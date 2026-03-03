@@ -5,7 +5,9 @@ const app = {
         ghUsername: '',
         ghRepo: '',
         ghToken: '',
-        theme: 'dark'
+        theme: 'dark',
+        scrollInterval: null,
+        scrollSpeed: 3
     },
 
     init() {
@@ -66,11 +68,15 @@ const app = {
     },
 
     showView(viewId) {
+        // Остановка автоскролла при уходе со страницы песни
+        this.stopAutoscroll();
+
         document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
         this.state.currentView = viewId;
 
         if (viewId === 'libraryView') {
+            document.getElementById('searchInput').value = ''; // Сброс поиска
             this.loadSongs();
         }
     },
@@ -81,6 +87,11 @@ const app = {
         document.getElementById('addSongForm').addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleSaveSong();
+        });
+
+        // Слушатель для поиска
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.filterSongs(e.target.value.toLowerCase());
         });
     },
 
@@ -177,7 +188,24 @@ const app = {
         }
 
         this.state.songs = content || [];
+        // Сортировка по алфавиту по умолчанию (по Исполнителю)
+        this.state.songs.sort((a, b) => a.artist.localeCompare(b.artist));
+
         this.renderSongs(this.state.songs);
+    },
+
+    filterSongs(query) {
+        if (!query) {
+            this.renderSongs(this.state.songs);
+            return;
+        }
+
+        const filtered = this.state.songs.filter(song =>
+            song.title.toLowerCase().includes(query) ||
+            song.artist.toLowerCase().includes(query)
+        );
+
+        this.renderSongs(filtered);
     },
 
     renderSongs(songs) {
@@ -273,7 +301,7 @@ const app = {
 
     // Парсер аккордов с помощью регулярного выражения
     parseChords(text) {
-        // Регулярное выражение: ищет A-G, с возможной диезом/бемолем, 
+        // Регулярное выражение: ищет A-G, с возможной диезом/бемолем,
         // и с возможными суффиксами (m, maj, min, aug, dim, sus, цифры, и т.д.)
         const chordRegex = /\b([CDEFGAB](?:#|b)?(?:m|maj|min|aug|dim|sus)?(?:\d)*)\b/g;
 
@@ -281,8 +309,67 @@ const app = {
             .replace(/</g, '&lt;') // Базовая защита от HTML-инъекций
             .replace(/>/g, '&gt;')
             .replace(chordRegex, '<span class="chord">$1</span>');
+    },
+
+    // --- Автоскролл (Автоплей) ---
+    toggleAutoscroll() {
+        const btn = document.getElementById('autoscrollBtn');
+        if (this.state.scrollInterval) {
+            this.stopAutoscroll();
+        } else {
+            this.startAutoscroll();
+        }
+    },
+
+    startAutoscroll() {
+        const btn = document.getElementById('autoscrollBtn');
+        btn.textContent = '⏸ Пауза';
+        btn.classList.add('accent'); // Делаем кнопку активной
+
+        // Базовая скорость (пиксели в миллисекунду). Чем больше scrollSpeed, тем быстрее.
+        const baseSpeed = 10;
+
+        this.state.scrollInterval = setInterval(() => {
+            // Крутим весь экран вниз
+            window.scrollBy({
+                top: this.state.scrollSpeed / baseSpeed,
+                left: 0,
+                behavior: 'auto'
+            });
+
+            // Проверяем, достигли ли дна страницы
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
+                this.stopAutoscroll();
+            }
+        }, 50); // обновление каждые 50ms = 20 FPS (достаточно плавно для телефона)
+    },
+
+    stopAutoscroll() {
+        if (this.state.scrollInterval) {
+            clearInterval(this.state.scrollInterval);
+            this.state.scrollInterval = null;
+        }
+        const btn = document.getElementById('autoscrollBtn');
+        if (btn) {
+            btn.textContent = '▶️ Автоскролл';
+            btn.classList.remove('accent');
+        }
+    },
+
+    updateScrollSpeed(val) {
+        this.state.scrollSpeed = parseInt(val);
+        document.getElementById('speedValue').textContent = val;
     }
 };
+
+// Регистрация Service Worker для PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker зарегистрирован!', reg))
+            .catch(err => console.error('Ошибка регистрации Service Worker:', err));
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     app.init();

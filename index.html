@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyChordBase - Струннотека</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MyChordBase - Струнотека</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icon-192x192.png">
+<meta name="theme-color" content="#1e1e1e">
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -24,7 +27,10 @@
     <!-- Main App Container -->
     <div id="appContainer">
         <header>
-            <h1 id="logo" onclick="app.showView('homeView')">🎸 MyChordBase</h1>
+            <h1 id="logo" onclick="app.showView('homeView')">
+                <img src="icon-192x192.png" alt="logo" class="logo-img">
+                🎸 MyChordBase
+            </h1>
             <div class="header-actions">
                 <button id="themeToggleBtn" onclick="app.toggleTheme()">🌙</button>
                 <button id="settingsBtn" onclick="app.openSettings()">⚙️</button>
@@ -90,7 +96,11 @@
 
             <!-- Library View -->
             <section id="libraryView" class="view hidden">
-                <h2>Моя библиотека</h2>
+                <div class="library-header">
+                    <h2>Моя библиотека</h2>
+                    <input type="text" id="searchInput" placeholder="Поиск по названию или исполнителю..."
+                        class="search-input">
+                </div>
                 <div id="songsGrid" class="songs-grid">
                     <!-- Song cards will be injected here -->
                     <p class="loading-text">Загрузка песен...</p>
@@ -108,6 +118,18 @@
                         <span id="viewCapo" class="badge">Капо: -</span>
                         <span id="viewBpm" class="badge">BPM: -</span>
                         <span id="viewStrum" class="badge">Бой: -</span>
+                    </div>
+
+                    <!-- Autoplay Controls -->
+                    <div class="autoplay-controls">
+                        <button id="autoscrollBtn" onclick="app.toggleAutoscroll()" class="primary-btn small">
+                            ▶️ Автоскролл
+                        </button>
+                        <div class="speed-control">
+                            <label>Скорость: <span id="speedValue">3</span></label>
+                            <input type="range" id="scrollSpeed" min="1" max="10" value="3"
+                                oninput="app.updateScrollSpeed(this.value)">
+                        </div>
                     </div>
                 </div>
 
