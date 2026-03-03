@@ -99,6 +99,12 @@ const app = {
         if (ocrUpload) {
             ocrUpload.addEventListener('change', (e) => this.handleOcrUpload(e));
         }
+
+        // Слушатель для вставки картинки из буфера обмена (Ctrl+V)
+        const songText = document.getElementById('songText');
+        if (songText) {
+            songText.addEventListener('paste', (e) => this.handlePasteImage(e));
+        }
     },
 
     // --- Интеграция с GitHub API ---
@@ -270,9 +276,33 @@ const app = {
 
     // --- Логика OCR (Распознавание текста) ---
     async handleOcrUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
 
+        for (let i = 0; i < files.length; i++) {
+            await this.processOcrFile(files[i]);
+        }
+
+        // Сброс инпута
+        event.target.value = '';
+    },
+
+    async handlePasteImage(event) {
+        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf("image") !== -1) {
+                event.preventDefault(); // Останавливаем стандартную вставку (чтобы браузер не вставил картинку как текст)
+                const file = items[i].getAsFile();
+                if (file) {
+                    await this.processOcrFile(file);
+                }
+            }
+        }
+        // Если вставляется обычный текст, то стандартное поведение отработает само
+    },
+
+    async processOcrFile(file) {
         const statusDiv = document.getElementById('ocrStatus');
         const progressSpan = document.getElementById('ocrProgress');
         const textArea = document.getElementById('songText');
@@ -298,7 +328,7 @@ const app = {
             const currentText = textArea.value;
             textArea.value = currentText ? currentText + '\n\n' + result.data.text : result.data.text;
 
-            // Немного чистим частые ошибки OCR аккордов (опционально)
+            // Немного чистим частые ошибки OCR аккордов
             this.cleanOcrText();
 
             statusDiv.innerHTML = '✅ Текст успешно распознан!';
@@ -310,10 +340,11 @@ const app = {
         } catch (error) {
             console.error('Ошибка распознавания:', error);
             statusDiv.innerHTML = '❌ Ошибка распознавания';
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+                statusDiv.innerHTML = '<span class="spinner"></span> Распознавание: <span id="ocrProgress">0%</span>';
+            }, 3000);
         }
-
-        // Сброс инпута
-        event.target.value = '';
     },
 
     cleanOcrText() {
