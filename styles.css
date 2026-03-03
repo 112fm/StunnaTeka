@@ -248,7 +248,7 @@ textarea:focus {
 }
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 .primary-btn {
