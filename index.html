@@ -94,11 +94,21 @@
                     <!-- Блок OCR -->
                     <div class="ocr-block">
                         <label for="ocrUpload" class="ocr-upload-btn">
-                            <span class="icon">📷</span> Распознать текст по фото/скрину
+                            <span class="icon">📷</span> Выбрать фото/скриншот
                         </label>
-                        <input type="file" id="ocrUpload" accept="image/*" class="hidden" multiple>
-                        <div id="ocrStatus" class="ocr-status hidden">
-                            <span class="spinner"></span> Распознавание: <span id="ocrProgress">0%</span>
+                        <input type="file" id="ocrUpload" accept="image/*" class="hidden">
+
+                        <!-- Превью перед отправкой -->
+                        <div id="ocrPreviewContainer" class="hidden" style="margin-top: 10px; text-align: center;">
+                            <p style="color: var(--text-secondary); margin-bottom: 5px; font-size: 0.9em;">✅ Картинка
+                                загружена (или вставлена Ctrl+V)</p>
+                            <button type="button" id="ocrProcessBtn" class="primary-btn small"
+                                style="background-color: var(--primary-color);">🪄 Распознать текст с помощью
+                                ИИ</button>
+                        </div>
+
+                        <div id="ocrStatus" class="ocr-status hidden" style="margin-top: 10px;">
+                            <span class="spinner"></span> Обработка нейросетью...
                         </div>
                     </div>
 

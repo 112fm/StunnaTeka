@@ -103,13 +103,33 @@ const app = {
         // Слушатель для загрузки картинки (OCR)
         const ocrUpload = document.getElementById('ocrUpload');
         if (ocrUpload) {
-            ocrUpload.addEventListener('change', (e) => this.handleOcrUpload(e));
+            ocrUpload.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    this.prepareImageForAi(e.target.files[0]);
+                }
+            });
+        }
+
+        // Кнопка принудительного запуска ИИ
+        const ocrProcessBtn = document.getElementById('ocrProcessBtn');
+        if (ocrProcessBtn) {
+            ocrProcessBtn.addEventListener('click', () => this.runGeminiAi());
         }
 
         // Слушатель для вставки картинки из буфера обмена (Ctrl+V)
         const songText = document.getElementById('songText');
         if (songText) {
-            songText.addEventListener('paste', (e) => this.handlePasteImage(e));
+            songText.addEventListener('paste', (e) => {
+                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                for (let index in items) {
+                    const item = items[index];
+                    if (item.kind === 'file' && item.type.startsWith('image/')) {
+                        e.preventDefault(); // Останавливаем вставку картинки прямиком в текстовое поле
+                        const blob = item.getAsFile();
+                        this.prepareImageForAi(blob);
+                    }
+                }
+            });
         }
 
         // Интерактивный рейтинг и сложность
@@ -292,85 +312,112 @@ const app = {
             alert('Песня успешно сохранена на GitHub!');
             this.showView('libraryView');
         }
-
         submitBtn.disabled = false;
         submitBtn.textContent = 'Сохранить песню';
     },
 
-    // --- Логика OCR (Распознавание текста) ---
-    async handleOcrUpload(event) {
-        const files = event.target.files;
-        if (!files || files.length === 0) return;
-
-        for (let i = 0; i < files.length; i++) {
-            await this.processOcrFile(files[i]);
+    // --- Подготовка и логика Gemini Vision ---
+    async prepareImageForAi(file) {
+        if (!this.state.googleApiKey) {
+            alert('Сначала добавьте ключ Google API в настройках!');
+            return;
         }
-
-        // Сброс инпута
-        event.target.value = '';
-    },
-
-    async handlePasteImage(event) {
-        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf("image") !== -1) {
-                event.preventDefault(); // Останавливаем стандартную вставку (чтобы браузер не вставил картинку как текст)
-                const file = items[i].getAsFile();
-                if (file) {
-                    await this.processOcrFile(file);
-                }
-            }
-        }
-        // Если вставляется обычный текст, то стандартное поведение отработает само
-    },
-
-    async processOcrFile(file) {
-        const statusDiv = document.getElementById('ocrStatus');
-        const progressSpan = document.getElementById('ocrProgress');
-        const textArea = document.getElementById('songText');
-
-        statusDiv.classList.remove('hidden');
-        progressSpan.textContent = '0%';
 
         try {
-            // Используем скачанный через CDN Tesseract
-            // Добавляем PSM 6 (Assume a single uniform block of text) для сохранения оригинальных пробелов
-            const result = await Tesseract.recognize(
-                file,
-                'rus+eng', // Распознаем русский и английский (для аккордов)
-                {
-                    logger: m => {
-                        if (m.status === 'recognizing text') {
-                            progressSpan.textContent = `${Math.round(m.progress * 100)}%`;
+            const reader = new FileReader();
+            const base64Promise = new Promise((resolve) => {
+                reader.onload = (e) => resolve({
+                    data: e.target.result.split(',')[1],
+                    type: file.type || "image/jpeg"
+                });
+                reader.readAsDataURL(file);
+            });
+
+            this.state.pendingImage = await base64Promise;
+
+            // Показываем кнопку "Распознать с помощью ИИ"
+            document.getElementById('ocrPreviewContainer').classList.remove('hidden');
+        } catch (e) {
+            console.error(e);
+            alert("Ошибка чтения файла");
+        }
+    },
+
+    async runGeminiAi() {
+        if (!this.state.pendingImage) return;
+
+        const statusDiv = document.getElementById('ocrStatus');
+        const previewContainer = document.getElementById('ocrPreviewContainer');
+        const textArea = document.getElementById('songText');
+
+        previewContainer.classList.add('hidden');
+        statusDiv.classList.remove('hidden');
+
+        try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.state.googleApiKey}`;
+
+            const prompt = "Ты профессиональный транскрибатор музыкальных аккордов и текстов. " +
+                "Твоя задача — прочитать текст песни с картинки и в точности перепечатать его, сохраняя идеальное выравнивание. " +
+                "ОБЯЗАТЕЛЬНО: Если аккорд написан с отступом (например, в середине строки), ты ДОЛЖЕН использовать пробелы, чтобы расположить аккорд на нужной дистанции ровно над нужным словом или слогом в нижней строке текста. " +
+                "Никогда не пиши никаких приветствий или пояснений, только результат транскрипции. Исправляй опечатки OCR (такие как 'Ат' вместо 'Am', 'От' вместо 'Dm'), если это явно аккорд.";
+
+            const requestBody = {
+                contents: [{
+                    parts: [
+                        { text: prompt },
+                        {
+                            inline_data: {
+                                mime_type: this.state.pendingImage.type,
+                                data: this.state.pendingImage.data
+                            }
                         }
-                    }
-                },
-                {
-                    tessedit_pageseg_mode: Tesseract.PSM.AUTO_OSD // Пытаемся сохранить структуру (альтернатива 6)
+                    ]
+                }],
+                generationConfig: {
+                    temperature: 0.1 // Снижаем фантазию ИИ для максимальной точности
                 }
-            );
+            };
 
-            // Если не поможет AUTO_OSD, будем пробовать другой режим. Пока так.
-            let rawText = result.data.text;
-            textArea.value = currentText ? currentText + '\n\n' + result.data.text : result.data.text;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
 
-            // Немного чистим частые ошибки OCR аккордов
-            this.cleanOcrText();
+            if (!response.ok) {
+                const errData = await response.json();
+                console.error("Gemini Error Payload:", errData);
+                throw new Error(errData.error?.message || response.status);
+            }
 
-            statusDiv.innerHTML = '✅ Текст успешно распознан!';
+            const data = await response.json();
+            let recognizedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+            // Чистим от случайных Markdown блоков, если ИИ их добавил (```text ... ```)
+            recognizedText = recognizedText.replace(/^```[a-z]*\n/i, '').replace(/\n```$/, '');
+
+            // Добавляем распознанный текст
+            const currentText = textArea.value;
+            textArea.value = currentText ? currentText + '\n\n' + recognizedText : recognizedText;
+
+            statusDiv.innerHTML = '✅ Текст успешно обработан!';
             setTimeout(() => {
                 statusDiv.classList.add('hidden');
-                statusDiv.innerHTML = '<span class="spinner"></span> Распознавание: <span id="ocrProgress">0%</span>';
+                statusDiv.innerHTML = '<span class="spinner"></span> Обработка нейросетью...';
             }, 3000);
+
+            // Сбрасываем pending image
+            this.state.pendingImage = null;
 
         } catch (error) {
-            console.error('Ошибка распознавания:', error);
-            statusDiv.innerHTML = '❌ Ошибка распознавания';
+            console.error('Ошибка Gemini OCR:', error);
+            statusDiv.innerHTML = `❌ Ошибка: ${error.message}`;
             setTimeout(() => {
                 statusDiv.classList.add('hidden');
-                statusDiv.innerHTML = '<span class="spinner"></span> Распознавание: <span id="ocrProgress">0%</span>';
-            }, 3000);
+                statusDiv.innerHTML = '<span class="spinner"></span> Обработка нейросетью...';
+                // Возвращаем кнопку если была ошибка
+                previewContainer.classList.remove('hidden');
+            }, 6000);
         }
     },
 
