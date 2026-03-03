@@ -197,6 +197,60 @@ textarea:focus {
     color: var(--text-secondary);
 }
 
+/* OCR Styles */
+.ocr-block {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.ocr-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--surface-highlight);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border: 1px dashed var(--accent-color);
+    transition: all 0.2s ease;
+}
+
+.ocr-upload-btn:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.ocr-status {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--accent-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
 .primary-btn {
     background-color: var(--accent-color);
     color: white;

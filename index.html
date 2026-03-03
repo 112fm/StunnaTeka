@@ -86,6 +86,18 @@
                             <input type="range" id="songDifficulty" min="1" max="5" value="2">
                         </div>
                     </div>
+
+                    <!-- Блок OCR -->
+                    <div class="ocr-block">
+                        <label for="ocrUpload" class="ocr-upload-btn">
+                            <span class="icon">📷</span> Распознать текст по фото/скрину
+                        </label>
+                        <input type="file" id="ocrUpload" accept="image/*" class="hidden">
+                        <div id="ocrStatus" class="ocr-status hidden">
+                            <span class="spinner"></span> Распознавание: <span id="ocrProgress">0%</span>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <textarea id="songText" placeholder="Текст песни с аккордами (напр. Куплет 1: Am C D G)..."
                             rows="12" required></textarea>
@@ -146,6 +158,7 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <script src="app.js"></script>
 </body>
 

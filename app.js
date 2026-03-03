@@ -93,6 +93,12 @@ const app = {
         document.getElementById('searchInput').addEventListener('input', (e) => {
             this.filterSongs(e.target.value.toLowerCase());
         });
+
+        // Слушатель для загрузки картинки (OCR)
+        const ocrUpload = document.getElementById('ocrUpload');
+        if (ocrUpload) {
+            ocrUpload.addEventListener('change', (e) => this.handleOcrUpload(e));
+        }
     },
 
     // --- Интеграция с GitHub API ---
@@ -260,6 +266,64 @@ const app = {
 
         submitBtn.disabled = false;
         submitBtn.textContent = 'Сохранить песню';
+    },
+
+    // --- Логика OCR (Распознавание текста) ---
+    async handleOcrUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const statusDiv = document.getElementById('ocrStatus');
+        const progressSpan = document.getElementById('ocrProgress');
+        const textArea = document.getElementById('songText');
+
+        statusDiv.classList.remove('hidden');
+        progressSpan.textContent = '0%';
+
+        try {
+            // Используем скачанный через CDN Tesseract
+            const result = await Tesseract.recognize(
+                file,
+                'rus+eng', // Распознаем русский и английский (для аккордов)
+                {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            progressSpan.textContent = `${Math.round(m.progress * 100)}%`;
+                        }
+                    }
+                }
+            );
+
+            // Добавляем распознанный текст в текстовое поле (оставляем существующий текст, если он есть)
+            const currentText = textArea.value;
+            textArea.value = currentText ? currentText + '\n\n' + result.data.text : result.data.text;
+
+            // Немного чистим частые ошибки OCR аккордов (опционально)
+            this.cleanOcrText();
+
+            statusDiv.innerHTML = '✅ Текст успешно распознан!';
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+                statusDiv.innerHTML = '<span class="spinner"></span> Распознавание: <span id="ocrProgress">0%</span>';
+            }, 3000);
+
+        } catch (error) {
+            console.error('Ошибка распознавания:', error);
+            statusDiv.innerHTML = '❌ Ошибка распознавания';
+        }
+
+        // Сброс инпута
+        event.target.value = '';
+    },
+
+    cleanOcrText() {
+        const textArea = document.getElementById('songText');
+        let text = textArea.value;
+        // Заменяем частые ошибки (например, I привязывается к аккордам или 0 вместо O)
+        text = text.replace(/\bArn\b/g, 'Am');
+        text = text.replace(/\bCfn\b/g, 'Cm');
+        // Можно добавлять свои регулярки для чистки мусора
+        textArea.value = text;
     },
 
     // --- Просмотр Песни ---
