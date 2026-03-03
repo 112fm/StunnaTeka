@@ -354,7 +354,7 @@ const app = {
         statusDiv.classList.remove('hidden');
 
         try {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.state.googleApiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${this.state.googleApiKey}`;
             const prompt = "Ты профессиональный транскрибатор музыкальных аккордов и текстов. " +
                 "Твоя задача — прочитать текст песни с картинки и в точности перепечатать его, сохраняя идеальное выравнивание. " +
                 "ОБЯЗАТЕЛЬНО: Если аккорд написан с отступом (например, в середине строки), ты ДОЛЖЕН использовать пробелы, чтобы расположить аккорд на нужной дистанции ровно над нужным словом или слогом в нижней строке текста. " +
