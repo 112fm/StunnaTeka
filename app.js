@@ -405,6 +405,31 @@ const app = {
             text = text.replace(regex, replacement);
         });
 
+        // Эвристика: если строка состоит ТОЛЬКО из аккордов и пробелов, 
+        // и следующий за ней текст не пустой, пытаемся сдвинуть аккорды (хоть как-то)
+        // Так как OCR часто "съедает" начальные пробелы пустых строк. 
+        const lines = text.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
+            // Проверяем, содержит ли строка только аккорды (очень грубо)
+            const isChordLine = line.trim().length > 0 &&
+                line.split(/\s+/).every(word => /^[CDEFGABH][#b]?(m|min|maj|dim|aug|sus\d?|\d)?$/.test(word));
+
+            // Если это строка с аккордами, и мы видим, что снизу длинный текст, 
+            // а аккорды прижаты влево (т.к. OCR съел пробелы)
+            if (isChordLine && i + 1 < lines.length) {
+                const textLine = lines[i + 1].trim();
+                if (textLine.length > 0) {
+                    // Просто добавляем немного пробелов между аккордами для читаемости
+                    lines[i] = line.trim().split(/\s+/).join('        ');
+                    // А также даем небольшой отступ спереди
+                    lines[i] = '    ' + lines[i];
+                }
+            }
+        }
+        text = lines.join('\n');
+
         textArea.value = text;
     },
 
