@@ -330,6 +330,7 @@ const app = {
 
         try {
             // Используем скачанный через CDN Tesseract
+            // Добавляем PSM 6 (Assume a single uniform block of text) для сохранения оригинальных пробелов
             const result = await Tesseract.recognize(
                 file,
                 'rus+eng', // Распознаем русский и английский (для аккордов)
@@ -339,11 +340,14 @@ const app = {
                             progressSpan.textContent = `${Math.round(m.progress * 100)}%`;
                         }
                     }
+                },
+                {
+                    tessedit_pageseg_mode: Tesseract.PSM.AUTO_OSD // Пытаемся сохранить структуру (альтернатива 6)
                 }
             );
 
-            // Добавляем распознанный текст в текстовое поле (оставляем существующий текст, если он есть)
-            const currentText = textArea.value;
+            // Если не поможет AUTO_OSD, будем пробовать другой режим. Пока так.
+            let rawText = result.data.text;
             textArea.value = currentText ? currentText + '\n\n' + result.data.text : result.data.text;
 
             // Немного чистим частые ошибки OCR аккордов
@@ -535,6 +539,60 @@ const app = {
 
         } catch (e) {
             console.error('Ошибка фонового сохранения метаданных:', e);
+        }
+    },
+
+    async deleteCurrentSong() {
+        if (!this.state.currentSongId) return;
+
+        if (!confirm('Вы уверены, что хотите удалить эту песню? Это действие нельзя отменить.')) {
+            return;
+        }
+
+        const songIndex = this.state.songs.findIndex(s => s.id === this.state.currentSongId);
+        if (songIndex === -1) return;
+
+        const songToDelete = this.state.songs[songIndex];
+
+        // Удаляем из локального стейта
+        this.state.songs.splice(songIndex, 1);
+
+        // Отправляем изменения на GitHub
+        const { ghUsername, ghRepo, ghToken } = this.state;
+        const url = `https://api.github.com/repos/${ghUsername}/${ghRepo}/contents/songs.json`;
+
+        try {
+            const { sha } = await this.getGitHubFile();
+            const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(this.state.songs, null, 2))));
+
+            const reqBody = {
+                message: `Delete song: ${songToDelete.title}`,
+                content: contentEncoded,
+            };
+            if (sha) reqBody.sha = sha;
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${ghToken}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reqBody)
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при удалении на GitHub');
+            }
+
+            alert('Песня успешно удалена!');
+            this.showView('libraryView');
+
+        } catch (e) {
+            console.error('Ошибка удаления:', e);
+            alert('Ошибка при удалении: ' + e.message);
+            // Возвращаем песню обратно в стейт, если GitHub упал
+            this.state.songs.splice(songIndex, 0, songToDelete);
         }
     },
 

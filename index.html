@@ -113,7 +113,10 @@
             <!-- Song View -->
             <section id="songView" class="view hidden">
                 <div class="song-header">
-                    <button class="back-btn" onclick="app.showView('libraryView')">⬅ Назад</button>
+                    <div class="song-header-top">
+                        <button class="back-btn" onclick="app.showView('libraryView')">⬅ Назад</button>
+                        <button class="delete-btn" onclick="app.deleteCurrentSong()">🗑 Удалить</button>
+                    </div>
                     <h2 id="viewTitle">Название песни</h2>
                     <h3 id="viewArtist">Исполнитель</h3>
                     <div class="song-meta">

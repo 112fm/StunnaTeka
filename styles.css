@@ -424,16 +424,36 @@ textarea:focus {
     font-size: 0.9rem;
 }
 
-/* Song View */
+.song-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 .back-btn {
     background: transparent;
     color: var(--text-secondary);
-    margin-bottom: 15px;
     font-size: 0.9rem;
 }
 
 .back-btn:hover {
     color: var(--text-primary);
+}
+
+.delete-btn {
+    background: transparent;
+    color: #ef4444;
+    /* red-500 */
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.delete-btn:hover {
+    color: #b91c1c;
+    /* red-700 */
 }
 
 .song-header h2 {
