@@ -261,6 +261,68 @@ textarea:focus {
     transition: background-color 0.2s;
 }
 
+.song-rating-edit {
+    display: flex;
+    gap: 20px;
+    padding: 15px 20px;
+    background-color: var(--surface-light);
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid var(--surface-highlight);
+}
+
+.song-rating-edit .input-block {
+    flex: 1;
+}
+
+/* Rating Stars */
+.rating-stars {
+    display: inline-flex;
+    gap: 5px;
+    font-size: 1.8rem;
+    color: var(--surface-highlight);
+    cursor: pointer;
+    user-select: none;
+}
+
+.rating-stars span {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
+}
+
+.rating-stars span:hover {
+    transform: scale(1.2);
+}
+
+.rating-stars span.active {
+    color: #f59e0b;
+    /* Golden Yellow */
+}
+
+/* Difficulty Boxes */
+.difficulty-boxes {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.diff-box {
+    width: 20px;
+    height: 20px;
+    background-color: var(--surface-highlight);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.diff-box:hover {
+    transform: translateY(-2px);
+}
+
+.diff-box.active {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
 .primary-btn.small {
     padding: 8px 15px;
     font-size: 0.9rem;

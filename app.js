@@ -7,7 +7,8 @@ const app = {
         ghToken: '',
         theme: 'dark',
         scrollInterval: null,
-        scrollSpeed: 3
+        scrollSpeed: 3,
+        currentSongId: null
     },
 
     init() {
@@ -105,6 +106,14 @@ const app = {
         if (songText) {
             songText.addEventListener('paste', (e) => this.handlePasteImage(e));
         }
+
+        // Интерактивный рейтинг и сложность
+        document.querySelectorAll('.rating-stars span').forEach(star => {
+            star.addEventListener('click', (e) => this.handleMetaClick(e.target.dataset.val, 'rating'));
+        });
+        document.querySelectorAll('.difficulty-boxes .diff-box').forEach(box => {
+            box.addEventListener('click', (e) => this.handleMetaClick(e.target.dataset.val, 'difficulty'));
+        });
     },
 
     // --- Интеграция с GitHub API ---
@@ -350,15 +359,30 @@ const app = {
     cleanOcrText() {
         const textArea = document.getElementById('songText');
         let text = textArea.value;
-        // Заменяем частые ошибки (например, I привязывается к аккордам или 0 вместо O)
+
+        // Заменяем частые ошибки (например, кириллические символы похожие на аккорды)
+        // Ат -> Am, От -> Dm, Em/E остаются E, С -> C, В -> B
+        text = text.replace(/\bАт\b/g, 'Am');
+        text = text.replace(/\bОт\b/g, 'Dm');
         text = text.replace(/\bArn\b/g, 'Am');
         text = text.replace(/\bCfn\b/g, 'Cm');
-        // Можно добавлять свои регулярки для чистки мусора
+
+        // Замена русских букв на похожие латинские в изолированных аккордах
+        text = text.replace(/\bС\b/g, 'C'); // Русская С
+        text = text.replace(/\bА\b/g, 'A'); // Русская А
+        text = text.replace(/\bЕ\b/g, 'E'); // Русская Е
+        text = text.replace(/\bН\b/g, 'H'); // Русская Н (часто H/B)
+        text = text.replace(/\bВ\b/g, 'B'); // Русская В
+
+        // Фикс пробелов перед m: A m -> Am
+        text = text.replace(/\b([CDEFGAB]) m\b/g, '$1m');
+
         textArea.value = text;
     },
 
     // --- Просмотр Песни ---
     openSongView(song) {
+        this.state.currentSongId = song.id;
         document.getElementById('viewTitle').textContent = song.title;
         document.getElementById('viewArtist').textContent = song.artist;
         document.getElementById('viewKey').textContent = `Тональность: ${song.key || '-'}`;
@@ -385,7 +409,80 @@ const app = {
 
         document.getElementById('viewText').innerHTML = this.parseChords(song.text);
 
+        // Установка значений звезд и боксов
+        this.renderMetaVisuals(song.rating || 0, 'rating');
+        this.renderMetaVisuals(song.difficulty || 0, 'difficulty');
+
         this.showView('songView');
+    },
+
+    renderMetaVisuals(val, field) {
+        const value = parseInt(val) || 0;
+
+        if (field === 'rating') {
+            document.getElementById('valRating').textContent = value;
+            document.querySelectorAll('.rating-stars span').forEach(star => {
+                if (parseInt(star.dataset.val) <= value) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        if (field === 'difficulty') {
+            document.getElementById('valDifficulty').textContent = value;
+            document.querySelectorAll('.difficulty-boxes .diff-box').forEach(box => {
+                if (parseInt(box.dataset.val) <= value) {
+                    box.classList.add('active');
+                } else {
+                    box.classList.remove('active');
+                }
+            });
+        }
+    },
+
+    async handleMetaClick(val, field) {
+        if (!this.state.currentSongId) return;
+
+        const value = parseInt(val) || 0;
+
+        // Быстро визуально обновляем
+        this.renderMetaVisuals(value, field);
+
+        // Находим и обновляем песню в локальном стейте
+        const songIndex = this.state.songs.findIndex(s => s.id === this.state.currentSongId);
+        if (songIndex === -1) return;
+
+        this.state.songs[songIndex][field] = value;
+
+        // Отправляем все песни обратно на GitHub
+        const { ghUsername, ghRepo, ghToken } = this.state;
+        const url = `https://api.github.com/repos/${ghUsername}/${ghRepo}/contents/songs.json`;
+
+        try {
+            const { sha } = await this.getGitHubFile();
+            const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(this.state.songs, null, 2))));
+
+            const reqBody = {
+                message: `Update ${field} for ${this.state.songs[songIndex].title}`,
+                content: contentEncoded,
+            };
+            if (sha) reqBody.sha = sha;
+
+            await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${ghToken}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reqBody)
+            });
+
+        } catch (e) {
+            console.error('Ошибка фонового сохранения метаданных:', e);
+        }
     },
 
     extractYoutubeId(url) {

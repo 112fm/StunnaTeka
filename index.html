@@ -76,16 +76,7 @@
                     <div class="form-group">
                         <input type="url" id="songYoutube" placeholder="Ссылка на YouTube">
                     </div>
-                    <div class="form-group row">
-                        <div class="input-block">
-                            <label>Оценка (1-5)</label>
-                            <input type="range" id="songRating" min="1" max="5" value="5">
-                        </div>
-                        <div class="input-block">
-                            <label>Сложность (1-5)</label>
-                            <input type="range" id="songDifficulty" min="1" max="5" value="2">
-                        </div>
-                    </div>
+
 
                     <!-- Блок OCR -->
                     <div class="ocr-block">
@@ -142,6 +133,19 @@
                             <input type="range" id="scrollSpeed" min="1" max="10" value="3"
                                 oninput="app.updateScrollSpeed(this.value)">
                         </div>
+                    </div>
+                </div>
+
+                <div class="song-rating-edit">
+                    <div class="input-block">
+                        <label>Оценка: <strong id="valRating">0</strong>/5</label>
+                        <input type="range" id="editRating" min="1" max="5" value="3"
+                            onchange="app.updateSongMeta(this.value, 'rating')">
+                    </div>
+                    <div class="input-block">
+                        <label>Сложность: <strong id="valDifficulty">0</strong>/5</label>
+                        <input type="range" id="editDifficulty" min="1" max="5" value="3"
+                            onchange="app.updateSongMeta(this.value, 'difficulty')">
                     </div>
                 </div>
 
