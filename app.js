@@ -254,20 +254,29 @@ const app = {
     // --- Обработка Формы ---
     async handleSaveSong() {
         const submitBtn = document.querySelector('#addSongForm button[type="submit"]');
+
+        const titleInput = document.getElementById('songTitle').value.trim();
+        const artistInput = document.getElementById('songArtist').value.trim();
+
+        if (!titleInput || !artistInput) {
+            alert('Пожалуйста, заполните хотя бы Название и Исполнителя!');
+            return;
+        }
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Сохранение...';
 
         const newSong = {
             id: Date.now().toString(),
-            artist: document.getElementById('songArtist').value.trim(),
-            title: document.getElementById('songTitle').value.trim(),
+            artist: artistInput,
+            title: titleInput,
             bpm: parseInt(document.getElementById('songBpm').value) || null,
-            key: document.getElementById('songKey').value.trim(),
+            key: document.getElementById('songKey').value.trim() || null,
             capo: parseInt(document.getElementById('songCapo').value) || 0,
-            strum_pattern: document.getElementById('songStrum').value,
-            youtube_url: document.getElementById('songYoutube').value.trim(),
-            rating: parseInt(document.getElementById('songRating').value) || 0,
-            difficulty: parseInt(document.getElementById('songDifficulty').value) || 0,
+            strum_pattern: document.getElementById('songStrum').value || null,
+            youtube_url: document.getElementById('songYoutube').value.trim() || null,
+            rating: 0,
+            difficulty: 0,
             text: document.getElementById('songText').value
         };
 
@@ -360,22 +369,42 @@ const app = {
         const textArea = document.getElementById('songText');
         let text = textArea.value;
 
-        // Заменяем частые ошибки (например, кириллические символы похожие на аккорды)
-        // Ат -> Am, От -> Dm, Em/E остаются E, С -> C, В -> B
-        text = text.replace(/\bАт\b/g, 'Am');
-        text = text.replace(/\bОт\b/g, 'Dm');
-        text = text.replace(/\bArn\b/g, 'Am');
-        text = text.replace(/\bCfn\b/g, 'Cm');
+        // Массив замен: [что искать (регулярка), на что менять]
+        const replacements = [
+            // Аккорды, которые путаются с кириллицей или мусором
+            [/\bАт\b/g, 'Am'],
+            [/\bОт\b/g, 'Dm'],
+            [/\bAn\b/g, 'Am'],
+            [/\bоп\b/g, 'Dm'],
+            [/\bArn\b/g, 'Am'],
+            [/\bCfn\b/g, 'Cm'],
 
-        // Замена русских букв на похожие латинские в изолированных аккордах
-        text = text.replace(/\bС\b/g, 'C'); // Русская С
-        text = text.replace(/\bА\b/g, 'A'); // Русская А
-        text = text.replace(/\bЕ\b/g, 'E'); // Русская Е
-        text = text.replace(/\bН\b/g, 'H'); // Русская Н (часто H/B)
-        text = text.replace(/\bВ\b/g, 'B'); // Русская В
+            // Русские буквы в изолированных аккордах
+            [/\bС\b/g, 'C'], // Русская С
+            [/\bА\b/g, 'A'], // Русская А
+            [/\bЕ\b/g, 'E'], // Русская Е
+            [/\bН\b/g, 'H'], // Русская Н
+            [/\bВ\b/g, 'B'], // Русская В
+            [/\bО\b/g, 'D'], // Русское О часто вместо латинской D
 
-        // Фикс пробелов перед m: A m -> Am
-        text = text.replace(/\b([CDEFGAB]) m\b/g, '$1m');
+            // Типичные ошибки слов в кириллице из-за латинских примесей
+            [/\bBOT\b/g, 'вот'],
+            [/\bMUCHMO\b/g, 'письмо'],
+            [/\bHaM\b/g, 'нам'],
+            [/\bTex\b/g, 'тех'],
+            [/\bropax\b/g, 'горах'],
+            [/\bTpaccepa\b/g, 'трассера'],
+            [/\bBnepén\b/g, 'вперёд'],
+            [/\bowa\b/g, 'она'],
+            [/\bHe\b/g, 'не'],
+
+            // Фикс пробелов в аккордах (A m -> Am)
+            [/\b([CDEFGABH]) m\b/g, '$1m']
+        ];
+
+        replacements.forEach(([regex, replacement]) => {
+            text = text.replace(regex, replacement);
+        });
 
         textArea.value = text;
     },
