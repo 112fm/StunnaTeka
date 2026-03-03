@@ -14,13 +14,26 @@
 <body>
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Настройки GitHub</h2>
-            <p>Введите данные для сохранения песен в ваш репозиторий.</p>
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 20px;">⚙️ Настройки</h2>
+
+            <h3 style="margin-bottom: 10px; color: var(--primary-color);">🗄️ Сохранение (GitHub)</h3>
+            <p>Укажите ваш репозиторий GitHub для сохранения базы песен.</p>
             <input type="text" id="ghUsername" placeholder="GitHub Username (например, octocat)">
             <input type="text" id="ghRepo" placeholder="Repository Name (например, chords-db)">
             <input type="password" id="ghToken" placeholder="Personal Access Token">
-            <button id="saveSettingsBtn" class="primary-btn">Сохранить</button>
+            <p class="help-text">Token нужен с правами "repo" для чтения/записи файлов.</p>
+
+            <hr style="margin: 20px 0; border: 1px solid var(--border-color);">
+
+            <h3 style="margin-bottom: 10px; color: var(--primary-color);">🧠 Умное Распознавание (Gemini)</h3>
+            <p>Укажите бесплатный ключ Google AI Studio. Он нужен для распознавания фото с сохранением правильных
+                пробелов.</p>
+            <input type="password" id="googleApiKey" placeholder="Google Gemini 1.5 API Key">
+            <p class="help-text">Получить <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                    style="color:var(--primary-color)">здесь</a>.</p>
+
+            <button id="saveSettingsBtn" class="primary-btn" style="margin-top: 20px;">Сохранить параметры</button>
         </div>
     </div>
 
@@ -165,7 +178,6 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <script src="app.js"></script>
 </body>
 

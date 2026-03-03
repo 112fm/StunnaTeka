@@ -5,6 +5,7 @@ const app = {
         ghUsername: '',
         ghRepo: '',
         ghToken: '',
+        googleApiKey: '',
         theme: 'dark',
         scrollInterval: null,
         scrollSpeed: 3,
@@ -25,6 +26,7 @@ const app = {
         this.state.ghUsername = localStorage.getItem('ghUsername') || '';
         this.state.ghRepo = localStorage.getItem('ghRepo') || '';
         this.state.ghToken = localStorage.getItem('ghToken') || '';
+        this.state.googleApiKey = localStorage.getItem('googleApiKey') || '';
         this.state.theme = localStorage.getItem('theme') || 'dark';
     },
 
@@ -46,6 +48,7 @@ const app = {
         document.getElementById('ghUsername').value = this.state.ghUsername;
         document.getElementById('ghRepo').value = this.state.ghRepo;
         document.getElementById('ghToken').value = this.state.ghToken;
+        document.getElementById('googleApiKey').value = this.state.googleApiKey;
         document.getElementById('settingsModal').classList.remove('hidden');
     },
 
@@ -53,11 +56,13 @@ const app = {
         this.state.ghUsername = document.getElementById('ghUsername').value.trim();
         this.state.ghRepo = document.getElementById('ghRepo').value.trim();
         this.state.ghToken = document.getElementById('ghToken').value.trim();
+        this.state.googleApiKey = document.getElementById('googleApiKey').value.trim();
 
         if (this.state.ghUsername && this.state.ghRepo && this.state.ghToken) {
             localStorage.setItem('ghUsername', this.state.ghUsername);
             localStorage.setItem('ghRepo', this.state.ghRepo);
             localStorage.setItem('ghToken', this.state.ghToken);
+            localStorage.setItem('googleApiKey', this.state.googleApiKey);
             document.getElementById('settingsModal').classList.add('hidden');
 
             if (this.state.currentView === 'libraryView') {
