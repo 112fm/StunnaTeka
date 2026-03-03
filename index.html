@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyChordBase - Струннотека</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Настройки GitHub</h2>
+            <p>Введите данные для сохранения песен в ваш репозиторий.</p>
+            <input type="text" id="ghUsername" placeholder="GitHub Username (например, octocat)">
+            <input type="text" id="ghRepo" placeholder="Repository Name (например, chords-db)">
+            <input type="password" id="ghToken" placeholder="Personal Access Token">
+            <button id="saveSettingsBtn" class="primary-btn">Сохранить</button>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="appContainer">
+        <header>
+            <h1 id="logo" onclick="app.showView('homeView')">🎸 MyChordBase</h1>
+            <div class="header-actions">
+                <button id="themeToggleBtn" onclick="app.toggleTheme()">🌙</button>
+                <button id="settingsBtn" onclick="app.openSettings()">⚙️</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Home View -->
+            <section id="homeView" class="view active">
+                <div class="home-buttons">
+                    <button class="massive-btn accent" onclick="app.showView('addView')">
+                        <span class="icon">➕</span> Новая песня
+                    </button>
+                    <button class="massive-btn" onclick="app.showView('libraryView')">
+                        <span class="icon">🎸</span> Мои песни
+                    </button>
+                </div>
+            </section>
+
+            <!-- Add Song View -->
+            <section id="addView" class="view hidden">
+                <h2>Добавить новую песню</h2>
+                <form id="addSongForm">
+                    <div class="form-group row">
+                        <input type="text" id="songArtist" placeholder="Исполнитель" required>
+                        <input type="text" id="songTitle" placeholder="Название песни" required>
+                    </div>
+                    <div class="form-group row">
+                        <input type="number" id="songBpm" placeholder="BPM" min="1">
+                        <input type="text" id="songKey" placeholder="Тональность (например, Am)">
+                        <input type="number" id="songCapo" placeholder="Каподастр (0-12)" min="0" max="12">
+                    </div>
+                    <div class="form-group">
+                        <select id="songStrum">
+                            <option value="">Выберите бой...</option>
+                            <option value="Шестерка">Шестерка</option>
+                            <option value="Четверка">Четверка</option>
+                            <option value="Восьмерка">Восьмерка</option>
+                            <option value="Перебор">Перебор</option>
+                            <option value="Свой вариант">Свой вариант</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="url" id="songYoutube" placeholder="Ссылка на YouTube">
+                    </div>
+                    <div class="form-group row">
+                        <div class="input-block">
+                            <label>Оценка (1-5)</label>
+                            <input type="range" id="songRating" min="1" max="5" value="5">
+                        </div>
+                        <div class="input-block">
+                            <label>Сложность (1-5)</label>
+                            <input type="range" id="songDifficulty" min="1" max="5" value="2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="songText" placeholder="Текст песни с аккордами (напр. Куплет 1: Am C D G)..."
+                            rows="12" required></textarea>
+                    </div>
+                    <button type="submit" class="primary-btn full-width">Сохранить песню</button>
+                </form>
+            </section>
+
+            <!-- Library View -->
+            <section id="libraryView" class="view hidden">
+                <h2>Моя библиотека</h2>
+                <div id="songsGrid" class="songs-grid">
+                    <!-- Song cards will be injected here -->
+                    <p class="loading-text">Загрузка песен...</p>
+                </div>
+            </section>
+
+            <!-- Song View -->
+            <section id="songView" class="view hidden">
+                <div class="song-header">
+                    <button class="back-btn" onclick="app.showView('libraryView')">⬅ Назад</button>
+                    <h2 id="viewTitle">Название песни</h2>
+                    <h3 id="viewArtist">Исполнитель</h3>
+                    <div class="song-meta">
+                        <span id="viewKey" class="badge">Тональность: -</span>
+                        <span id="viewCapo" class="badge">Капо: -</span>
+                        <span id="viewBpm" class="badge">BPM: -</span>
+                        <span id="viewStrum" class="badge">Бой: -</span>
+                    </div>
+                </div>
+
+                <div id="viewYoutubeContainer" class="youtube-container hidden">
+                    <iframe id="viewYoutube" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+
+                <div class="song-lyrics">
+                    <pre id="viewText"></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
