@@ -105,7 +105,7 @@ const app = {
         if (ocrUpload) {
             ocrUpload.addEventListener('change', (e) => {
                 if (e.target.files && e.target.files.length > 0) {
-                    this.prepareImageForAi(e.target.files[0]);
+                    this.prepareImagesForAi(Array.from(e.target.files));
                 }
             });
         }
@@ -121,13 +121,16 @@ const app = {
         if (songText) {
             songText.addEventListener('paste', (e) => {
                 const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                const imagesToProcess = [];
                 for (let index in items) {
                     const item = items[index];
                     if (item.kind === 'file' && item.type.startsWith('image/')) {
-                        e.preventDefault(); // Останавливаем вставку картинки прямиком в текстовое поле
-                        const blob = item.getAsFile();
-                        this.prepareImageForAi(blob);
+                        e.preventDefault();
+                        imagesToProcess.push(item.getAsFile());
                     }
+                }
+                if (imagesToProcess.length > 0) {
+                    this.prepareImagesForAi(imagesToProcess);
                 }
             });
         }
@@ -344,7 +347,7 @@ const app = {
     },
 
     async runGeminiAi() {
-        if (!this.state.pendingImage) return;
+        if (!this.state.pendingImages || this.state.pendingImages.length === 0) return;
 
         const statusDiv = document.getElementById('ocrStatus');
         const previewContainer = document.getElementById('ocrPreviewContainer');
@@ -409,44 +412,59 @@ const app = {
 3. НИКОГДА не съедай отступы. За каждый пропущенный пробел - штраф.
 4. Выдавай ТОЛЬКО готовый текст. Без пояснений, приветствий или markdown-блоков (\`\`\`).`;
 
-            const requestBody = {
-                contents: [{
-                    parts: [
-                        { text: prompt },
-                        {
-                            inlineData: {
-                                mimeType: this.state.pendingImage.type,
-                                data: this.state.pendingImage.data
+            // Цикл по всем загруженным картинкам
+            let allRecognizedText = "";
+            let currentImageCount = 1;
+            const totalImages = this.state.pendingImages.length;
+
+            for (const imgData of this.state.pendingImages) {
+                statusDiv.innerHTML = `<span class="spinner"></span> Обрабатываем фото ${currentImageCount} из ${totalImages}...`;
+
+                const requestBody = {
+                    contents: [{
+                        parts: [
+                            { text: prompt },
+                            {
+                                inlineData: {
+                                    mimeType: imgData.type,
+                                    data: imgData.data
+                                }
                             }
-                        }
-                    ]
-                }],
-                generationConfig: {
-                    temperature: 0.1 // Снижаем фантазию ИИ для максимальной точности
+                        ]
+                    }],
+                    generationConfig: {
+                        temperature: 0.1 // Снижаем фантазию ИИ для максимальной точности
+                    }
+                };
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    console.error("Gemini Error Payload:", errData);
+                    throw new Error(errData.error?.message || response.status);
                 }
-            };
 
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody)
-            });
+                const data = await response.json();
+                let recognizedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
-            if (!response.ok) {
-                const errData = await response.json();
-                console.error("Gemini Error Payload:", errData);
-                throw new Error(errData.error?.message || response.status);
+                // Чистим от случайных Markdown блоков
+                recognizedText = recognizedText.replace(/^```[a-z]*\n/i, '').replace(/\n```$/, '');
+
+                if (allRecognizedText.length > 0) {
+                    allRecognizedText += '\n\n';
+                }
+                allRecognizedText += recognizedText;
+                currentImageCount++;
             }
-
-            const data = await response.json();
-            let recognizedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-
-            // Чистим от случайных Markdown блоков, если ИИ их добавил (```text ... ```)
-            recognizedText = recognizedText.replace(/^```[a-z]*\n/i, '').replace(/\n```$/, '');
 
             // Добавляем распознанный текст
             const currentText = textArea.value;
-            textArea.value = currentText ? currentText + '\n\n' + recognizedText : recognizedText;
+            textArea.value = currentText ? currentText + '\n\n' + allRecognizedText : allRecognizedText;
 
             statusDiv.innerHTML = '✅ Текст успешно обработан!';
             setTimeout(() => {
@@ -455,7 +473,7 @@ const app = {
             }, 3000);
 
             // Сбрасываем pending image
-            this.state.pendingImage = null;
+            this.state.pendingImages = [];
 
         } catch (error) {
             console.error('Ошибка Gemini OCR:', error);
