@@ -122,8 +122,8 @@ const app = {
             songText.addEventListener('paste', (e) => {
                 const items = (e.clipboardData || e.originalEvent.clipboardData).items;
                 const imagesToProcess = [];
-                for (let index in items) {
-                    const item = items[index];
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
                     if (item.kind === 'file' && item.type.startsWith('image/')) {
                         e.preventDefault();
                         imagesToProcess.push(item.getAsFile());
