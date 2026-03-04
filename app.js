@@ -354,7 +354,52 @@ const app = {
         statusDiv.classList.remove('hidden');
 
         try {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${this.state.googleApiKey}`;
+            // Сначала спрашиваем у Google, к каким моделям у вашего ключа есть доступ
+            const modelsUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${this.state.googleApiKey}`;
+            const modelsResponse = await fetch(modelsUrl);
+            const modelsData = await modelsResponse.json();
+
+            if (!modelsResponse.ok) {
+                console.error("Ошибка ключа API (ListModels):", modelsData);
+                throw new Error("Ошибка ключа API: " + (modelsData.error?.message || modelsResponse.status));
+            }
+
+            // Ищем лучшую доступную для картинок модель
+            const availableModels = modelsData.models || [];
+            console.log("Доступные модели:", availableModels.map(m => m.name));
+
+            // Список приоритетов (от идеальных к запасным)
+            const preferredModels = [
+                'models/gemini-2.5-flash',
+                'models/gemini-2.0-flash',
+                'models/gemini-1.5-flash',
+                'models/gemini-1.5-pro',
+                'models/gemini-pro-vision'
+            ];
+
+            let selectedModel = null;
+            for (const preferred of preferredModels) {
+                const found = availableModels.find(m => m.name === preferred && m.supportedGenerationMethods?.includes('generateContent'));
+                if (found) {
+                    selectedModel = found.name;
+                    break;
+                }
+            }
+
+            // Запасной план: берем любую модель gemini, которая поддерживает генерацию
+            if (!selectedModel) {
+                const fallback = availableModels.find(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent'));
+                if (fallback) {
+                    selectedModel = fallback.name;
+                } else {
+                    throw new Error("Ваш API ключ не имеет доступа к текстовым моделям Gemini.");
+                }
+            }
+
+            console.log("Выбрана модель:", selectedModel);
+
+            // Обращаемся уже конкретно к разрешенной модели
+            const url = `https://generativelanguage.googleapis.com/v1beta/${selectedModel}:generateContent?key=${this.state.googleApiKey}`;
             const prompt = "Ты профессиональный транскрибатор музыкальных аккордов и текстов. " +
                 "Твоя задача — прочитать текст песни с картинки и в точности перепечатать его, сохраняя идеальное выравнивание. " +
                 "ОБЯЗАТЕЛЬНО: Если аккорд написан с отступом (например, в середине строки), ты ДОЛЖЕН использовать пробелы, чтобы расположить аккорд на нужной дистанции ровно над нужным словом или слогом в нижней строке текста. " +
