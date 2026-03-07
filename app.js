@@ -1308,7 +1308,7 @@ const app = {
         try {
             const prompt = `
 Ты — помощник по гитарному разбору песни.
-Верни только JSON.
+Верни только JSON без markdown-разметки внутри строк (не используй **, __, списки с маркерами).
 
 Запрос пользователя:
 ${modePrompts[mode] || modePrompts.overview}
@@ -1336,7 +1336,7 @@ ${song.text}
 `.trim();
             const rawResponse = await this.requestGemini([{ text: prompt }]);
             const parsed = this.extractJsonBlock(rawResponse);
-            song.study_tips = parsed.study_tips || [];
+            song.study_tips = Array.isArray(parsed.study_tips) ? parsed.study_tips.map((tip) => this.sanitizeAiText(tip)).filter(Boolean) : [];
             output.innerHTML = this.renderStudyHelper(parsed);
         } catch (error) {
             output.innerHTML = `<p class="error-text">${this.escapeHtml(error.message)}</p>`;
@@ -1344,9 +1344,21 @@ ${song.text}
             status.classList.add('hidden');
         }
     },
+    sanitizeAiText(value) {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        return value
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/__(.*?)__/g, '$1')
+            .replace(/^[\s]*[-*\u2022]+\s+/gm, '')
+            .replace(/\s{2,}/g, ' ')
+            .trim();
+    },
+
     renderStudyHelper(data) {
         const sections = [
-            ['Обзор', data.overview ? `<p>${this.escapeHtml(data.overview)}</p>` : ''],
+            ['Обзор', data.overview ? `<p>${this.escapeHtml(this.sanitizeAiText(data.overview))}</p>` : ''],
             ['План разучивания', this.renderHelperList(data.practice_plan)],
             ['Чем заменить баррэ', this.renderHelperList(data.barre_replacements)],
             ['Сложные места', this.renderHelperList(data.hard_spots)],
@@ -1360,7 +1372,7 @@ ${song.text}
         if (!Array.isArray(items) || !items.length) {
             return '';
         }
-        return `<div class="helper-list">${items.map((item) => `<p>${this.escapeHtml(item)}</p>`).join('')}</div>`;
+        return `<div class="helper-list">${items.map((item) => this.sanitizeAiText(item)).filter(Boolean).map((item) => `<p>${this.escapeHtml(item)}</p>`).join('')}</div>`;
     },
 
     toggleAutoscroll() {
