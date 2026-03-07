@@ -55,34 +55,31 @@
     </div>
 
     <div id="appContainer">
-        <header class="app-header">
+        <header class="app-header minimal-header">
             <button class="brand-mark" type="button" onclick="app.showView('homeView')">
                 <img src="icon-192x192.png" alt="Струнотека" class="logo-img">
-                <span class="brand-copy">
+                <span class="brand-copy compact-brand">
                     <strong>Струнотека</strong>
-                    <small>личная база песен и разборов</small>
                 </span>
             </button>
 
-            <nav class="top-nav">
-                <button class="nav-chip" type="button" onclick="app.showView('homeView')">Главная</button>
+            <nav class="top-nav compact-nav">
                 <button class="nav-chip" type="button" onclick="app.showView('addView')">Новая песня</button>
-                <button class="nav-chip" type="button" onclick="app.showView('libraryView')">Мои песни</button>
+                <button class="nav-chip" type="button" onclick="app.showView('libraryView')">Библиотека</button>
             </nav>
 
-            <div class="header-actions">
-                <button id="themeToggleBtn" class="icon-btn subtle" type="button" onclick="app.toggleTheme()">☾</button>
+            <div class="header-actions minimal-actions">
+                <button id="themeToggleBtn" class="icon-btn subtle text-icon-btn" type="button" onclick="app.toggleTheme()">Тема</button>
                 <button id="settingsBtn" class="icon-btn subtle" type="button" onclick="app.openSettings()">⚙</button>
             </div>
         </header>
 
         <main>
             <section id="homeView" class="view active">
-                <div class="home-stack">
-                    <div class="home-hero">
-                        <p class="eyebrow">Струнотека</p>
-                        <h1>Собирай песни спокойно, а не продирайся через перегруженные экраны</h1>
-                        <p class="hero-copy">Загрузил скрины текста и боя, запустил AI, быстро проверил результат и сохранил. Главная задача здесь не впечатлять блоками, а быстро доводить до песни, которую можно открыть вечером и играть.</p>
+                <div class="home-stack compact-home">
+                    <div class="home-hero quiet-hero">
+                        <h1>Собирай песни без лишнего шума</h1>
+                        <p class="hero-copy short-copy">Закинул материалы, проверил результат, сохранил и вечером открыл для игры.</p>
 
                         <div class="hero-actions hero-actions-spaced">
                             <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">Новая песня</button>
@@ -101,30 +98,23 @@
                         </div>
                         <div class="flow-card">
                             <strong>3</strong>
-                            <span>Проверь, сохрани и открывай для игры</span>
+                            <span>Проверь и сохрани</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="home-support-line">
-                    <span>OCR по скринам</span>
-                    <span>бой и схема ударов</span>
-                    <span>видеоразбор</span>
-                    <span>подсказки по изучению</span>
                 </div>
 
                 <div class="feature-grid-relaxed">
                     <article class="feature-tile soft-tile">
                         <h3>Быстрый старт</h3>
-                        <p>Сначала кидаешь материалы, а не думаешь, какие десять полей заполнять вручную.</p>
+                        <p>Сначала кидаешь материалы, а не думаешь, какие поля сейчас обязательны.</p>
                     </article>
                     <article class="feature-tile soft-tile">
                         <h3>Режим репетиции</h3>
-                        <p>Песня сохраняется как рабочий разбор: текст, бой, видео и помощь по сложным местам.</p>
+                        <p>Песня сохраняется как рабочий разбор: текст, бой, видео и заметки по игре.</p>
                     </article>
                     <article class="feature-tile soft-tile">
                         <h3>Ручная доводка</h3>
-                        <p>Если AI ошибся, уже потом можно спокойно поправить детали, не перегружая стартовый экран.</p>
+                        <p>Если AI ошибся, детали можно поправить уже после распознавания, а не на старте.</p>
                     </article>
                 </div>
             </section>
@@ -157,8 +147,8 @@
 
                     <form id="addSongForm" class="wizard-form">
                         <section class="wizard-page active" data-page="1">
-                            <div class="wizard-grid">
-                                <div class="wizard-card emphasis-card">
+                            <div class="wizard-grid step-one-grid">
+                                <div class="wizard-card emphasis-card step-one-main">
                                     <div class="card-head">
                                         <div>
                                             <p class="card-kicker">Шаг 1</p>
@@ -185,10 +175,19 @@
                                         <span>Кликни сюда и нажми Ctrl + V. Можно вставлять несколько раз подряд, а на телефоне добавлять файлы партиями.</span>
                                     </button>
 
-                                    <div class="upload-summaries">
-                                        <div id="lyricsUploadSummary" class="upload-summary">Скрины текста не выбраны</div>
-                                        <div id="patternUploadSummary" class="upload-summary">Скрины боя не выбраны</div>
+                                    <div class="upload-summaries upload-summaries-stacked">
+                                        <div>
+                                            <div id="lyricsUploadSummary" class="upload-summary">Скрины текста не выбраны</div>
+                                            <div id="lyricsUploadList" class="upload-list empty">Пока нет добавленных скринов текста.</div>
+                                        </div>
+                                        <div>
+                                            <div id="patternUploadSummary" class="upload-summary">Скрины боя не выбраны</div>
+                                            <div id="patternUploadList" class="upload-list empty">Пока нет добавленных скринов боя.</div>
+                                        </div>
                                     </div>
+
+                                    <label class="field-label" for="songTextQuick">Или вставь текст вручную прямо сейчас</label>
+                                    <textarea id="songTextQuick" rows="8" placeholder="Если скринов нет, просто вставь сюда текст песни с аккордами."></textarea>
 
                                     <div id="ocrStatus" class="ocr-status hidden">
                                         <span class="spinner"></span>
@@ -204,7 +203,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="compact-fields">
+                                    <div class="compact-fields optional-fields">
                                         <div>
                                             <label class="field-label" for="songArtist">Исполнитель</label>
                                             <input type="text" id="songArtist" placeholder="Например, Кино">
@@ -236,22 +235,43 @@
                                         </div>
                                     </div>
 
-                                    <div class="meta-grid">
+                                    <div class="meta-grid improved-meta-grid">
                                         <div>
                                             <label class="field-label" for="songKey">Тональность</label>
-                                            <input type="text" id="songKey" placeholder="Am">
+                                            <input type="text" id="songKey" list="songKeyOptions" placeholder="Например, Am">
+                                            <datalist id="songKeyOptions">
+                                                <option value="Am"></option><option value="Em"></option><option value="Dm"></option><option value="C"></option><option value="G"></option><option value="D"></option><option value="E"></option><option value="F"></option><option value="Bm"></option><option value="A"></option>
+                                            </datalist>
                                         </div>
                                         <div>
                                             <label class="field-label" for="songBpm">BPM</label>
-                                            <input type="number" id="songBpm" placeholder="92" min="1">
+                                            <input type="number" id="songBpm" list="songBpmOptions" placeholder="Например, 80" min="1">
+                                            <datalist id="songBpmOptions">
+                                                <option value="60"></option><option value="70"></option><option value="80"></option><option value="90"></option><option value="100"></option><option value="120"></option><option value="140"></option>
+                                            </datalist>
                                         </div>
                                         <div>
                                             <label class="field-label" for="songCapo">Каподастр</label>
-                                            <input type="number" id="songCapo" placeholder="0-12" min="0" max="12">
+                                            <select id="songCapo">
+                                                <option value="">Не указан</option>
+                                                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                                            </select>
                                         </div>
                                         <div>
-                                            <label class="field-label" for="songTuning">Строй</label>
-                                            <input type="text" id="songTuning" placeholder="E A D G B E">
+                                            <label class="field-label" for="songTuningPreset">Строй</label>
+                                            <select id="songTuningPreset">
+                                                <option value="">Не указан</option>
+                                                <option value="E A D G B E">Стандартный</option>
+                                                <option value="D A D G B E">Drop D</option>
+                                                <option value="D A D G A D">DADGAD</option>
+                                                <option value="D G D G B D">Open G</option>
+                                                <option value="D A D F# A D">Open D</option>
+                                            </select>
+                                            <small class="field-help">Строй = как настроены струны. Если обычный, оставь стандартный.</small>
+                                        </div>
+                                        <div class="meta-span-2">
+                                            <label class="field-label" for="songTuning">Свой строй вручную</label>
+                                            <input type="text" id="songTuning" placeholder="Например, E A D G B E">
                                         </div>
                                     </div>
 
@@ -261,6 +281,13 @@
                                     <details class="manual-box">
                                         <summary>Если AI криво распознал бой, поправить вручную</summary>
                                         <div class="manual-box-body">
+                                            <div class="strum-preset-row">
+                                                <label class="field-label" for="strumPresetSelect">Шаблон боя</label>
+                                                <select id="strumPresetSelect" class="sort-select">
+                                                    <option value="">Выбрать шаблон</option>
+                                                </select>
+                                            </div>
+
                                             <div class="strum-toolbar">
                                                 <button class="stroke-btn" type="button" data-direction="down">↓ Вниз</button>
                                                 <button class="stroke-btn" type="button" data-direction="up">↑ Вверх</button>
@@ -338,7 +365,7 @@
 
                     <div class="wizard-footer">
                         <button id="wizardPrevBtn" class="ghost-btn" type="button">Назад</button>
-                        <button id="wizardNextBtn" class="secondary-btn" type="button">Дальше</button>
+                        <button id="wizardNextBtn" class="secondary-btn" type="button">К проверке</button>
                     </div>
                 </div>
             </section>
@@ -402,7 +429,7 @@
                             <input type="range" id="scrollSpeed" min="1" max="10" value="3" oninput="app.updateScrollSpeed(this.value)">
                             <strong id="speedValue">3</strong>
                         </label>
-                        <button id="studyHelperBtn" class="primary-btn" type="button">Помочь в разборе</button>
+                        <button id="studyHelperBtn" class="primary-btn" type="button">AI-помощь</button>
                     </div>
                 </div>
 
@@ -410,8 +437,17 @@
                     <div class="panel-header">
                         <div>
                             <p class="panel-title">AI-помощник</p>
-                            <p class="panel-subtitle">Подсказки по игре, разучиванию, замене сложных аккордов и баррэ.</p>
+                            <p class="panel-subtitle">Сначала выбери, в чём именно нужна помощь, и только потом запускай AI.</p>
                         </div>
+                    </div>
+                    <div class="helper-toolbar">
+                        <select id="studyHelperMode" class="sort-select">
+                            <option value="overview">Помочь в разборе песни</option>
+                            <option value="chords">Помочь с аккордами</option>
+                            <option value="barre">Чем заменить баррэ</option>
+                            <option value="practice">Как быстрее выучить песню</option>
+                        </select>
+                        <button id="runStudyHelperBtn" class="secondary-btn" type="button">Спросить AI</button>
                     </div>
                     <div id="studyHelperStatus" class="ocr-status hidden">
                         <span class="spinner"></span>
@@ -420,8 +456,8 @@
                     <div id="studyHelperOutput" class="study-helper-output"></div>
                 </div>
 
-                <div class="panel">
-                    <div id="viewText" class="song-render"></div>
+                <div class="panel song-sheet-panel">
+                    <div id="viewText" class="song-render song-render-sheet"></div>
                 </div>
             </section>
         </main>
@@ -430,5 +466,7 @@
     <script src="app.js"></script>
 </body>
 </html>
+
+
 
 

@@ -1,4 +1,138 @@
-﻿
+﻿const STRUM_PATTERN_LIBRARY = [
+    {
+        id: 'shesterka',
+        name: 'РЁРµСЃС‚С‘СЂРєР°',
+        aliases: ['С€РµСЃС‚РµСЂРєР°', 'С€РµСЃС‚С‘СЂРєР°', 'Р±РѕР№ С€РµСЃС‚РµСЂРєР°', 'Р±РѕР№ С€РµСЃС‚С‘СЂРєР°', '6', 'six'],
+        steps: [
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'vosmerka',
+        name: 'Р’РѕСЃСЊРјС‘СЂРєР°',
+        aliases: ['РІРѕСЃСЊРјРµСЂРєР°', 'РІРѕСЃСЊРјС‘СЂРєР°', 'Р±РѕР№ РІРѕСЃСЊРјРµСЂРєР°', 'Р±РѕР№ РІРѕСЃСЊРјС‘СЂРєР°', '8', 'eight'],
+        steps: [
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'chetverka',
+        name: 'Р§РµС‚РІС‘СЂРєР°',
+        aliases: ['С‡РµС‚РІРµСЂРєР°', 'С‡РµС‚РІС‘СЂРєР°', 'Р±РѕР№ С‡РµС‚РІРµСЂРєР°', 'Р±РѕР№ С‡РµС‚РІС‘СЂРєР°', '4', 'four'],
+        steps: [
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: true },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'tsoi',
+        name: 'Р‘РѕР№ Р¦РѕСЏ',
+        aliases: ['Р±РѕР№ С†РѕСЏ', 'С†РѕР№', 'tsoi'],
+        steps: [
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: true, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: true, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'vysotsky',
+        name: 'Р‘РѕР№ Р’С‹СЃРѕС†РєРѕРіРѕ',
+        aliases: ['Р±РѕР№ РІС‹СЃРѕС†РєРѕРіРѕ', 'РІС‹СЃРѕС†РєРёР№'],
+        steps: [
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'spanish',
+        name: 'РСЃРїР°РЅСЃРєРёР№ Р±РѕР№',
+        aliases: ['РёСЃРїР°РЅСЃРєРёР№ Р±РѕР№', 'СЂР°СЃРіРµР°РґРѕ', 'rasgueado'],
+        steps: [
+            { direction: 'down', accent: true, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'rozenbaum',
+        name: 'Р‘РѕР№ Р РѕР·РµРЅР±Р°СѓРјР°',
+        aliases: ['Р±РѕР№ СЂРѕР·РµРЅР±Р°СѓРјР°', 'СЂРѕР·РµРЅР±Р°СѓРј'],
+        steps: [
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: true },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'reggae',
+        name: 'Р‘РѕР№ СЂРµРіРіРё',
+        aliases: ['Р±РѕР№ СЂРµРіРіРё', 'СЂРµРіРіРё'],
+        steps: [
+            { direction: 'down', accent: false, muted: true },
+            { direction: 'down', accent: true, muted: false }
+        ]
+    },
+    {
+        id: 'country',
+        name: 'Р‘РѕР№ РєР°РЅС‚СЂРё',
+        aliases: ['Р±РѕР№ РєР°РЅС‚СЂРё', 'РєР°РЅС‚СЂРё'],
+        steps: [
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'waltz',
+        name: 'Р’Р°Р»СЊСЃРѕРІС‹Р№ Р±РѕР№',
+        aliases: ['РІР°Р»СЊСЃРѕРІС‹Р№ Р±РѕР№', 'РІР°Р»СЊСЃ', '3/4'],
+        steps: [
+            { direction: 'down', accent: true, muted: false },
+            { direction: 'up', accent: false, muted: false },
+            { direction: 'up', accent: false, muted: false }
+        ]
+    },
+    {
+        id: 'chechen',
+        name: 'Р§РµС‡РµРЅСЃРєРёР№ Р±РѕР№',
+        aliases: ['С‡РµС‡РµРЅСЃРєРёР№ Р±РѕР№', 'С‡РµС‡РµРЅСЃРєРёР№'],
+        steps: [
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: false, muted: false },
+            { direction: 'down', accent: true, muted: false }
+        ]
+    }
+];
+
 const app = {
     state: {
         songs: [],
@@ -26,6 +160,7 @@ const app = {
         this.bindEvents();
         this.loadDraft();
         this.renderStrumBuilder();
+        this.renderStrumPresetOptions();
         this.updateWizard();
         this.updatePreview();
 
@@ -61,10 +196,10 @@ const app = {
         });
 
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
-            this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
+            this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р°');
         });
         document.getElementById('patternImageInput').addEventListener('change', (event) => {
-            this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'Скрины боя');
+            this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'РЎРєСЂРёРЅС‹ Р±РѕСЏ');
         });
 
         const pasteZone = document.getElementById('lyricsPasteZone');
@@ -96,7 +231,28 @@ const app = {
         document.getElementById('toggleMuteBtn').addEventListener('click', () => this.toggleSelectedStrumFlag('muted'));
         document.getElementById('deleteStepBtn').addEventListener('click', () => this.deleteSelectedStrumStep());
         document.getElementById('clearStrumBtn').addEventListener('click', () => this.clearStrumSteps());
-        document.getElementById('studyHelperBtn').addEventListener('click', () => this.runStudyHelper());
+        document.getElementById('strumPresetSelect').addEventListener('change', (event) => this.applyStrumPreset(event.target.value));
+        document.getElementById('studyHelperBtn').addEventListener('click', () => this.toggleStudyHelperPanel());
+        document.getElementById('runStudyHelperBtn').addEventListener('click', () => this.runStudyHelper());
+        document.getElementById('songTextQuick').addEventListener('input', (event) => this.syncQuickTextToMain(event.target.value));
+        document.getElementById('songTuningPreset').addEventListener('change', (event) => this.applyTuningPreset(event.target.value));
+
+        document.addEventListener('click', (event) => {
+            const removeButton = event.target.closest('[data-remove-image]');
+            if (removeButton) {
+                this.removePendingImage(removeButton.dataset.type, Number(removeButton.dataset.index));
+            }
+            if (this.state.scrollInterval && this.state.currentView === 'songView' && !event.target.closest('#autoscrollBtn')) {
+                this.stopAutoscroll();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (this.state.currentView === 'songView' && this.state.scrollInterval && event.code === 'Space') {
+                event.preventDefault();
+                this.stopAutoscroll();
+            }
+        });
     },
 
     hasGitHubConfig() {
@@ -148,7 +304,7 @@ const app = {
 
     applyTheme() {
         document.documentElement.setAttribute('data-theme', this.state.theme);
-        document.getElementById('themeToggleBtn').textContent = this.state.theme === 'dark' ? '☾' : '☀';
+        document.getElementById('themeToggleBtn').textContent = this.state.theme === 'dark' ? 'РЎРІРµС‚Р»Р°СЏ' : 'РўС‘РјРЅР°СЏ';
     },
 
     showView(viewId) {
@@ -170,6 +326,9 @@ const app = {
             this.setWizardStep(1);
             this.updatePreview();
         }
+        if (viewId !== 'songView') {
+            this.toggleStudyHelperPanel(false);
+        }
     },
 
     setWizardStep(step) {
@@ -188,8 +347,11 @@ const app = {
         document.querySelectorAll('.wizard-page').forEach((section) => {
             section.classList.toggle('active', Number(section.dataset.page) === this.state.currentWizardStep);
         });
+        const nextButton = document.getElementById('wizardNextBtn');
         document.getElementById('wizardPrevBtn').disabled = this.state.currentWizardStep === 1;
-        document.getElementById('wizardNextBtn').disabled = this.state.currentWizardStep === 3;
+        nextButton.disabled = this.state.currentWizardStep === 3;
+        nextButton.classList.toggle('hidden', this.state.currentWizardStep === 3);
+        nextButton.textContent = this.state.currentWizardStep === 1 ? 'Рљ РїСЂРѕРІРµСЂРєРµ' : 'Рљ СЃРѕС…СЂР°РЅРµРЅРёСЋ';
     },
 
     persistDraft() {
@@ -204,6 +366,8 @@ const app = {
             fingerings: document.getElementById('songFingerings').value,
             strumNotes: document.getElementById('strumNotes').value,
             text: document.getElementById('songText').value,
+            quickText: document.getElementById('songTextQuick').value,
+            tuningPreset: document.getElementById('songTuningPreset').value,
             strumSteps: this.state.currentStrumSteps
         };
         localStorage.setItem('songDraft', JSON.stringify(draft));
@@ -223,19 +387,35 @@ const app = {
             document.getElementById('songBpm').value = draft.bpm || '';
             document.getElementById('songCapo').value = draft.capo || '';
             document.getElementById('songTuning').value = draft.tuning || '';
+            document.getElementById('songTuningPreset').value = draft.tuningPreset || '';
             document.getElementById('songFingerings').value = draft.fingerings || '';
             document.getElementById('strumNotes').value = draft.strumNotes || '';
             document.getElementById('songText').value = draft.text || '';
+            document.getElementById('songTextQuick').value = draft.quickText || draft.text || '';
             this.state.currentStrumSteps = Array.isArray(draft.strumSteps) ? draft.strumSteps : [];
             this.state.selectedStrumIndex = this.state.currentStrumSteps.length ? 0 : -1;
         } catch (error) {
-            console.error('Не удалось загрузить черновик:', error);
+            console.error('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ С‡РµСЂРЅРѕРІРёРє:', error);
         }
     },
 
     clearDraft() {
         localStorage.removeItem('songDraft');
     },
+
+    syncQuickTextToMain(value) {
+        document.getElementById('songText').value = value;
+        this.persistDraft();
+        this.updatePreview();
+    },
+
+    applyTuningPreset(value) {
+        if (value) {
+            document.getElementById('songTuning').value = value;
+        }
+        this.persistDraft();
+    },
+
     handleImagePaste(event) {
         const items = (event.clipboardData || event.originalEvent?.clipboardData)?.items || [];
         const imageFiles = [];
@@ -247,27 +427,64 @@ const app = {
         }
         if (imageFiles.length) {
             event.preventDefault();
-            this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
+            this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р°');
             this.setWizardStep(1);
         }
     },
 
     prepareImages(fileList, stateKey, summaryId, label) {
-        const nextFiles = Array.from(fileList || []);
+        const nextFiles = Array.from(fileList || []).filter(Boolean);
         this.state[stateKey] = [...this.state[stateKey], ...nextFiles];
+        this.updateUploadUi(stateKey, summaryId, label);
+    },
+
+    updateUploadUi(stateKey, summaryId, label) {
         document.getElementById(summaryId).textContent = this.state[stateKey].length
-            ? label + ': ' + this.state[stateKey].length + ' шт.'
-            : label + ' не выбраны';
+            ? label + ': ' + this.state[stateKey].length + ' С€С‚.'
+            : label + ' РЅРµ РІС‹Р±СЂР°РЅС‹';
+
+        const listId = stateKey === 'pendingLyricsImages' ? 'lyricsUploadList' : 'patternUploadList';
+        this.renderUploadList(listId, stateKey);
 
         if (stateKey === 'pendingLyricsImages') {
             const pasteZone = document.getElementById('lyricsPasteZone');
             const hasContent = this.state[stateKey].length > 0;
             pasteZone.classList.toggle('has-content', hasContent);
-            pasteZone.querySelector('strong').textContent = hasContent ? 'Скрины добавлены в очередь' : 'Вставить скрин из буфера';
+            pasteZone.querySelector('strong').textContent = hasContent ? 'РЎРєСЂРёРЅС‹ РґРѕР±Р°РІР»РµРЅС‹ РІ РѕС‡РµСЂРµРґСЊ' : 'Р’СЃС‚Р°РІРёС‚СЊ СЃРєСЂРёРЅ РёР· Р±СѓС„РµСЂР°';
             pasteZone.querySelector('span').textContent = hasContent
-                ? 'Можно запускать AI или продолжать докидывать материалы.'
-                : 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
+                ? 'РњРѕР¶РЅРѕ Р·Р°РїСѓСЃРєР°С‚СЊ AI РёР»Рё РїСЂРѕРґРѕР»Р¶Р°С‚СЊ РґРѕРєРёРґС‹РІР°С‚СЊ РјР°С‚РµСЂРёР°Р»С‹.'
+                : 'РљР»РёРєРЅРё СЃСЋРґР° Рё РЅР°Р¶РјРё Ctrl + V. РќР° С‚РµР»РµС„РѕРЅРµ РёСЃРїРѕР»СЊР·СѓР№ РІС‹Р±РѕСЂ С„Р°Р№Р»Р°.';
         }
+    },
+
+    renderUploadList(listId, stateKey) {
+        const node = document.getElementById(listId);
+        if (!node) {
+            return;
+        }
+        const files = this.state[stateKey];
+        if (!files.length) {
+            node.className = 'upload-list empty';
+            node.textContent = stateKey === 'pendingLyricsImages' ? 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ С‚РµРєСЃС‚Р°.' : 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ Р±РѕСЏ.';
+            return;
+        }
+        node.className = 'upload-list';
+        node.innerHTML = files.map((file, index) => `
+            <div class="upload-item">
+                <span>${this.escapeHtml(file.name || `Р¤Р°Р№Р» ${index + 1}`)}</span>
+                <button type="button" class="ghost-btn upload-remove-btn" data-remove-image data-type="${stateKey}" data-index="${index}">РЈР±СЂР°С‚СЊ</button>
+            </div>
+        `).join('');
+    },
+
+    removePendingImage(stateKey, index) {
+        if (!Array.isArray(this.state[stateKey])) {
+            return;
+        }
+        this.state[stateKey].splice(index, 1);
+        const summaryId = stateKey === 'pendingLyricsImages' ? 'lyricsUploadSummary' : 'patternUploadSummary';
+        const label = stateKey === 'pendingLyricsImages' ? 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р°' : 'РЎРєСЂРёРЅС‹ Р±РѕСЏ';
+        this.updateUploadUi(stateKey, summaryId, label);
     },
 
     addStrumStep(direction) {
@@ -280,7 +497,7 @@ const app = {
     toggleSelectedStrumFlag(flagName) {
         const step = this.state.currentStrumSteps[this.state.selectedStrumIndex];
         if (!step) {
-            alert('Сначала выберите шаг боя.');
+            alert('РЎРЅР°С‡Р°Р»Р° РІС‹Р±РµСЂРёС‚Рµ С€Р°Рі Р±РѕСЏ.');
             return;
         }
         step[flagName] = !step[flagName];
@@ -311,7 +528,7 @@ const app = {
         }
         if (!steps.length) {
             target.classList.add('empty');
-            target.innerHTML = interactive ? 'Добавь шаги боя кнопками выше' : 'Бой не заполнен';
+            target.innerHTML = interactive ? 'Р”РѕР±Р°РІСЊ С€Р°РіРё Р±РѕСЏ РєРЅРѕРїРєР°РјРё РІС‹С€Рµ' : 'Р‘РѕР№ РЅРµ Р·Р°РїРѕР»РЅРµРЅ';
             return;
         }
 
@@ -321,7 +538,7 @@ const app = {
             const node = document.createElement(interactive ? 'button' : 'div');
             node.className = `strum-step${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}${interactive && index === this.state.selectedStrumIndex ? ' selected' : ''}`;
             node.innerHTML = `
-                <span class="strum-step-direction">${step.direction === 'up' ? '↑' : '↓'}</span>
+                <span class="strum-step-direction">${step.direction === 'up' ? 'в†‘' : 'в†“'}</span>
                 <span class="strum-step-meta">${this.describeStep(step)}</span>
             `;
             if (interactive) {
@@ -338,17 +555,103 @@ const app = {
     describeStep(step) {
         const parts = [];
         if (step.accent) {
-            parts.push('акцент');
+            parts.push('Р°РєС†РµРЅС‚');
         }
         if (step.muted) {
-            parts.push('глушка');
+            parts.push('РіР»СѓС€РєР°');
         }
-        return parts.length ? parts.join(' · ') : 'обычно';
+        return parts.length ? parts.join(' В· ') : 'РѕР±С‹С‡РЅРѕ';
     },
 
+    renderStrumPresetOptions() {
+        const select = document.getElementById('strumPresetSelect');
+        if (!select) {
+            return;
+        }
+        select.innerHTML = '<option value="">Выбрать шаблон</option>'
+            + STRUM_PATTERN_LIBRARY.map((pattern) => `<option value="${pattern.id}">${this.escapeHtml(pattern.name)}</option>`).join('');
+    },
+
+    clonePatternSteps(steps) {
+        return steps.map((step) => ({
+            direction: step.direction === 'up' ? 'up' : 'down',
+            accent: Boolean(step.accent),
+            muted: Boolean(step.muted)
+        }));
+    },
+
+    applyStrumPreset(patternId) {
+        if (!patternId) {
+            return;
+        }
+        const pattern = STRUM_PATTERN_LIBRARY.find((item) => item.id === patternId);
+        if (!pattern) {
+            return;
+        }
+        this.state.currentStrumSteps = this.clonePatternSteps(pattern.steps);
+        this.state.selectedStrumIndex = this.state.currentStrumSteps.length ? 0 : -1;
+        document.getElementById('strumNotes').value = `Шаблон: ${pattern.name}`;
+        this.renderStrumBuilder();
+        this.persistDraft();
+        this.updatePreview();
+    },
+
+    normalizeStrumText(value) {
+        return String(value || '')
+            .toLowerCase()
+            .replace(/ё/g, 'е')
+            .replace(/[.,;:()\[\]{}]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    },
+
+    parseArrowSteps(text) {
+        const normalized = String(text || '')
+            .replace(/вниз/gi, '↓')
+            .replace(/вверх/gi, '↑')
+            .replace(/down/gi, '↓')
+            .replace(/up/gi, '↑');
+        const tokens = normalized.match(/[↓↑][!xх]?/g) || [];
+        if (!tokens.length) {
+            return [];
+        }
+        return tokens.map((token) => ({
+            direction: token.startsWith('↑') ? 'up' : 'down',
+            accent: token.includes('!'),
+            muted: /x|х/i.test(token)
+        }));
+    },
+
+    matchStrumPatternByText(rawText) {
+        const textValue = this.normalizeStrumText(rawText);
+        if (!textValue) {
+            return null;
+        }
+        return STRUM_PATTERN_LIBRARY.find((pattern) => pattern.aliases.some((alias) => textValue.includes(this.normalizeStrumText(alias)))) || null;
+    },
+
+    resolveStrumStepsFromAi(result) {
+        if (Array.isArray(result?.strum?.steps) && result.strum.steps.length) {
+            return this.clonePatternSteps(result.strum.steps);
+        }
+
+        const textCandidates = [result?.strum?.notes, result?.strum_pattern, result?.text].filter(Boolean).join(' \n ');
+
+        const arrowSteps = this.parseArrowSteps(textCandidates);
+        if (arrowSteps.length) {
+            return arrowSteps;
+        }
+
+        const matched = this.matchStrumPatternByText(textCandidates);
+        if (matched) {
+            return this.clonePatternSteps(matched.steps);
+        }
+
+        return [];
+    },
     buildStrumSummary(steps = this.state.currentStrumSteps) {
         return steps.map((step) => {
-            const direction = step.direction === 'up' ? '↑' : '↓';
+            const direction = step.direction === 'up' ? 'в†‘' : 'в†“';
             const accent = step.accent ? '!' : '';
             const muted = step.muted ? 'x' : '';
             return `${direction}${accent}${muted}`;
@@ -361,12 +664,12 @@ const app = {
         }
         let text = rawText.replace(/\r/g, '').replace(/\t/g, '    ').replace(/[ ]+$/gm, '');
         const replacements = [
-            [/\bАm\b/g, 'Am'],
-            [/\bС\b/g, 'C'],
-            [/\bЕ\b/g, 'E'],
-            [/\bВ\b/g, 'B'],
-            [/\bН\b/g, 'H'],
-            [/\bА\b/g, 'A'],
+            [/\bРђm\b/g, 'Am'],
+            [/\bРЎ\b/g, 'C'],
+            [/\bР•\b/g, 'E'],
+            [/\bР’\b/g, 'B'],
+            [/\bРќ\b/g, 'H'],
+            [/\bРђ\b/g, 'A'],
             [/\b([A-GH])\s+m\b/g, '$1m']
         ];
         replacements.forEach(([pattern, replacement]) => {
@@ -406,7 +709,7 @@ const app = {
                 index += 1;
                 continue;
             }
-            if (/^[А-ЯA-Z][^:]{0,40}:$/u.test(trimmed)) {
+            if (/^[\u0410-\u042FA-Z][^:]{0,40}:$/u.test(trimmed)) {
                 blocks.push(`<div class="song-line-single section-label">${this.escapeHtml(trimmed)}</div>`);
                 continue;
             }
@@ -421,14 +724,14 @@ const app = {
         const parts = [];
         const strumSummary = this.buildStrumSummary();
         if (strumSummary) {
-            parts.push(`<div class="song-line-single"><strong>Бой:</strong> ${this.escapeHtml(strumSummary)}</div>`);
+            parts.push(`<div class="song-line-single"><strong>Р‘РѕР№:</strong> ${this.escapeHtml(strumSummary)}</div>`);
         }
         if (text.trim()) {
             previewNode.classList.remove('song-preview-empty');
             previewNode.innerHTML = parts.join('') + this.renderSongMarkup(text);
         } else {
             previewNode.classList.add('song-preview-empty');
-            previewNode.innerHTML = parts.length ? parts.join('') : 'Предпросмотр появится после ввода текста или запуска AI.';
+            previewNode.innerHTML = parts.length ? parts.join('') : 'РџСЂРµРґРїСЂРѕСЃРјРѕС‚СЂ РїРѕСЏРІРёС‚СЃСЏ РїРѕСЃР»Рµ РІРІРѕРґР° С‚РµРєСЃС‚Р° РёР»Рё Р·Р°РїСѓСЃРєР° AI.';
         }
     },
 
@@ -453,7 +756,7 @@ const app = {
         }
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Не удалось получить songs.json из GitHub.');
+            throw new Error(errorData.message || 'РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ songs.json РёР· GitHub.');
         }
         const data = await response.json();
         const decoded = decodeURIComponent(escape(atob(data.content)));
@@ -475,15 +778,15 @@ const app = {
         });
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Не удалось сохранить songs.json в GitHub.');
+            throw new Error(errorData.message || 'РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ songs.json РІ GitHub.');
         }
     },
 
     normalizeSongObject(song) {
         return {
             id: song.id || Date.now().toString(),
-            title: song.title || 'Без названия',
-            artist: song.artist || 'Неизвестный исполнитель',
+            title: song.title || 'Р‘РµР· РЅР°Р·РІР°РЅРёСЏ',
+            artist: song.artist || 'РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёСЃРїРѕР»РЅРёС‚РµР»СЊ',
             key: song.key || '',
             bpm: Number(song.bpm) || null,
             capo: Number.isFinite(Number(song.capo)) ? Number(song.capo) : null,
@@ -502,9 +805,9 @@ const app = {
 
     async loadSongs() {
         const grid = document.getElementById('songsGrid');
-        grid.innerHTML = '<p class="loading-text">Синхронизация с GitHub...</p>';
+        grid.innerHTML = '<p class="loading-text">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ GitHub...</p>';
         if (!this.hasGitHubConfig()) {
-            grid.innerHTML = '<p class="error-text">Откройте настройки и укажите GitHub Username, Repo и Token.</p>';
+            grid.innerHTML = '<p class="error-text">РћС‚РєСЂРѕР№С‚Рµ РЅР°СЃС‚СЂРѕР№РєРё Рё СѓРєР°Р¶РёС‚Рµ GitHub Username, Repo Рё Token.</p>';
             return;
         }
         try {
@@ -541,14 +844,14 @@ const app = {
     renderSongs(songs) {
         const grid = document.getElementById('songsGrid');
         if (!songs.length) {
-            grid.innerHTML = '<p class="loading-text">Пока пусто. Добавьте первую песню через мастер.</p>';
+            grid.innerHTML = '<p class="loading-text">РџРѕРєР° РїСѓСЃС‚Рѕ. Р”РѕР±Р°РІСЊС‚Рµ РїРµСЂРІСѓСЋ РїРµСЃРЅСЋ С‡РµСЂРµР· РјР°СЃС‚РµСЂ.</p>';
             return;
         }
         grid.innerHTML = '';
         songs.forEach((song) => {
             const card = document.createElement('article');
             card.className = 'song-card';
-            const badges = [song.key && `Тональность: ${song.key}`, song.bpm && `BPM: ${song.bpm}`, song.strum_pattern && `Бой: ${song.strum_pattern}`]
+            const badges = [song.key && `РўРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ: ${song.key}`, song.bpm && `BPM: ${song.bpm}`, song.strum_pattern && `Р‘РѕР№: ${song.strum_pattern}`]
                 .filter(Boolean)
                 .map((badge) => `<span class="song-badge">${this.escapeHtml(badge)}</span>`)
                 .join('');
@@ -558,9 +861,9 @@ const app = {
                         <h3>${this.escapeHtml(song.title)}</h3>
                         <p>${this.escapeHtml(song.artist)}</p>
                     </div>
-                    <button class="danger-btn" type="button">Удалить</button>
+                    <button class="danger-btn" type="button">РЈРґР°Р»РёС‚СЊ</button>
                 </div>
-                <div class="song-meta">${badges || '<span class="song-badge">Метаданные не заполнены</span>'}</div>
+                <div class="song-meta">${badges || '<span class="song-badge">РњРµС‚Р°РґР°РЅРЅС‹Рµ РЅРµ Р·Р°РїРѕР»РЅРµРЅС‹</span>'}</div>
             `;
             card.addEventListener('click', () => this.openSongView(song.id));
             card.querySelector('.danger-btn').addEventListener('click', (event) => {
@@ -587,11 +890,11 @@ const app = {
         document.getElementById('studyHelperPanel').classList.add('hidden');
         document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(song.study_tips);
         document.getElementById('viewMeta').innerHTML = [
-            song.key && `Тональность: ${song.key}`,
+            song.key && `РўРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ: ${song.key}`,
             song.bpm && `BPM: ${song.bpm}`,
-            Number.isFinite(song.capo) ? `Капо: ${song.capo}` : '',
-            song.tuning && `Строй: ${song.tuning}`,
-            song.fingerings && 'Есть заметки по аппликатуре'
+            Number.isFinite(song.capo) ? `РљР°РїРѕ: ${song.capo}` : '',
+            song.tuning && `РЎС‚СЂРѕР№: ${song.tuning}`,
+            song.fingerings && 'Р•СЃС‚СЊ Р·Р°РјРµС‚РєРё РїРѕ Р°РїРїР»РёРєР°С‚СѓСЂРµ'
         ].filter(Boolean).map((meta) => `<span class="song-badge">${this.escapeHtml(meta)}</span>`).join('');
         this.renderSongStrum(song);
         this.renderSongVideo(song.video_url);
@@ -608,9 +911,12 @@ const app = {
             notes.textContent = '';
             return;
         }
+        const steps = song.strum_steps.length ? song.strum_steps : this.parseSummaryToSteps(song.strum_pattern);
         section.classList.remove('hidden');
-        notes.textContent = song.strum_notes || song.strum_pattern || '';
-        this.renderStrumBuilder(preview, song.strum_steps.length ? song.strum_steps : this.parseSummaryToSteps(song.strum_pattern), false);
+        notes.textContent = song.strum_notes || '';
+        preview.innerHTML = steps.length
+            ? `<div class="strum-inline">${steps.map((step) => `<span class="strum-chip${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}">${step.direction === 'up' ? 'в†‘' : 'в†“'}</span>`).join('')}</div>`
+            : `<div class="strum-pattern-text">${this.escapeHtml(song.strum_pattern)}</div>`;
     },
 
     parseSummaryToSteps(summary) {
@@ -618,7 +924,7 @@ const app = {
             return [];
         }
         return summary.split(/\s+/).filter(Boolean).map((token) => ({
-            direction: token.includes('↑') ? 'up' : 'down',
+            direction: token.includes('в†‘') ? 'up' : 'down',
             accent: token.includes('!'),
             muted: token.includes('x')
         }));
@@ -652,7 +958,7 @@ const app = {
     },
     async handleSaveSong() {
         if (!this.hasGitHubConfig()) {
-            alert('Сначала заполните GitHub-настройки.');
+            alert('РЎРЅР°С‡Р°Р»Р° Р·Р°РїРѕР»РЅРёС‚Рµ GitHub-РЅР°СЃС‚СЂРѕР№РєРё.');
             this.openSettings();
             return;
         }
@@ -660,12 +966,12 @@ const app = {
         const artist = document.getElementById('songArtist').value.trim();
         const text = this.normalizeSongText(document.getElementById('songText').value);
         if (!title || !artist) {
-            alert('Нужно заполнить хотя бы название и исполнителя.');
+            alert('РќСѓР¶РЅРѕ Р·Р°РїРѕР»РЅРёС‚СЊ С…РѕС‚СЏ Р±С‹ РЅР°Р·РІР°РЅРёРµ Рё РёСЃРїРѕР»РЅРёС‚РµР»СЏ.');
             this.setWizardStep(1);
             return;
         }
         if (!text) {
-            alert('Добавьте текст песни или распознайте его со скрина.');
+            alert('Р”РѕР±Р°РІСЊС‚Рµ С‚РµРєСЃС‚ РїРµСЃРЅРё РёР»Рё СЂР°СЃРїРѕР·РЅР°Р№С‚Рµ РµРіРѕ СЃРѕ СЃРєСЂРёРЅР°.');
             this.setWizardStep(2);
             return;
         }
@@ -686,17 +992,17 @@ const app = {
             study_tips: []
         });
         const duplicate = this.state.songs.find((item) => item.title.toLowerCase() === song.title.toLowerCase() && item.artist.toLowerCase() === song.artist.toLowerCase());
-        if (duplicate && !confirm('Такая песня уже есть. Сохранить ещё одну копию?')) {
+        if (duplicate && !confirm('РўР°РєР°СЏ РїРµСЃРЅСЏ СѓР¶Рµ РµСЃС‚СЊ. РЎРѕС…СЂР°РЅРёС‚СЊ РµС‰С‘ РѕРґРЅСѓ РєРѕРїРёСЋ?')) {
             return;
         }
         const updatedSongs = [...this.state.songs, song];
         try {
-            await this.saveSongsToGitHub(updatedSongs, `Добавлена песня: ${song.title} — ${song.artist}`);
+            await this.saveSongsToGitHub(updatedSongs, `Р”РѕР±Р°РІР»РµРЅР° РїРµСЃРЅСЏ: ${song.title} вЂ” ${song.artist}`);
             this.state.songs = updatedSongs;
             this.clearSongForm();
             this.showView('libraryView');
         } catch (error) {
-            alert(`Не удалось сохранить песню: ${error.message}`);
+            alert(`РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РїРµСЃРЅСЋ: ${error.message}`);
         }
     },
 
@@ -706,12 +1012,19 @@ const app = {
         this.state.selectedStrumIndex = -1;
         this.state.pendingLyricsImages = [];
         this.state.pendingPatternImages = [];
-        document.getElementById('lyricsUploadSummary').textContent = 'Скрины текста не выбраны';
-        document.getElementById('patternUploadSummary').textContent = 'Скрины боя не выбраны';
+        document.getElementById('lyricsUploadSummary').textContent = 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р° РЅРµ РІС‹Р±СЂР°РЅС‹';
+        document.getElementById('patternUploadSummary').textContent = 'РЎРєСЂРёРЅС‹ Р±РѕСЏ РЅРµ РІС‹Р±СЂР°РЅС‹';
+        document.getElementById('lyricsUploadList').textContent = 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ С‚РµРєСЃС‚Р°.';
+        document.getElementById('lyricsUploadList').className = 'upload-list empty';
+        document.getElementById('patternUploadList').textContent = 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ Р±РѕСЏ.';
+        document.getElementById('patternUploadList').className = 'upload-list empty';
+        document.getElementById('songTextQuick').value = '';
+        document.getElementById('songTuningPreset').value = '';
+        document.getElementById('strumPresetSelect').value = '';
         const pasteZone = document.getElementById('lyricsPasteZone');
         pasteZone.classList.remove('has-content');
-        pasteZone.querySelector('strong').textContent = 'Вставить скрин из буфера';
-        pasteZone.querySelector('span').textContent = 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
+        pasteZone.querySelector('strong').textContent = 'Р’СЃС‚Р°РІРёС‚СЊ СЃРєСЂРёРЅ РёР· Р±СѓС„РµСЂР°';
+        pasteZone.querySelector('span').textContent = 'РљР»РёРєРЅРё СЃСЋРґР° Рё РЅР°Р¶РјРё Ctrl + V. РќР° С‚РµР»РµС„РѕРЅРµ РёСЃРїРѕР»СЊР·СѓР№ РІС‹Р±РѕСЂ С„Р°Р№Р»Р°.';
         this.renderStrumBuilder();
         this.updatePreview();
         this.clearDraft();
@@ -723,12 +1036,12 @@ const app = {
         if (!song) {
             return;
         }
-        if (!confirm(`Удалить песню "${song.title}"?`)) {
+        if (!confirm(`РЈРґР°Р»РёС‚СЊ РїРµСЃРЅСЋ "${song.title}"?`)) {
             return;
         }
         const nextSongs = this.state.songs.filter((item) => item.id !== songId);
         try {
-            await this.saveSongsToGitHub(nextSongs, `Удалена песня: ${song.title}`);
+            await this.saveSongsToGitHub(nextSongs, `РЈРґР°Р»РµРЅР° РїРµСЃРЅСЏ: ${song.title}`);
             this.state.songs = nextSongs;
             if (this.state.currentSongId === songId) {
                 this.state.currentSongId = null;
@@ -737,7 +1050,7 @@ const app = {
                 this.applyLibraryFilters();
             }
         } catch (error) {
-            alert(`Не удалось удалить песню: ${error.message}`);
+            alert(`РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ РїРµСЃРЅСЋ: ${error.message}`);
         }
     },
 
@@ -756,7 +1069,7 @@ const app = {
                     data: String(reader.result).split(',')[1]
                 }
             });
-            reader.onerror = () => reject(new Error(`Не удалось прочитать файл ${file.name}`));
+            reader.onerror = () => reject(new Error(`РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р» ${file.name}`));
             reader.readAsDataURL(file);
         })));
     },
@@ -768,21 +1081,21 @@ const app = {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${this.state.googleApiKey}`);
         const data = await response.json();
         if (!response.ok) {
-            throw new Error(data.error?.message || 'Не удалось получить список моделей Gemini.');
+            throw new Error(data.error?.message || 'РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РјРѕРґРµР»РµР№ Gemini.');
         }
         const priority = ['models/gemini-2.5-flash', 'models/gemini-2.0-flash', 'models/gemini-1.5-flash'];
         const available = data.models || [];
         this.state.selectedModel = priority.find((name) => available.some((model) => model.name === name && model.supportedGenerationMethods?.includes('generateContent')))
             || available.find((model) => model.name.includes('gemini') && model.supportedGenerationMethods?.includes('generateContent'))?.name;
         if (!this.state.selectedModel) {
-            throw new Error('Подходящая модель Gemini не найдена для текущего ключа.');
+            throw new Error('РџРѕРґС…РѕРґСЏС‰Р°СЏ РјРѕРґРµР»СЊ Gemini РЅРµ РЅР°Р№РґРµРЅР° РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РєР»СЋС‡Р°.');
         }
         return this.state.selectedModel;
     },
 
     async requestGemini(parts) {
         if (!this.state.googleApiKey) {
-            throw new Error('Добавьте Google Gemini API Key в настройках.');
+            throw new Error('Р”РѕР±Р°РІСЊС‚Рµ Google Gemini API Key РІ РЅР°СЃС‚СЂРѕР№РєР°С….');
         }
         const model = await this.ensureGeminiModel();
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${this.state.googleApiKey}`, {
@@ -799,7 +1112,7 @@ const app = {
         });
         const data = await response.json();
         if (!response.ok) {
-            throw new Error(data.error?.message || 'Gemini вернул ошибку.');
+            throw new Error(data.error?.message || 'Gemini РІРµСЂРЅСѓР» РѕС€РёР±РєСѓ.');
         }
         return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     },
@@ -809,7 +1122,7 @@ const app = {
         const firstBrace = cleaned.indexOf('{');
         const lastBrace = cleaned.lastIndexOf('}');
         if (firstBrace === -1 || lastBrace === -1) {
-            throw new Error('AI не вернул JSON.');
+            throw new Error('AI РЅРµ РІРµСЂРЅСѓР» JSON.');
         }
         return JSON.parse(cleaned.slice(firstBrace, lastBrace + 1));
     },
@@ -844,36 +1157,36 @@ const app = {
         const manualText = document.getElementById('songText').value.trim();
         const hasImages = this.state.pendingLyricsImages.length || this.state.pendingPatternImages.length;
         if (!fromTextOnly && !hasImages && !manualText) {
-            alert('Добавьте скрины или вставьте текст перед запуском AI.');
+            alert('Р”РѕР±Р°РІСЊС‚Рµ СЃРєСЂРёРЅС‹ РёР»Рё РІСЃС‚Р°РІСЊС‚Рµ С‚РµРєСЃС‚ РїРµСЂРµРґ Р·Р°РїСѓСЃРєРѕРј AI.');
             this.setWizardStep(1);
             return;
         }
         if (fromTextOnly && !manualText) {
-            alert('Сначала вставьте текст песни.');
+            alert('РЎРЅР°С‡Р°Р»Р° РІСЃС‚Р°РІСЊС‚Рµ С‚РµРєСЃС‚ РїРµСЃРЅРё.');
             this.setWizardStep(2);
             return;
         }
         statusNode.classList.remove('hidden');
-        statusText.textContent = fromTextOnly ? 'AI добирает метаданные из текста...' : 'AI разбирает скрины и заполняет песню...';
+        statusText.textContent = fromTextOnly ? 'AI РґРѕР±РёСЂР°РµС‚ РјРµС‚Р°РґР°РЅРЅС‹Рµ РёР· С‚РµРєСЃС‚Р°...' : 'AI СЂР°Р·Р±РёСЂР°РµС‚ СЃРєСЂРёРЅС‹ Рё Р·Р°РїРѕР»РЅСЏРµС‚ РїРµСЃРЅСЋ...';
         try {
             const imageParts = fromTextOnly ? [] : [
                 ...(await this.filesToInlineData(this.state.pendingLyricsImages)),
                 ...(await this.filesToInlineData(this.state.pendingPatternImages))
             ];
             const prompt = `
-Ты помогаешь собрать карточку гитарной песни из скринов и текста.
-Верни только JSON без markdown и пояснений.
+РўС‹ РїРѕРјРѕРіР°РµС€СЊ СЃРѕР±СЂР°С‚СЊ РєР°СЂС‚РѕС‡РєСѓ РіРёС‚Р°СЂРЅРѕР№ РїРµСЃРЅРё РёР· СЃРєСЂРёРЅРѕРІ Рё С‚РµРєСЃС‚Р°.
+Р’РµСЂРЅРё С‚РѕР»СЊРєРѕ JSON Р±РµР· markdown Рё РїРѕСЏСЃРЅРµРЅРёР№.
 
-Требования:
-- Если на скрине есть аккорды над текстом, сохрани их как отдельные строки аккордов над строками текста.
-- Не теряй ведущие пробелы в строках с аккордами.
-- Если виден бой, распознай его как массив шагов.
-- Если есть акценты, пометь accent=true.
-- Если есть глушение, пометь muted=true.
-- Если метаданные не видны, оставь null или пустую строку.
-- Если есть строй, BPM, капо и аппликатура, вынеси их.
+РўСЂРµР±РѕРІР°РЅРёСЏ:
+- Р•СЃР»Рё РЅР° СЃРєСЂРёРЅРµ РµСЃС‚СЊ Р°РєРєРѕСЂРґС‹ РЅР°Рґ С‚РµРєСЃС‚РѕРј, СЃРѕС…СЂР°РЅРё РёС… РєР°Рє РѕС‚РґРµР»СЊРЅС‹Рµ СЃС‚СЂРѕРєРё Р°РєРєРѕСЂРґРѕРІ РЅР°Рґ СЃС‚СЂРѕРєР°РјРё С‚РµРєСЃС‚Р°.
+- РќРµ С‚РµСЂСЏР№ РІРµРґСѓС‰РёРµ РїСЂРѕР±РµР»С‹ РІ СЃС‚СЂРѕРєР°С… СЃ Р°РєРєРѕСЂРґР°РјРё.
+- Р•СЃР»Рё РІРёРґРµРЅ Р±РѕР№, СЂР°СЃРїРѕР·РЅР°Р№ РµРіРѕ РєР°Рє РјР°СЃСЃРёРІ С€Р°РіРѕРІ.\n- РћСЂРёРµРЅС‚РёСЂСѓР№СЃСЏ РЅР° Р±Р°Р·РѕРІС‹Рµ С€Р°Р±Р»РѕРЅС‹: РЁРµСЃС‚С‘СЂРєР°, Р’РѕСЃСЊРјС‘СЂРєР°, Р§РµС‚РІС‘СЂРєР°, Р‘РѕР№ Р¦РѕСЏ, Р‘РѕР№ Р’С‹СЃРѕС†РєРѕРіРѕ, РСЃРїР°РЅСЃРєРёР№ Р±РѕР№, Р‘РѕР№ Р РѕР·РµРЅР±Р°СѓРјР°, Р‘РѕР№ СЂРµРіРіРё, Р‘РѕР№ РєР°РЅС‚СЂРё, Р’Р°Р»СЊСЃРѕРІС‹Р№ Р±РѕР№, Р§РµС‡РµРЅСЃРєРёР№ Р±РѕР№.
+- Р•СЃР»Рё РµСЃС‚СЊ Р°РєС†РµРЅС‚С‹, РїРѕРјРµС‚СЊ accent=true.
+- Р•СЃР»Рё РµСЃС‚СЊ РіР»СѓС€РµРЅРёРµ, РїРѕРјРµС‚СЊ muted=true.
+- Р•СЃР»Рё РјРµС‚Р°РґР°РЅРЅС‹Рµ РЅРµ РІРёРґРЅС‹, РѕСЃС‚Р°РІСЊ null РёР»Рё РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ.
+- Р•СЃР»Рё РµСЃС‚СЊ СЃС‚СЂРѕР№, BPM, РєР°РїРѕ Рё Р°РїРїР»РёРєР°С‚СѓСЂР°, РІС‹РЅРµСЃРё РёС….
 
-Схема JSON:
+РЎС…РµРјР° JSON:
 {
   "title": "",
   "artist": "",
@@ -895,15 +1208,15 @@ const app = {
 `.trim();
             const parts = [{ text: prompt }];
             if (manualText) {
-                parts.push({ text: `Уже введённый текст пользователя:\n${manualText}` });
+                parts.push({ text: `РЈР¶Рµ РІРІРµРґС‘РЅРЅС‹Р№ С‚РµРєСЃС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:\n${manualText}` });
             }
             imageParts.forEach((part) => parts.push(part));
             const rawResponse = await this.requestGemini(parts);
             const parsed = this.extractJsonBlock(rawResponse);
             this.applyAiSongData(parsed, { replaceText: true });
-            alert('AI заполнил песню. Проверь результат на шаге 2.');
+            alert('AI Р·Р°РїРѕР»РЅРёР» РїРµСЃРЅСЋ. РџСЂРѕРІРµСЂСЊ СЂРµР·СѓР»СЊС‚Р°С‚ РЅР° С€Р°РіРµ 2.');
         } catch (error) {
-            alert(`Не удалось обработать материалы: ${error.message}`);
+            alert(`РќРµ СѓРґР°Р»РѕСЃСЊ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ РјР°С‚РµСЂРёР°Р»С‹: ${error.message}`);
         } finally {
             statusNode.classList.add('hidden');
         }
@@ -911,9 +1224,18 @@ const app = {
 
     renderStoredStudyTips(studyTips) {
         if (!Array.isArray(studyTips) || !studyTips.length) {
-            return '<p class="muted-copy">Нажми "Помочь в разборе", чтобы получить советы по изучению, замене баррэ и сложным местам.</p>';
+            return '<p class="muted-copy">РћС‚РєСЂРѕР№ AI-РїРѕРјРѕС‰СЊ Рё РІС‹Р±РµСЂРё, СЃ С‡РµРј РЅСѓР¶РЅР° РїРѕРјРѕС‰СЊ РїРѕ СЌС‚РѕР№ РїРµСЃРЅРµ.</p>';
         }
-        return `<div><h3>Короткие советы</h3><ul>${studyTips.map((tip) => `<li>${this.escapeHtml(tip)}</li>`).join('')}</ul></div>`;
+        return `<section class="helper-card"><h3>РљРѕСЂРѕС‚РєРёРµ СЃРѕРІРµС‚С‹</h3><div class="helper-list">${studyTips.map((tip) => `<p>${this.escapeHtml(tip)}</p>`).join('')}</div></section>`;
+    },
+
+    toggleStudyHelperPanel(forceOpen) {
+        const panel = document.getElementById('studyHelperPanel');
+        const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('hidden');
+        panel.classList.toggle('hidden', !shouldOpen);
+        if (shouldOpen && !document.getElementById('studyHelperOutput').innerHTML.trim()) {
+            document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(this.getCurrentSong()?.study_tips || []);
+        }
     },
 
     async runStudyHelper() {
@@ -921,29 +1243,39 @@ const app = {
         if (!song) {
             return;
         }
+        const mode = document.getElementById('studyHelperMode').value;
         const panel = document.getElementById('studyHelperPanel');
         const status = document.getElementById('studyHelperStatus');
         const output = document.getElementById('studyHelperOutput');
+        const modePrompts = {
+            overview: 'РќСѓР¶РЅР° РѕР±С‰Р°СЏ РїРѕРјРѕС‰СЊ РїРѕ СЂР°Р·Р±РѕСЂСѓ РїРµСЃРЅРё: РєР°Рє РёРіСЂР°С‚СЊ, РЅР° С‡С‚Рѕ РѕР±СЂР°С‚РёС‚СЊ РІРЅРёРјР°РЅРёРµ, РєР°Рє РІРѕСЃРїСЂРёРЅРёРјР°С‚СЊ С„РѕСЂРјСѓ.',
+            chords: 'РќСѓР¶РЅР° РїРѕРјРѕС‰СЊ РёРјРµРЅРЅРѕ РїРѕ Р°РєРєРѕСЂРґР°Рј: РєР°РєРёРµ РїРµСЂРµС…РѕРґС‹ СЃР»РѕР¶РЅС‹Рµ, С‡С‚Рѕ РїСЂРѕРІРµСЂРёС‚СЊ, РєР°Рє СѓРїСЂРѕСЃС‚РёС‚СЊ.',
+            barre: 'РќСѓР¶РЅР° РїРѕРјРѕС‰СЊ РїРѕ Р·Р°РјРµРЅРµ Р±Р°СЂСЂСЌ Рё СѓРїСЂРѕС‰С‘РЅРЅС‹Рј РІР°СЂРёР°РЅС‚Р°Рј Р°РєРєРѕСЂРґРѕРІ.',
+            practice: 'РќСѓР¶РµРЅ РїР»Р°РЅ, РєР°Рє Р±С‹СЃС‚СЂРµРµ РІС‹СѓС‡РёС‚СЊ РїРµСЃРЅСЋ Рё РґРѕРІРµСЃС‚Рё РґРѕ СѓРІРµСЂРµРЅРЅРѕРіРѕ РёСЃРїРѕР»РЅРµРЅРёСЏ.'
+        };
         panel.classList.remove('hidden');
         status.classList.remove('hidden');
         output.innerHTML = '';
         try {
             const prompt = `
-Ты — помощник по гитарному разбору песни.
-Верни только JSON.
+РўС‹ вЂ” РїРѕРјРѕС‰РЅРёРє РїРѕ РіРёС‚Р°СЂРЅРѕРјСѓ СЂР°Р·Р±РѕСЂСѓ РїРµСЃРЅРё.
+Р’РµСЂРЅРё С‚РѕР»СЊРєРѕ JSON.
 
-Песня:
-Название: ${song.title}
-Исполнитель: ${song.artist}
-Тональность: ${song.key || 'не указана'}
-BPM: ${song.bpm || 'не указан'}
-Строй: ${song.tuning || 'не указан'}
-Бой: ${song.strum_pattern || 'не указан'}
-Аппликатура: ${song.fingerings || 'нет'}
-Текст:
+Р—Р°РїСЂРѕСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:
+${modePrompts[mode] || modePrompts.overview}
+
+РџРµСЃРЅСЏ:
+РќР°Р·РІР°РЅРёРµ: ${song.title}
+РСЃРїРѕР»РЅРёС‚РµР»СЊ: ${song.artist}
+РўРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ: ${song.key || 'РЅРµ СѓРєР°Р·Р°РЅР°'}
+BPM: ${song.bpm || 'РЅРµ СѓРєР°Р·Р°РЅ'}
+РЎС‚СЂРѕР№: ${song.tuning || 'РЅРµ СѓРєР°Р·Р°РЅ'}
+Р‘РѕР№: ${song.strum_pattern || 'РЅРµ СѓРєР°Р·Р°РЅ'}
+РђРїРїР»РёРєР°С‚СѓСЂР°: ${song.fingerings || 'РЅРµС‚'}
+РўРµРєСЃС‚:
 ${song.text}
 
-Нужен JSON такого вида:
+РќСѓР¶РµРЅ JSON С‚Р°РєРѕРіРѕ РІРёРґР°:
 {
   "overview": "",
   "practice_plan": ["", ""],
@@ -966,21 +1298,21 @@ ${song.text}
 
     renderStudyHelper(data) {
         const sections = [
-            ['Обзор', data.overview ? `<p>${this.escapeHtml(data.overview)}</p>` : ''],
-            ['План разучивания', this.renderList(data.practice_plan)],
-            ['Чем заменить баррэ', this.renderList(data.barre_replacements)],
-            ['Сложные места', this.renderList(data.hard_spots)],
-            ['Советы по исполнению', this.renderList(data.performance_advice)],
-            ['Быстрые подсказки', this.renderList(data.study_tips)]
+            ['РћР±Р·РѕСЂ', data.overview ? `<p>${this.escapeHtml(data.overview)}</p>` : ''],
+            ['РџР»Р°РЅ СЂР°Р·СѓС‡РёРІР°РЅРёСЏ', this.renderHelperList(data.practice_plan)],
+            ['Р§РµРј Р·Р°РјРµРЅРёС‚СЊ Р±Р°СЂСЂСЌ', this.renderHelperList(data.barre_replacements)],
+            ['РЎР»РѕР¶РЅС‹Рµ РјРµСЃС‚Р°', this.renderHelperList(data.hard_spots)],
+            ['РЎРѕРІРµС‚С‹ РїРѕ РёСЃРїРѕР»РЅРµРЅРёСЋ', this.renderHelperList(data.performance_advice)],
+            ['Р‘С‹СЃС‚СЂС‹Рµ РїРѕРґСЃРєР°Р·РєРё', this.renderHelperList(data.study_tips)]
         ].filter(([, content]) => content);
-        return sections.map(([title, content]) => `<div><h3>${this.escapeHtml(title)}</h3>${content}</div>`).join('');
+        return sections.map(([title, content]) => `<section class="helper-card"><h3>${this.escapeHtml(title)}</h3>${content}</section>`).join('');
     },
 
-    renderList(items) {
+    renderHelperList(items) {
         if (!Array.isArray(items) || !items.length) {
             return '';
         }
-        return `<ul>${items.map((item) => `<li>${this.escapeHtml(item)}</li>`).join('')}</ul>`;
+        return `<div class="helper-list">${items.map((item) => `<p>${this.escapeHtml(item)}</p>`).join('')}</div>`;
     },
 
     toggleAutoscroll() {
@@ -993,7 +1325,7 @@ ${song.text}
 
     startAutoscroll() {
         const button = document.getElementById('autoscrollBtn');
-        button.textContent = 'Пауза';
+        button.textContent = 'РџР°СѓР·Р°';
         this.state.scrollInterval = setInterval(() => {
             window.scrollBy({ top: this.state.scrollSpeed / 1.8, left: 0, behavior: 'auto' });
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
@@ -1009,7 +1341,7 @@ ${song.text}
         }
         const button = document.getElementById('autoscrollBtn');
         if (button) {
-            button.textContent = 'Автоскролл';
+            button.textContent = 'РђРІС‚РѕСЃРєСЂРѕР»Р»';
         }
     },
 
@@ -1022,12 +1354,37 @@ ${song.text}
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch((error) => {
-            console.error('Ошибка регистрации service worker:', error);
+            console.error('РћС€РёР±РєР° СЂРµРіРёСЃС‚СЂР°С†РёРё service worker:', error);
         });
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => app.init());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
