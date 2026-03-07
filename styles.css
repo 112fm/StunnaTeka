@@ -604,20 +604,20 @@ main {
 .capture-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    margin-bottom: 14px;
+    gap: 18px;
+    margin-bottom: 18px;
 }
 
 .drop-card,
 .paste-zone {
     display: grid;
-    gap: 6px;
+    gap: 8px;
     text-align: left;
     border: 1px dashed rgba(79, 143, 255, 0.24);
     border-radius: 22px;
     background: linear-gradient(135deg, rgba(79, 143, 255, 0.08), rgba(79, 143, 255, 0.02));
     color: var(--text-primary);
-    padding: 20px;
+    padding: 24px;
 }
 
 .accent-card {
@@ -1201,8 +1201,13 @@ main {
 .step-one-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-    gap: 20px;
+    gap: 28px;
     align-items: start;
+}
+
+.step-one-main {
+    display: grid;
+    gap: 18px;
 }
 
 .optional-fields {
@@ -1213,17 +1218,18 @@ main {
 .upload-summaries-stacked {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 18px;
+    margin-top: 4px;
 }
 
 .upload-list {
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 12px;
+    padding: 12px;
     border: 1px solid var(--surface-border);
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.02);
     display: grid;
-    gap: 8px;
+    gap: 10px;
 }
 
 .upload-list.empty {
@@ -1397,3 +1403,12 @@ main {
     }
 }
 
+
+label[for="songTextQuick"] {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+#songTextQuick {
+    min-height: 230px;
+}
