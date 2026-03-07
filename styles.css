@@ -1778,3 +1778,36 @@ label[for="songTextQuick"] {
         padding: 10px 12px;
     }
 }
+
+
+.helper-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+#studyHelperCollapseBtn {
+    width: auto;
+    min-height: 40px;
+    white-space: nowrap;
+}
+
+#studyHelperContent.hidden {
+    display: none;
+}
+
+#studyHelperPanel.helper-collapsed {
+    padding-bottom: 14px;
+}
+
+@media (max-width: 760px) {
+    .helper-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #studyHelperCollapseBtn {
+        width: 100%;
+    }
+}

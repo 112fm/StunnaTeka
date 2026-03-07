@@ -151,6 +151,7 @@ const app = {
         pendingPatternImages: [],
         currentStrumSteps: [],
         selectedStrumIndex: -1,
+        studyHelperCollapsed: false,
         selectedModel: null,
         previewObjectUrls: []
     },
@@ -238,6 +239,10 @@ const app = {
         document.getElementById('strumPresetSelect').addEventListener('change', (event) => this.applyStrumPreset(event.target.value));
         document.getElementById('studyHelperBtn').addEventListener('click', () => this.toggleStudyHelperPanel());
         document.getElementById('runStudyHelperBtn').addEventListener('click', () => this.runStudyHelper());
+        const collapseBtn = document.getElementById('studyHelperCollapseBtn');
+        if (collapseBtn) {
+            collapseBtn.addEventListener('click', () => this.toggleStudyHelperContent());
+        }
         document.getElementById('songTextQuick').addEventListener('input', (event) => this.syncQuickTextToMain(event.target.value));
         document.getElementById('songTuningPreset').addEventListener('change', (event) => this.applyTuningPreset(event.target.value));
 
@@ -1282,9 +1287,28 @@ const app = {
         const panel = document.getElementById('studyHelperPanel');
         const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('hidden');
         panel.classList.toggle('hidden', !shouldOpen);
-        if (shouldOpen && !document.getElementById('studyHelperOutput').innerHTML.trim()) {
-            document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(this.getCurrentSong()?.study_tips || []);
+        if (shouldOpen) {
+            this.toggleStudyHelperContent(false);
+            if (!document.getElementById('studyHelperOutput').innerHTML.trim()) {
+                document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(this.getCurrentSong()?.study_tips || []);
+            }
         }
+    },
+
+    toggleStudyHelperContent(forceCollapsed) {
+        const content = document.getElementById('studyHelperContent');
+        const button = document.getElementById('studyHelperCollapseBtn');
+        const panel = document.getElementById('studyHelperPanel');
+        if (!content || !button || !panel) {
+            return;
+        }
+        const collapse = typeof forceCollapsed === 'boolean'
+            ? forceCollapsed
+            : !this.state.studyHelperCollapsed;
+        this.state.studyHelperCollapsed = collapse;
+        content.classList.toggle('hidden', collapse);
+        panel.classList.toggle('helper-collapsed', collapse);
+        button.textContent = collapse ? 'Развернуть советы' : 'Свернуть советы';
     },
 
     async runStudyHelper() {
@@ -1303,6 +1327,7 @@ const app = {
             practice: 'Нужен план, как быстрее выучить песню и довести до уверенного исполнения.'
         };
         panel.classList.remove('hidden');
+        this.toggleStudyHelperContent(false);
         status.classList.remove('hidden');
         output.innerHTML = '';
         try {

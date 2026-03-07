@@ -433,28 +433,30 @@
                         <button id="studyHelperBtn" class="primary-btn" type="button">AI-помощь</button>
                     </div>
                 </div>
-
                 <div id="studyHelperPanel" class="panel hidden">
-                    <div class="panel-header">
+                    <div class="panel-header helper-head">
                         <div>
                             <p class="panel-title">AI-помощник</p>
-                            <p class="panel-subtitle">Сначала выбери, в чём именно нужна помощь, и только потом запускай AI.</p>
+                            <p class="panel-subtitle">Выбери режим, с чем нужна помощь, и запусти разбор от AI.</p>
                         </div>
+                        <button id="studyHelperCollapseBtn" class="ghost-btn" type="button">Свернуть советы</button>
                     </div>
-                    <div class="helper-toolbar">
-                        <select id="studyHelperMode" class="sort-select">
-                            <option value="overview">Помочь в разборе песни</option>
-                            <option value="chords">Помочь с аккордами</option>
-                            <option value="barre">Чем заменить баррэ</option>
-                            <option value="practice">Как быстрее выучить песню</option>
-                        </select>
-                        <button id="runStudyHelperBtn" class="secondary-btn" type="button">Спросить AI</button>
+                    <div id="studyHelperContent">
+                        <div class="helper-toolbar">
+                            <select id="studyHelperMode" class="sort-select">
+                                <option value="overview">Помощь по разбору песни</option>
+                                <option value="chords">Помощь по аккордам</option>
+                                <option value="barre">Чем заменить баррэ</option>
+                                <option value="practice">Как быстрее выучить песню</option>
+                            </select>
+                            <button id="runStudyHelperBtn" class="secondary-btn" type="button">Запросить AI</button>
+                        </div>
+                        <div id="studyHelperStatus" class="ocr-status hidden">
+                            <span class="spinner"></span>
+                            <span id="studyHelperStatusText">AI готовит ответ...</span>
+                        </div>
+                        <div id="studyHelperOutput" class="study-helper-output"></div>
                     </div>
-                    <div id="studyHelperStatus" class="ocr-status hidden">
-                        <span class="spinner"></span>
-                        <span id="studyHelperStatusText">AI готовит советы...</span>
-                    </div>
-                    <div id="studyHelperOutput" class="study-helper-output"></div>
                 </div>
 
                 <div class="panel song-sheet-panel">
