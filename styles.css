@@ -182,7 +182,7 @@ select:focus {
 .top-nav {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -383,13 +383,14 @@ main {
 
 .home-stack {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.82fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 22px;
     align-items: stretch;
     margin-bottom: 22px;
 }
 
 .home-hero {
+    grid-column: 1 / span 2;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -418,9 +419,10 @@ main {
 }
 
 .home-flow {
+    grid-column: 3;
     display: grid;
     grid-template-rows: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
     height: 100%;
 }
 
@@ -428,8 +430,8 @@ main {
     display: grid;
     gap: 10px;
     align-content: start;
-    min-height: 112px;
-    padding: 18px 18px;
+    min-height: 96px;
+    padding: 14px 16px;
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-xl);
     background: rgba(24, 38, 53, 0.88);
@@ -441,14 +443,14 @@ main {
 }
 
 .flow-card strong {
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1;
     color: var(--brand-blue);
 }
 
 .flow-card span {
     max-width: 20ch;
-    font-size: 1.08rem;
+    font-size: 1rem;
     line-height: 1.25;
 }
 
