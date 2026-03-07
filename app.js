@@ -151,7 +151,8 @@ const app = {
         pendingPatternImages: [],
         currentStrumSteps: [],
         selectedStrumIndex: -1,
-        selectedModel: null
+        selectedModel: null,
+        previewObjectUrls: []
     },
 
     init() {
@@ -337,6 +338,7 @@ const app = {
     setWizardStep(step) {
         this.state.currentWizardStep = Math.max(1, Math.min(3, step));
         this.updateWizard();
+        this.updatePreview();
     },
 
     goWizardStep(delta) {
@@ -719,6 +721,7 @@ const app = {
     },
 
     updatePreview() {
+        this.renderSourcePreview();
         const text = this.normalizeSongText(document.getElementById('songText').value);
         const previewNode = document.getElementById('songPreview');
         const parts = [];
@@ -733,6 +736,52 @@ const app = {
             previewNode.classList.add('song-preview-empty');
             previewNode.innerHTML = parts.length ? parts.join('') : 'Предпросмотр появится после ввода текста или запуска AI.';
         }
+    },
+    revokePreviewUrls() {
+        if (!Array.isArray(this.state.previewObjectUrls)) {
+            this.state.previewObjectUrls = [];
+            return;
+        }
+        this.state.previewObjectUrls.forEach((url) => URL.revokeObjectURL(url));
+        this.state.previewObjectUrls = [];
+    },
+
+    renderSourcePreview() {
+        const node = document.getElementById('sourcePreview');
+        if (!node) {
+            return;
+        }
+
+        this.revokePreviewUrls();
+
+        const groups = [
+            { title: 'Текст/аккорды', files: this.state.pendingLyricsImages || [] },
+            { title: 'Бой/схемы', files: this.state.pendingPatternImages || [] }
+        ].filter((group) => group.files.length);
+
+        if (!groups.length) {
+            node.classList.add('hidden');
+            node.innerHTML = '';
+            return;
+        }
+
+        const thumbs = [];
+        groups.forEach((group) => {
+            group.files.forEach((file, index) => {
+                const url = URL.createObjectURL(file);
+                this.state.previewObjectUrls.push(url);
+                thumbs.push(
+                    '<div class="source-preview-thumb">'
+                    + `<img src="${url}" alt="${this.escapeHtml(group.title)} ${index + 1}">`
+                    + `<span>${this.escapeHtml(group.title)} ${index + 1}</span>`
+                    + '</div>'
+                );
+            });
+        });
+
+        node.classList.remove('hidden');
+        node.innerHTML = '<span class="source-preview-title">Загруженные материалы из шага 1</span>'
+            + `<div class="source-preview-grid">${thumbs.join('')}</div>`;
     },
     escapeHtml(value) {
         return String(value)
@@ -1007,6 +1056,7 @@ const app = {
         this.state.selectedStrumIndex = -1;
         this.state.pendingLyricsImages = [];
         this.state.pendingPatternImages = [];
+        this.revokePreviewUrls();
         document.getElementById('lyricsUploadSummary').textContent = 'Скрины текста не выбраны';
         document.getElementById('patternUploadSummary').textContent = 'Скрины боя не выбраны';
         document.getElementById('lyricsUploadList').textContent = 'Пока нет добавленных скринов текста.';
@@ -1358,36 +1408,3 @@ if ('serviceWorker' in navigator) {
 }
 
 document.addEventListener('DOMContentLoaded', () => app.init());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
