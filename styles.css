@@ -419,16 +419,17 @@ main {
 
 .home-flow {
     display: grid;
-    gap: 16px;
-    align-content: start;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    height: 100%;
 }
 
 .flow-card {
     display: grid;
-    gap: 12px;
+    gap: 10px;
     align-content: start;
-    min-height: 136px;
-    padding: 24px 22px;
+    min-height: 112px;
+    padding: 18px 18px;
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-xl);
     background: rgba(24, 38, 53, 0.88);
@@ -440,14 +441,14 @@ main {
 }
 
 .flow-card strong {
-    font-size: 2.2rem;
+    font-size: 2rem;
     line-height: 1;
     color: var(--brand-blue);
 }
 
 .flow-card span {
-    max-width: 18ch;
-    font-size: 1.2rem;
+    max-width: 20ch;
+    font-size: 1.08rem;
     line-height: 1.25;
 }
 
@@ -1004,7 +1005,8 @@ main {
     }
 
     .home-flow {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
     }
 
     .feature-grid-relaxed {
@@ -1043,6 +1045,8 @@ main {
 
     .home-flow {
         grid-template-columns: 1fr;
+        grid-template-rows: none;
+        height: auto;
     }
 
     .flow-card {

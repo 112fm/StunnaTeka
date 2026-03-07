@@ -1,8 +1,8 @@
 ﻿const STRUM_PATTERN_LIBRARY = [
     {
         id: 'shesterka',
-        name: 'РЁРµСЃС‚С‘СЂРєР°',
-        aliases: ['С€РµСЃС‚РµСЂРєР°', 'С€РµСЃС‚С‘СЂРєР°', 'Р±РѕР№ С€РµСЃС‚РµСЂРєР°', 'Р±РѕР№ С€РµСЃС‚С‘СЂРєР°', '6', 'six'],
+        name: 'Шестёрка',
+        aliases: ['шестерка', 'шестёрка', 'бой шестерка', 'бой шестёрка', '6', 'six'],
         steps: [
             { direction: 'down', accent: false, muted: false },
             { direction: 'down', accent: false, muted: false },
@@ -14,8 +14,8 @@
     },
     {
         id: 'vosmerka',
-        name: 'Р’РѕСЃСЊРјС‘СЂРєР°',
-        aliases: ['РІРѕСЃСЊРјРµСЂРєР°', 'РІРѕСЃСЊРјС‘СЂРєР°', 'Р±РѕР№ РІРѕСЃСЊРјРµСЂРєР°', 'Р±РѕР№ РІРѕСЃСЊРјС‘СЂРєР°', '8', 'eight'],
+        name: 'Восьмёрка',
+        aliases: ['восьмерка', 'восьмёрка', 'бой восьмерка', 'бой восьмёрка', '8', 'eight'],
         steps: [
             { direction: 'down', accent: false, muted: false },
             { direction: 'down', accent: false, muted: false },
@@ -29,8 +29,8 @@
     },
     {
         id: 'chetverka',
-        name: 'Р§РµС‚РІС‘СЂРєР°',
-        aliases: ['С‡РµС‚РІРµСЂРєР°', 'С‡РµС‚РІС‘СЂРєР°', 'Р±РѕР№ С‡РµС‚РІРµСЂРєР°', 'Р±РѕР№ С‡РµС‚РІС‘СЂРєР°', '4', 'four'],
+        name: 'Четвёрка',
+        aliases: ['четверка', 'четвёрка', 'бой четверка', 'бой четвёрка', '4', 'four'],
         steps: [
             { direction: 'down', accent: false, muted: false },
             { direction: 'up', accent: false, muted: false },
@@ -40,8 +40,8 @@
     },
     {
         id: 'tsoi',
-        name: 'Р‘РѕР№ Р¦РѕСЏ',
-        aliases: ['Р±РѕР№ С†РѕСЏ', 'С†РѕР№', 'tsoi'],
+        name: 'Бой Цоя',
+        aliases: ['бой цоя', 'цой', 'tsoi'],
         steps: [
             { direction: 'down', accent: false, muted: false },
             { direction: 'down', accent: false, muted: false },
@@ -58,8 +58,8 @@
     },
     {
         id: 'vysotsky',
-        name: 'Р‘РѕР№ Р’С‹СЃРѕС†РєРѕРіРѕ',
-        aliases: ['Р±РѕР№ РІС‹СЃРѕС†РєРѕРіРѕ', 'РІС‹СЃРѕС†РєРёР№'],
+        name: 'Бой Высоцкого',
+        aliases: ['бой высоцкого', 'высоцкий'],
         steps: [
             { direction: 'up', accent: false, muted: false },
             { direction: 'down', accent: false, muted: false },
@@ -68,8 +68,8 @@
     },
     {
         id: 'spanish',
-        name: 'РСЃРїР°РЅСЃРєРёР№ Р±РѕР№',
-        aliases: ['РёСЃРїР°РЅСЃРєРёР№ Р±РѕР№', 'СЂР°СЃРіРµР°РґРѕ', 'rasgueado'],
+        name: 'Испанский бой',
+        aliases: ['испанский бой', 'расгеадо', 'rasgueado'],
         steps: [
             { direction: 'down', accent: true, muted: false },
             { direction: 'up', accent: false, muted: false },
@@ -81,8 +81,8 @@
     },
     {
         id: 'rozenbaum',
-        name: 'Р‘РѕР№ Р РѕР·РµРЅР±Р°СѓРјР°',
-        aliases: ['Р±РѕР№ СЂРѕР·РµРЅР±Р°СѓРјР°', 'СЂРѕР·РµРЅР±Р°СѓРј'],
+        name: 'Бой Розенбаума',
+        aliases: ['бой розенбаума', 'розенбаум'],
         steps: [
             { direction: 'up', accent: false, muted: false },
             { direction: 'up', accent: false, muted: false },
@@ -92,8 +92,8 @@
     },
     {
         id: 'reggae',
-        name: 'Р‘РѕР№ СЂРµРіРіРё',
-        aliases: ['Р±РѕР№ СЂРµРіРіРё', 'СЂРµРіРіРё'],
+        name: 'Бой регги',
+        aliases: ['бой регги', 'регги'],
         steps: [
             { direction: 'down', accent: false, muted: true },
             { direction: 'down', accent: true, muted: false }
@@ -101,8 +101,8 @@
     },
     {
         id: 'country',
-        name: 'Р‘РѕР№ РєР°РЅС‚СЂРё',
-        aliases: ['Р±РѕР№ РєР°РЅС‚СЂРё', 'РєР°РЅС‚СЂРё'],
+        name: 'Бой кантри',
+        aliases: ['бой кантри', 'кантри'],
         steps: [
             { direction: 'down', accent: false, muted: false },
             { direction: 'down', accent: false, muted: false },
@@ -111,8 +111,8 @@
     },
     {
         id: 'waltz',
-        name: 'Р’Р°Р»СЊСЃРѕРІС‹Р№ Р±РѕР№',
-        aliases: ['РІР°Р»СЊСЃРѕРІС‹Р№ Р±РѕР№', 'РІР°Р»СЊСЃ', '3/4'],
+        name: 'Вальсовый бой',
+        aliases: ['вальсовый бой', 'вальс', '3/4'],
         steps: [
             { direction: 'down', accent: true, muted: false },
             { direction: 'up', accent: false, muted: false },
@@ -121,8 +121,8 @@
     },
     {
         id: 'chechen',
-        name: 'Р§РµС‡РµРЅСЃРєРёР№ Р±РѕР№',
-        aliases: ['С‡РµС‡РµРЅСЃРєРёР№ Р±РѕР№', 'С‡РµС‡РµРЅСЃРєРёР№'],
+        name: 'Чеченский бой',
+        aliases: ['чеченский бой', 'чеченский'],
         steps: [
             { direction: 'down', accent: false, muted: false },
             { direction: 'down', accent: false, muted: false },
@@ -196,10 +196,10 @@ const app = {
         });
 
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
-            this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р°');
+            this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
         });
         document.getElementById('patternImageInput').addEventListener('change', (event) => {
-            this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'РЎРєСЂРёРЅС‹ Р±РѕСЏ');
+            this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'Скрины боя');
         });
 
         const pasteZone = document.getElementById('lyricsPasteZone');
@@ -207,6 +207,9 @@ const app = {
         pasteZone.addEventListener('paste', (event) => this.handleImagePaste(event));
 
         document.addEventListener('paste', (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
             const target = event.target;
             const isFormInput = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
             if (this.state.currentView !== 'addView' || isFormInput) {
@@ -304,7 +307,7 @@ const app = {
 
     applyTheme() {
         document.documentElement.setAttribute('data-theme', this.state.theme);
-        document.getElementById('themeToggleBtn').textContent = this.state.theme === 'dark' ? 'РЎРІРµС‚Р»Р°СЏ' : 'РўС‘РјРЅР°СЏ';
+        document.getElementById('themeToggleBtn').textContent = this.state.theme === 'dark' ? 'Светлая' : 'Тёмная';
     },
 
     showView(viewId) {
@@ -351,7 +354,7 @@ const app = {
         document.getElementById('wizardPrevBtn').disabled = this.state.currentWizardStep === 1;
         nextButton.disabled = this.state.currentWizardStep === 3;
         nextButton.classList.toggle('hidden', this.state.currentWizardStep === 3);
-        nextButton.textContent = this.state.currentWizardStep === 1 ? 'Рљ РїСЂРѕРІРµСЂРєРµ' : 'Рљ СЃРѕС…СЂР°РЅРµРЅРёСЋ';
+        nextButton.textContent = this.state.currentWizardStep === 1 ? 'К проверке' : 'К сохранению';
     },
 
     persistDraft() {
@@ -395,7 +398,7 @@ const app = {
             this.state.currentStrumSteps = Array.isArray(draft.strumSteps) ? draft.strumSteps : [];
             this.state.selectedStrumIndex = this.state.currentStrumSteps.length ? 0 : -1;
         } catch (error) {
-            console.error('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ С‡РµСЂРЅРѕРІРёРє:', error);
+            console.error('Не удалось загрузить черновик:', error);
         }
     },
 
@@ -417,6 +420,9 @@ const app = {
     },
 
     handleImagePaste(event) {
+        if (event.defaultPrevented) {
+            return;
+        }
         const items = (event.clipboardData || event.originalEvent?.clipboardData)?.items || [];
         const imageFiles = [];
         for (let index = 0; index < items.length; index += 1) {
@@ -427,7 +433,7 @@ const app = {
         }
         if (imageFiles.length) {
             event.preventDefault();
-            this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р°');
+            this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
             this.setWizardStep(1);
         }
     },
@@ -440,8 +446,8 @@ const app = {
 
     updateUploadUi(stateKey, summaryId, label) {
         document.getElementById(summaryId).textContent = this.state[stateKey].length
-            ? label + ': ' + this.state[stateKey].length + ' С€С‚.'
-            : label + ' РЅРµ РІС‹Р±СЂР°РЅС‹';
+            ? label + ': ' + this.state[stateKey].length + ' шт.'
+            : label + ' не выбраны';
 
         const listId = stateKey === 'pendingLyricsImages' ? 'lyricsUploadList' : 'patternUploadList';
         this.renderUploadList(listId, stateKey);
@@ -450,13 +456,12 @@ const app = {
             const pasteZone = document.getElementById('lyricsPasteZone');
             const hasContent = this.state[stateKey].length > 0;
             pasteZone.classList.toggle('has-content', hasContent);
-            pasteZone.querySelector('strong').textContent = hasContent ? 'РЎРєСЂРёРЅС‹ РґРѕР±Р°РІР»РµРЅС‹ РІ РѕС‡РµСЂРµРґСЊ' : 'Р’СЃС‚Р°РІРёС‚СЊ СЃРєСЂРёРЅ РёР· Р±СѓС„РµСЂР°';
+            pasteZone.querySelector('strong').textContent = hasContent ? 'Скрины добавлены в очередь' : 'Вставить скрин из буфера';
             pasteZone.querySelector('span').textContent = hasContent
-                ? 'РњРѕР¶РЅРѕ Р·Р°РїСѓСЃРєР°С‚СЊ AI РёР»Рё РїСЂРѕРґРѕР»Р¶Р°С‚СЊ РґРѕРєРёРґС‹РІР°С‚СЊ РјР°С‚РµСЂРёР°Р»С‹.'
-                : 'РљР»РёРєРЅРё СЃСЋРґР° Рё РЅР°Р¶РјРё Ctrl + V. РќР° С‚РµР»РµС„РѕРЅРµ РёСЃРїРѕР»СЊР·СѓР№ РІС‹Р±РѕСЂ С„Р°Р№Р»Р°.';
+                ? 'Можно запускать AI или продолжать докидывать материалы.'
+                : 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
         }
     },
-
     renderUploadList(listId, stateKey) {
         const node = document.getElementById(listId);
         if (!node) {
@@ -465,25 +470,24 @@ const app = {
         const files = this.state[stateKey];
         if (!files.length) {
             node.className = 'upload-list empty';
-            node.textContent = stateKey === 'pendingLyricsImages' ? 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ С‚РµРєСЃС‚Р°.' : 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ Р±РѕСЏ.';
+            node.textContent = stateKey === 'pendingLyricsImages' ? 'Пока нет добавленных скринов текста.' : 'Пока нет добавленных скринов боя.';
             return;
         }
         node.className = 'upload-list';
         node.innerHTML = files.map((file, index) => `
             <div class="upload-item">
-                <span>${this.escapeHtml(file.name || `Р¤Р°Р№Р» ${index + 1}`)}</span>
-                <button type="button" class="ghost-btn upload-remove-btn" data-remove-image data-type="${stateKey}" data-index="${index}">РЈР±СЂР°С‚СЊ</button>
+                <span>${this.escapeHtml(file.name || `Файл ${index + 1}`)}</span>
+                <button type="button" class="ghost-btn upload-remove-btn" data-remove-image data-type="${stateKey}" data-index="${index}">Убрать</button>
             </div>
         `).join('');
     },
-
     removePendingImage(stateKey, index) {
         if (!Array.isArray(this.state[stateKey])) {
             return;
         }
         this.state[stateKey].splice(index, 1);
         const summaryId = stateKey === 'pendingLyricsImages' ? 'lyricsUploadSummary' : 'patternUploadSummary';
-        const label = stateKey === 'pendingLyricsImages' ? 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р°' : 'РЎРєСЂРёРЅС‹ Р±РѕСЏ';
+        const label = stateKey === 'pendingLyricsImages' ? 'Скрины текста' : 'Скрины боя';
         this.updateUploadUi(stateKey, summaryId, label);
     },
 
@@ -497,7 +501,7 @@ const app = {
     toggleSelectedStrumFlag(flagName) {
         const step = this.state.currentStrumSteps[this.state.selectedStrumIndex];
         if (!step) {
-            alert('РЎРЅР°С‡Р°Р»Р° РІС‹Р±РµСЂРёС‚Рµ С€Р°Рі Р±РѕСЏ.');
+            alert('Сначала выберите шаг боя.');
             return;
         }
         step[flagName] = !step[flagName];
@@ -528,7 +532,7 @@ const app = {
         }
         if (!steps.length) {
             target.classList.add('empty');
-            target.innerHTML = interactive ? 'Р”РѕР±Р°РІСЊ С€Р°РіРё Р±РѕСЏ РєРЅРѕРїРєР°РјРё РІС‹С€Рµ' : 'Р‘РѕР№ РЅРµ Р·Р°РїРѕР»РЅРµРЅ';
+            target.innerHTML = interactive ? 'Добавь шаги боя кнопками выше' : 'Бой не заполнен';
             return;
         }
 
@@ -538,7 +542,7 @@ const app = {
             const node = document.createElement(interactive ? 'button' : 'div');
             node.className = `strum-step${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}${interactive && index === this.state.selectedStrumIndex ? ' selected' : ''}`;
             node.innerHTML = `
-                <span class="strum-step-direction">${step.direction === 'up' ? 'в†‘' : 'в†“'}</span>
+                <span class="strum-step-direction">${step.direction === 'up' ? '↑' : '↓'}</span>
                 <span class="strum-step-meta">${this.describeStep(step)}</span>
             `;
             if (interactive) {
@@ -551,18 +555,16 @@ const app = {
             target.appendChild(node);
         });
     },
-
     describeStep(step) {
         const parts = [];
         if (step.accent) {
-            parts.push('Р°РєС†РµРЅС‚');
+            parts.push('акцент');
         }
         if (step.muted) {
-            parts.push('РіР»СѓС€РєР°');
+            parts.push('глушка');
         }
-        return parts.length ? parts.join(' В· ') : 'РѕР±С‹С‡РЅРѕ';
+        return parts.length ? parts.join(' / ') : 'обычно';
     },
-
     renderStrumPresetOptions() {
         const select = document.getElementById('strumPresetSelect');
         if (!select) {
@@ -651,25 +653,24 @@ const app = {
     },
     buildStrumSummary(steps = this.state.currentStrumSteps) {
         return steps.map((step) => {
-            const direction = step.direction === 'up' ? 'в†‘' : 'в†“';
+            const direction = step.direction === 'up' ? '↑' : '↓';
             const accent = step.accent ? '!' : '';
             const muted = step.muted ? 'x' : '';
             return `${direction}${accent}${muted}`;
         }).join(' ');
     },
-
     normalizeSongText(rawText) {
         if (!rawText) {
             return '';
         }
         let text = rawText.replace(/\r/g, '').replace(/\t/g, '    ').replace(/[ ]+$/gm, '');
         const replacements = [
-            [/\bРђm\b/g, 'Am'],
-            [/\bРЎ\b/g, 'C'],
-            [/\bР•\b/g, 'E'],
-            [/\bР’\b/g, 'B'],
-            [/\bРќ\b/g, 'H'],
-            [/\bРђ\b/g, 'A'],
+            [/\bАm\b/g, 'Am'],
+            [/\bС\b/g, 'C'],
+            [/\bЕ\b/g, 'E'],
+            [/\bВ\b/g, 'B'],
+            [/\bН\b/g, 'H'],
+            [/\bА\b/g, 'A'],
             [/\b([A-GH])\s+m\b/g, '$1m']
         ];
         replacements.forEach(([pattern, replacement]) => {
@@ -677,7 +678,6 @@ const app = {
         });
         return text.replace(/\n{4,}/g, '\n\n\n');
     },
-
     isChordLine(line) {
         const trimmed = line.trim();
         if (!trimmed) {
@@ -724,17 +724,16 @@ const app = {
         const parts = [];
         const strumSummary = this.buildStrumSummary();
         if (strumSummary) {
-            parts.push(`<div class="song-line-single"><strong>Р‘РѕР№:</strong> ${this.escapeHtml(strumSummary)}</div>`);
+            parts.push(`<div class="song-line-single"><strong>Бой:</strong> ${this.escapeHtml(strumSummary)}</div>`);
         }
         if (text.trim()) {
             previewNode.classList.remove('song-preview-empty');
             previewNode.innerHTML = parts.join('') + this.renderSongMarkup(text);
         } else {
             previewNode.classList.add('song-preview-empty');
-            previewNode.innerHTML = parts.length ? parts.join('') : 'РџСЂРµРґРїСЂРѕСЃРјРѕС‚СЂ РїРѕСЏРІРёС‚СЃСЏ РїРѕСЃР»Рµ РІРІРѕРґР° С‚РµРєСЃС‚Р° РёР»Рё Р·Р°РїСѓСЃРєР° AI.';
+            previewNode.innerHTML = parts.length ? parts.join('') : 'Предпросмотр появится после ввода текста или запуска AI.';
         }
     },
-
     escapeHtml(value) {
         return String(value)
             .replace(/&/g, '&amp;')
@@ -756,7 +755,7 @@ const app = {
         }
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || 'РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ songs.json РёР· GitHub.');
+            throw new Error(errorData.message || 'Не удалось получить songs.json из GitHub.');
         }
         const data = await response.json();
         const decoded = decodeURIComponent(escape(atob(data.content)));
@@ -778,15 +777,15 @@ const app = {
         });
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || 'РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ songs.json РІ GitHub.');
+            throw new Error(errorData.message || 'Не удалось сохранить songs.json в GitHub.');
         }
     },
 
     normalizeSongObject(song) {
         return {
             id: song.id || Date.now().toString(),
-            title: song.title || 'Р‘РµР· РЅР°Р·РІР°РЅРёСЏ',
-            artist: song.artist || 'РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёСЃРїРѕР»РЅРёС‚РµР»СЊ',
+            title: song.title || 'Без названия',
+            artist: song.artist || 'Неизвестный исполнитель',
             key: song.key || '',
             bpm: Number(song.bpm) || null,
             capo: Number.isFinite(Number(song.capo)) ? Number(song.capo) : null,
@@ -805,9 +804,9 @@ const app = {
 
     async loadSongs() {
         const grid = document.getElementById('songsGrid');
-        grid.innerHTML = '<p class="loading-text">РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ СЃ GitHub...</p>';
+        grid.innerHTML = '<p class="loading-text">Синхронизация с GitHub...</p>';
         if (!this.hasGitHubConfig()) {
-            grid.innerHTML = '<p class="error-text">РћС‚РєСЂРѕР№С‚Рµ РЅР°СЃС‚СЂРѕР№РєРё Рё СѓРєР°Р¶РёС‚Рµ GitHub Username, Repo Рё Token.</p>';
+            grid.innerHTML = '<p class="error-text">Откройте настройки и укажите GitHub Username, Repo и Token.</p>';
             return;
         }
         try {
@@ -844,14 +843,14 @@ const app = {
     renderSongs(songs) {
         const grid = document.getElementById('songsGrid');
         if (!songs.length) {
-            grid.innerHTML = '<p class="loading-text">РџРѕРєР° РїСѓСЃС‚Рѕ. Р”РѕР±Р°РІСЊС‚Рµ РїРµСЂРІСѓСЋ РїРµСЃРЅСЋ С‡РµСЂРµР· РјР°СЃС‚РµСЂ.</p>';
+            grid.innerHTML = '<p class="loading-text">Пока пусто. Добавьте первую песню через мастер.</p>';
             return;
         }
         grid.innerHTML = '';
         songs.forEach((song) => {
             const card = document.createElement('article');
             card.className = 'song-card';
-            const badges = [song.key && `РўРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ: ${song.key}`, song.bpm && `BPM: ${song.bpm}`, song.strum_pattern && `Р‘РѕР№: ${song.strum_pattern}`]
+            const badges = [song.key && `Тональность: ${song.key}`, song.bpm && `BPM: ${song.bpm}`, song.strum_pattern && `Бой: ${song.strum_pattern}`]
                 .filter(Boolean)
                 .map((badge) => `<span class="song-badge">${this.escapeHtml(badge)}</span>`)
                 .join('');
@@ -861,9 +860,9 @@ const app = {
                         <h3>${this.escapeHtml(song.title)}</h3>
                         <p>${this.escapeHtml(song.artist)}</p>
                     </div>
-                    <button class="danger-btn" type="button">РЈРґР°Р»РёС‚СЊ</button>
+                    <button class="danger-btn" type="button">Удалить</button>
                 </div>
-                <div class="song-meta">${badges || '<span class="song-badge">РњРµС‚Р°РґР°РЅРЅС‹Рµ РЅРµ Р·Р°РїРѕР»РЅРµРЅС‹</span>'}</div>
+                <div class="song-meta">${badges || '<span class="song-badge">Метаданные не заполнены</span>'}</div>
             `;
             card.addEventListener('click', () => this.openSongView(song.id));
             card.querySelector('.danger-btn').addEventListener('click', (event) => {
@@ -873,7 +872,6 @@ const app = {
             grid.appendChild(card);
         });
     },
-
     getCurrentSong() {
         return this.state.songs.find((song) => song.id === this.state.currentSongId) || null;
     },
@@ -890,17 +888,16 @@ const app = {
         document.getElementById('studyHelperPanel').classList.add('hidden');
         document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(song.study_tips);
         document.getElementById('viewMeta').innerHTML = [
-            song.key && `РўРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ: ${song.key}`,
+            song.key && `Тональность: ${song.key}`,
             song.bpm && `BPM: ${song.bpm}`,
-            Number.isFinite(song.capo) ? `РљР°РїРѕ: ${song.capo}` : '',
-            song.tuning && `РЎС‚СЂРѕР№: ${song.tuning}`,
-            song.fingerings && 'Р•СЃС‚СЊ Р·Р°РјРµС‚РєРё РїРѕ Р°РїРїР»РёРєР°С‚СѓСЂРµ'
+            Number.isFinite(song.capo) ? `Капо: ${song.capo}` : '',
+            song.tuning && `Строй: ${song.tuning}`,
+            song.fingerings && 'Есть заметки по аппликатуре'
         ].filter(Boolean).map((meta) => `<span class="song-badge">${this.escapeHtml(meta)}</span>`).join('');
         this.renderSongStrum(song);
         this.renderSongVideo(song.video_url);
         this.showView('songView');
     },
-
     renderSongStrum(song) {
         const section = document.getElementById('viewStrumSection');
         const preview = document.getElementById('viewStrumPreview');
@@ -915,21 +912,19 @@ const app = {
         section.classList.remove('hidden');
         notes.textContent = song.strum_notes || '';
         preview.innerHTML = steps.length
-            ? `<div class="strum-inline">${steps.map((step) => `<span class="strum-chip${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}">${step.direction === 'up' ? 'в†‘' : 'в†“'}</span>`).join('')}</div>`
+            ? `<div class="strum-inline">${steps.map((step) => `<span class="strum-chip${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}">${step.direction === 'up' ? '↑' : '↓'}</span>`).join('')}</div>`
             : `<div class="strum-pattern-text">${this.escapeHtml(song.strum_pattern)}</div>`;
     },
-
     parseSummaryToSteps(summary) {
         if (!summary) {
             return [];
         }
         return summary.split(/\s+/).filter(Boolean).map((token) => ({
-            direction: token.includes('в†‘') ? 'up' : 'down',
+            direction: token.includes('↑') ? 'up' : 'down',
             accent: token.includes('!'),
             muted: token.includes('x')
         }));
     },
-
     renderSongVideo(url) {
         const section = document.getElementById('viewLinksSection');
         const embedWrapper = document.getElementById('viewVideoEmbed');
@@ -958,7 +953,7 @@ const app = {
     },
     async handleSaveSong() {
         if (!this.hasGitHubConfig()) {
-            alert('РЎРЅР°С‡Р°Р»Р° Р·Р°РїРѕР»РЅРёС‚Рµ GitHub-РЅР°СЃС‚СЂРѕР№РєРё.');
+            alert('Сначала заполните GitHub-настройки.');
             this.openSettings();
             return;
         }
@@ -966,12 +961,12 @@ const app = {
         const artist = document.getElementById('songArtist').value.trim();
         const text = this.normalizeSongText(document.getElementById('songText').value);
         if (!title || !artist) {
-            alert('РќСѓР¶РЅРѕ Р·Р°РїРѕР»РЅРёС‚СЊ С…РѕС‚СЏ Р±С‹ РЅР°Р·РІР°РЅРёРµ Рё РёСЃРїРѕР»РЅРёС‚РµР»СЏ.');
+            alert('Нужно заполнить хотя бы название и исполнителя.');
             this.setWizardStep(1);
             return;
         }
         if (!text) {
-            alert('Р”РѕР±Р°РІСЊС‚Рµ С‚РµРєСЃС‚ РїРµСЃРЅРё РёР»Рё СЂР°СЃРїРѕР·РЅР°Р№С‚Рµ РµРіРѕ СЃРѕ СЃРєСЂРёРЅР°.');
+            alert('Добавьте текст песни или распознайте его со скрина.');
             this.setWizardStep(2);
             return;
         }
@@ -992,39 +987,39 @@ const app = {
             study_tips: []
         });
         const duplicate = this.state.songs.find((item) => item.title.toLowerCase() === song.title.toLowerCase() && item.artist.toLowerCase() === song.artist.toLowerCase());
-        if (duplicate && !confirm('РўР°РєР°СЏ РїРµСЃРЅСЏ СѓР¶Рµ РµСЃС‚СЊ. РЎРѕС…СЂР°РЅРёС‚СЊ РµС‰С‘ РѕРґРЅСѓ РєРѕРїРёСЋ?')) {
+        if (duplicate && !confirm('Такая песня уже есть. Сохранить ещё одну копию?')) {
             return;
         }
         const updatedSongs = [...this.state.songs, song];
         try {
-            await this.saveSongsToGitHub(updatedSongs, `Р”РѕР±Р°РІР»РµРЅР° РїРµСЃРЅСЏ: ${song.title} вЂ” ${song.artist}`);
+            await this.saveSongsToGitHub(updatedSongs, `Добавлена песня: ${song.title} — ${song.artist}`);
             this.state.songs = updatedSongs;
             this.clearSongForm();
-            this.showView('libraryView');
+            this.applyLibraryFilters();
+            this.openSongView(song.id);
         } catch (error) {
-            alert(`РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РїРµСЃРЅСЋ: ${error.message}`);
+            alert(`Не удалось сохранить песню: ${error.message}`);
         }
     },
-
     clearSongForm() {
         document.getElementById('addSongForm').reset();
         this.state.currentStrumSteps = [];
         this.state.selectedStrumIndex = -1;
         this.state.pendingLyricsImages = [];
         this.state.pendingPatternImages = [];
-        document.getElementById('lyricsUploadSummary').textContent = 'РЎРєСЂРёРЅС‹ С‚РµРєСЃС‚Р° РЅРµ РІС‹Р±СЂР°РЅС‹';
-        document.getElementById('patternUploadSummary').textContent = 'РЎРєСЂРёРЅС‹ Р±РѕСЏ РЅРµ РІС‹Р±СЂР°РЅС‹';
-        document.getElementById('lyricsUploadList').textContent = 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ С‚РµРєСЃС‚Р°.';
+        document.getElementById('lyricsUploadSummary').textContent = 'Скрины текста не выбраны';
+        document.getElementById('patternUploadSummary').textContent = 'Скрины боя не выбраны';
+        document.getElementById('lyricsUploadList').textContent = 'Пока нет добавленных скринов текста.';
         document.getElementById('lyricsUploadList').className = 'upload-list empty';
-        document.getElementById('patternUploadList').textContent = 'РџРѕРєР° РЅРµС‚ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРєСЂРёРЅРѕРІ Р±РѕСЏ.';
+        document.getElementById('patternUploadList').textContent = 'Пока нет добавленных скринов боя.';
         document.getElementById('patternUploadList').className = 'upload-list empty';
         document.getElementById('songTextQuick').value = '';
         document.getElementById('songTuningPreset').value = '';
         document.getElementById('strumPresetSelect').value = '';
         const pasteZone = document.getElementById('lyricsPasteZone');
         pasteZone.classList.remove('has-content');
-        pasteZone.querySelector('strong').textContent = 'Р’СЃС‚Р°РІРёС‚СЊ СЃРєСЂРёРЅ РёР· Р±СѓС„РµСЂР°';
-        pasteZone.querySelector('span').textContent = 'РљР»РёРєРЅРё СЃСЋРґР° Рё РЅР°Р¶РјРё Ctrl + V. РќР° С‚РµР»РµС„РѕРЅРµ РёСЃРїРѕР»СЊР·СѓР№ РІС‹Р±РѕСЂ С„Р°Р№Р»Р°.';
+        pasteZone.querySelector('strong').textContent = 'Вставить скрин из буфера';
+        pasteZone.querySelector('span').textContent = 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
         this.renderStrumBuilder();
         this.updatePreview();
         this.clearDraft();
@@ -1036,12 +1031,12 @@ const app = {
         if (!song) {
             return;
         }
-        if (!confirm(`РЈРґР°Р»РёС‚СЊ РїРµСЃРЅСЋ "${song.title}"?`)) {
+        if (!confirm(`Удалить песню "${song.title}"?`)) {
             return;
         }
         const nextSongs = this.state.songs.filter((item) => item.id !== songId);
         try {
-            await this.saveSongsToGitHub(nextSongs, `РЈРґР°Р»РµРЅР° РїРµСЃРЅСЏ: ${song.title}`);
+            await this.saveSongsToGitHub(nextSongs, `Удалена песня: ${song.title}`);
             this.state.songs = nextSongs;
             if (this.state.currentSongId === songId) {
                 this.state.currentSongId = null;
@@ -1050,10 +1045,9 @@ const app = {
                 this.applyLibraryFilters();
             }
         } catch (error) {
-            alert(`РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ РїРµСЃРЅСЋ: ${error.message}`);
+            alert(`Не удалось удалить песню: ${error.message}`);
         }
     },
-
     deleteCurrentSong() {
         if (this.state.currentSongId) {
             this.deleteSongById(this.state.currentSongId);
@@ -1069,11 +1063,10 @@ const app = {
                     data: String(reader.result).split(',')[1]
                 }
             });
-            reader.onerror = () => reject(new Error(`РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р» ${file.name}`));
+            reader.onerror = () => reject(new Error(`Не удалось прочитать файл ${file.name}`));
             reader.readAsDataURL(file);
         })));
     },
-
     async ensureGeminiModel() {
         if (this.state.selectedModel) {
             return this.state.selectedModel;
@@ -1081,21 +1074,21 @@ const app = {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${this.state.googleApiKey}`);
         const data = await response.json();
         if (!response.ok) {
-            throw new Error(data.error?.message || 'РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РјРѕРґРµР»РµР№ Gemini.');
+            throw new Error(data.error?.message || 'Не удалось получить список моделей Gemini.');
         }
         const priority = ['models/gemini-2.5-flash', 'models/gemini-2.0-flash', 'models/gemini-1.5-flash'];
         const available = data.models || [];
         this.state.selectedModel = priority.find((name) => available.some((model) => model.name === name && model.supportedGenerationMethods?.includes('generateContent')))
             || available.find((model) => model.name.includes('gemini') && model.supportedGenerationMethods?.includes('generateContent'))?.name;
         if (!this.state.selectedModel) {
-            throw new Error('РџРѕРґС…РѕРґСЏС‰Р°СЏ РјРѕРґРµР»СЊ Gemini РЅРµ РЅР°Р№РґРµРЅР° РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РєР»СЋС‡Р°.');
+            throw new Error('Подходящая модель Gemini не найдена для текущего ключа.');
         }
         return this.state.selectedModel;
     },
 
     async requestGemini(parts) {
         if (!this.state.googleApiKey) {
-            throw new Error('Р”РѕР±Р°РІСЊС‚Рµ Google Gemini API Key РІ РЅР°СЃС‚СЂРѕР№РєР°С….');
+            throw new Error('Добавьте Google Gemini API Key в настройках.');
         }
         const model = await this.ensureGeminiModel();
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${this.state.googleApiKey}`, {
@@ -1112,7 +1105,7 @@ const app = {
         });
         const data = await response.json();
         if (!response.ok) {
-            throw new Error(data.error?.message || 'Gemini РІРµСЂРЅСѓР» РѕС€РёР±РєСѓ.');
+            throw new Error(data.error?.message || 'Gemini вернул ошибку.');
         }
         return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     },
@@ -1122,7 +1115,7 @@ const app = {
         const firstBrace = cleaned.indexOf('{');
         const lastBrace = cleaned.lastIndexOf('}');
         if (firstBrace === -1 || lastBrace === -1) {
-            throw new Error('AI РЅРµ РІРµСЂРЅСѓР» JSON.');
+            throw new Error('AI не вернул JSON.');
         }
         return JSON.parse(cleaned.slice(firstBrace, lastBrace + 1));
     },
@@ -1157,36 +1150,35 @@ const app = {
         const manualText = document.getElementById('songText').value.trim();
         const hasImages = this.state.pendingLyricsImages.length || this.state.pendingPatternImages.length;
         if (!fromTextOnly && !hasImages && !manualText) {
-            alert('Р”РѕР±Р°РІСЊС‚Рµ СЃРєСЂРёРЅС‹ РёР»Рё РІСЃС‚Р°РІСЊС‚Рµ С‚РµРєСЃС‚ РїРµСЂРµРґ Р·Р°РїСѓСЃРєРѕРј AI.');
+            alert('Добавьте скрины или вставьте текст перед запуском AI.');
             this.setWizardStep(1);
             return;
         }
         if (fromTextOnly && !manualText) {
-            alert('РЎРЅР°С‡Р°Р»Р° РІСЃС‚Р°РІСЊС‚Рµ С‚РµРєСЃС‚ РїРµСЃРЅРё.');
+            alert('Сначала вставьте текст песни.');
             this.setWizardStep(2);
             return;
         }
         statusNode.classList.remove('hidden');
-        statusText.textContent = fromTextOnly ? 'AI РґРѕР±РёСЂР°РµС‚ РјРµС‚Р°РґР°РЅРЅС‹Рµ РёР· С‚РµРєСЃС‚Р°...' : 'AI СЂР°Р·Р±РёСЂР°РµС‚ СЃРєСЂРёРЅС‹ Рё Р·Р°РїРѕР»РЅСЏРµС‚ РїРµСЃРЅСЋ...';
+        statusText.textContent = fromTextOnly ? 'AI добирает метаданные из текста...' : 'AI разбирает скрины и заполняет песню...';
         try {
-            const imageParts = fromTextOnly ? [] : [
-                ...(await this.filesToInlineData(this.state.pendingLyricsImages)),
-                ...(await this.filesToInlineData(this.state.pendingPatternImages))
-            ];
+            const lyricImageParts = fromTextOnly ? [] : await this.filesToInlineData(this.state.pendingLyricsImages);
+            const patternImageParts = fromTextOnly ? [] : await this.filesToInlineData(this.state.pendingPatternImages);
             const prompt = `
-РўС‹ РїРѕРјРѕРіР°РµС€СЊ СЃРѕР±СЂР°С‚СЊ РєР°СЂС‚РѕС‡РєСѓ РіРёС‚Р°СЂРЅРѕР№ РїРµСЃРЅРё РёР· СЃРєСЂРёРЅРѕРІ Рё С‚РµРєСЃС‚Р°.
-Р’РµСЂРЅРё С‚РѕР»СЊРєРѕ JSON Р±РµР· markdown Рё РїРѕСЏСЃРЅРµРЅРёР№.
+Ты помогаешь собрать карточку гитарной песни из скринов и текста.
+Верни только JSON без markdown и пояснений.
 
-РўСЂРµР±РѕРІР°РЅРёСЏ:
-- Р•СЃР»Рё РЅР° СЃРєСЂРёРЅРµ РµСЃС‚СЊ Р°РєРєРѕСЂРґС‹ РЅР°Рґ С‚РµРєСЃС‚РѕРј, СЃРѕС…СЂР°РЅРё РёС… РєР°Рє РѕС‚РґРµР»СЊРЅС‹Рµ СЃС‚СЂРѕРєРё Р°РєРєРѕСЂРґРѕРІ РЅР°Рґ СЃС‚СЂРѕРєР°РјРё С‚РµРєСЃС‚Р°.
-- РќРµ С‚РµСЂСЏР№ РІРµРґСѓС‰РёРµ РїСЂРѕР±РµР»С‹ РІ СЃС‚СЂРѕРєР°С… СЃ Р°РєРєРѕСЂРґР°РјРё.
-- Р•СЃР»Рё РІРёРґРµРЅ Р±РѕР№, СЂР°СЃРїРѕР·РЅР°Р№ РµРіРѕ РєР°Рє РјР°СЃСЃРёРІ С€Р°РіРѕРІ.\n- РћСЂРёРµРЅС‚РёСЂСѓР№СЃСЏ РЅР° Р±Р°Р·РѕРІС‹Рµ С€Р°Р±Р»РѕРЅС‹: РЁРµСЃС‚С‘СЂРєР°, Р’РѕСЃСЊРјС‘СЂРєР°, Р§РµС‚РІС‘СЂРєР°, Р‘РѕР№ Р¦РѕСЏ, Р‘РѕР№ Р’С‹СЃРѕС†РєРѕРіРѕ, РСЃРїР°РЅСЃРєРёР№ Р±РѕР№, Р‘РѕР№ Р РѕР·РµРЅР±Р°СѓРјР°, Р‘РѕР№ СЂРµРіРіРё, Р‘РѕР№ РєР°РЅС‚СЂРё, Р’Р°Р»СЊСЃРѕРІС‹Р№ Р±РѕР№, Р§РµС‡РµРЅСЃРєРёР№ Р±РѕР№.
-- Р•СЃР»Рё РµСЃС‚СЊ Р°РєС†РµРЅС‚С‹, РїРѕРјРµС‚СЊ accent=true.
-- Р•СЃР»Рё РµСЃС‚СЊ РіР»СѓС€РµРЅРёРµ, РїРѕРјРµС‚СЊ muted=true.
-- Р•СЃР»Рё РјРµС‚Р°РґР°РЅРЅС‹Рµ РЅРµ РІРёРґРЅС‹, РѕСЃС‚Р°РІСЊ null РёР»Рё РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ.
-- Р•СЃР»Рё РµСЃС‚СЊ СЃС‚СЂРѕР№, BPM, РєР°РїРѕ Рё Р°РїРїР»РёРєР°С‚СѓСЂР°, РІС‹РЅРµСЃРё РёС….
+Требования:
+- Если на скрине есть аккорды над текстом, сохрани их как отдельные строки аккордов над строками текста.
+- Не теряй ведущие пробелы в строках с аккордами.
+- Если виден бой, распознай его как массив шагов.
+- Ориентируйся на базовые шаблоны: Шестёрка, Восьмёрка, Четвёрка, Бой Цоя, Бой Высоцкого, Испанский бой, Бой Розенбаума, Бой регги, Бой кантри, Вальсовый бой, Чеченский бой.
+- Если есть акценты, пометь accent=true.
+- Если есть глушение, пометь muted=true.
+- Если метаданные не видны, оставь null или пустую строку.
+- Если есть строй, BPM, капо и аппликатура, вынеси их.
 
-РЎС…РµРјР° JSON:
+Схема JSON:
 {
   "title": "",
   "artist": "",
@@ -1208,15 +1200,22 @@ const app = {
 `.trim();
             const parts = [{ text: prompt }];
             if (manualText) {
-                parts.push({ text: `РЈР¶Рµ РІРІРµРґС‘РЅРЅС‹Р№ С‚РµРєСЃС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:\n${manualText}` });
+                parts.push({ text: `Уже введённый текст пользователя:\n${manualText}` });
             }
-            imageParts.forEach((part) => parts.push(part));
+            if (lyricImageParts.length) {
+                parts.push({ text: 'Скрины текста и аккордов:' });
+                lyricImageParts.forEach((part) => parts.push(part));
+            }
+            if (patternImageParts.length) {
+                parts.push({ text: 'Скрины боя и схем ударов:' });
+                patternImageParts.forEach((part) => parts.push(part));
+            }
             const rawResponse = await this.requestGemini(parts);
             const parsed = this.extractJsonBlock(rawResponse);
             this.applyAiSongData(parsed, { replaceText: true });
-            alert('AI Р·Р°РїРѕР»РЅРёР» РїРµСЃРЅСЋ. РџСЂРѕРІРµСЂСЊ СЂРµР·СѓР»СЊС‚Р°С‚ РЅР° С€Р°РіРµ 2.');
+            alert('AI заполнил песню. Проверь результат на шаге 2.');
         } catch (error) {
-            alert(`РќРµ СѓРґР°Р»РѕСЃСЊ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ РјР°С‚РµСЂРёР°Р»С‹: ${error.message}`);
+            alert(`Не удалось обработать материалы: ${error.message}`);
         } finally {
             statusNode.classList.add('hidden');
         }
@@ -1224,9 +1223,9 @@ const app = {
 
     renderStoredStudyTips(studyTips) {
         if (!Array.isArray(studyTips) || !studyTips.length) {
-            return '<p class="muted-copy">РћС‚РєСЂРѕР№ AI-РїРѕРјРѕС‰СЊ Рё РІС‹Р±РµСЂРё, СЃ С‡РµРј РЅСѓР¶РЅР° РїРѕРјРѕС‰СЊ РїРѕ СЌС‚РѕР№ РїРµСЃРЅРµ.</p>';
+            return '<p class="muted-copy">Открой AI-помощь и выбери, с чем нужна помощь по этой песне.</p>';
         }
-        return `<section class="helper-card"><h3>РљРѕСЂРѕС‚РєРёРµ СЃРѕРІРµС‚С‹</h3><div class="helper-list">${studyTips.map((tip) => `<p>${this.escapeHtml(tip)}</p>`).join('')}</div></section>`;
+        return `<section class="helper-card"><h3>Короткие советы</h3><div class="helper-list">${studyTips.map((tip) => `<p>${this.escapeHtml(tip)}</p>`).join('')}</div></section>`;
     },
 
     toggleStudyHelperPanel(forceOpen) {
@@ -1248,34 +1247,34 @@ const app = {
         const status = document.getElementById('studyHelperStatus');
         const output = document.getElementById('studyHelperOutput');
         const modePrompts = {
-            overview: 'РќСѓР¶РЅР° РѕР±С‰Р°СЏ РїРѕРјРѕС‰СЊ РїРѕ СЂР°Р·Р±РѕСЂСѓ РїРµСЃРЅРё: РєР°Рє РёРіСЂР°С‚СЊ, РЅР° С‡С‚Рѕ РѕР±СЂР°С‚РёС‚СЊ РІРЅРёРјР°РЅРёРµ, РєР°Рє РІРѕСЃРїСЂРёРЅРёРјР°С‚СЊ С„РѕСЂРјСѓ.',
-            chords: 'РќСѓР¶РЅР° РїРѕРјРѕС‰СЊ РёРјРµРЅРЅРѕ РїРѕ Р°РєРєРѕСЂРґР°Рј: РєР°РєРёРµ РїРµСЂРµС…РѕРґС‹ СЃР»РѕР¶РЅС‹Рµ, С‡С‚Рѕ РїСЂРѕРІРµСЂРёС‚СЊ, РєР°Рє СѓРїСЂРѕСЃС‚РёС‚СЊ.',
-            barre: 'РќСѓР¶РЅР° РїРѕРјРѕС‰СЊ РїРѕ Р·Р°РјРµРЅРµ Р±Р°СЂСЂСЌ Рё СѓРїСЂРѕС‰С‘РЅРЅС‹Рј РІР°СЂРёР°РЅС‚Р°Рј Р°РєРєРѕСЂРґРѕРІ.',
-            practice: 'РќСѓР¶РµРЅ РїР»Р°РЅ, РєР°Рє Р±С‹СЃС‚СЂРµРµ РІС‹СѓС‡РёС‚СЊ РїРµСЃРЅСЋ Рё РґРѕРІРµСЃС‚Рё РґРѕ СѓРІРµСЂРµРЅРЅРѕРіРѕ РёСЃРїРѕР»РЅРµРЅРёСЏ.'
+            overview: 'Нужна общая помощь по разбору песни: как играть, на что обратить внимание, как воспринимать форму.',
+            chords: 'Нужна помощь именно по аккордам: какие переходы сложные, что проверить, как упростить.',
+            barre: 'Нужна помощь по замене баррэ и упрощённым вариантам аккордов.',
+            practice: 'Нужен план, как быстрее выучить песню и довести до уверенного исполнения.'
         };
         panel.classList.remove('hidden');
         status.classList.remove('hidden');
         output.innerHTML = '';
         try {
             const prompt = `
-РўС‹ вЂ” РїРѕРјРѕС‰РЅРёРє РїРѕ РіРёС‚Р°СЂРЅРѕРјСѓ СЂР°Р·Р±РѕСЂСѓ РїРµСЃРЅРё.
-Р’РµСЂРЅРё С‚РѕР»СЊРєРѕ JSON.
+Ты — помощник по гитарному разбору песни.
+Верни только JSON.
 
-Р—Р°РїСЂРѕСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:
+Запрос пользователя:
 ${modePrompts[mode] || modePrompts.overview}
 
-РџРµСЃРЅСЏ:
-РќР°Р·РІР°РЅРёРµ: ${song.title}
-РСЃРїРѕР»РЅРёС‚РµР»СЊ: ${song.artist}
-РўРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ: ${song.key || 'РЅРµ СѓРєР°Р·Р°РЅР°'}
-BPM: ${song.bpm || 'РЅРµ СѓРєР°Р·Р°РЅ'}
-РЎС‚СЂРѕР№: ${song.tuning || 'РЅРµ СѓРєР°Р·Р°РЅ'}
-Р‘РѕР№: ${song.strum_pattern || 'РЅРµ СѓРєР°Р·Р°РЅ'}
-РђРїРїР»РёРєР°С‚СѓСЂР°: ${song.fingerings || 'РЅРµС‚'}
-РўРµРєСЃС‚:
+Песня:
+Название: ${song.title}
+Исполнитель: ${song.artist}
+Тональность: ${song.key || 'не указана'}
+BPM: ${song.bpm || 'не указан'}
+Строй: ${song.tuning || 'не указан'}
+Бой: ${song.strum_pattern || 'не указан'}
+Аппликатура: ${song.fingerings || 'нет'}
+Текст:
 ${song.text}
 
-РќСѓР¶РµРЅ JSON С‚Р°РєРѕРіРѕ РІРёРґР°:
+Нужен JSON такого вида:
 {
   "overview": "",
   "practice_plan": ["", ""],
@@ -1295,15 +1294,14 @@ ${song.text}
             status.classList.add('hidden');
         }
     },
-
     renderStudyHelper(data) {
         const sections = [
-            ['РћР±Р·РѕСЂ', data.overview ? `<p>${this.escapeHtml(data.overview)}</p>` : ''],
-            ['РџР»Р°РЅ СЂР°Р·СѓС‡РёРІР°РЅРёСЏ', this.renderHelperList(data.practice_plan)],
-            ['Р§РµРј Р·Р°РјРµРЅРёС‚СЊ Р±Р°СЂСЂСЌ', this.renderHelperList(data.barre_replacements)],
-            ['РЎР»РѕР¶РЅС‹Рµ РјРµСЃС‚Р°', this.renderHelperList(data.hard_spots)],
-            ['РЎРѕРІРµС‚С‹ РїРѕ РёСЃРїРѕР»РЅРµРЅРёСЋ', this.renderHelperList(data.performance_advice)],
-            ['Р‘С‹СЃС‚СЂС‹Рµ РїРѕРґСЃРєР°Р·РєРё', this.renderHelperList(data.study_tips)]
+            ['Обзор', data.overview ? `<p>${this.escapeHtml(data.overview)}</p>` : ''],
+            ['План разучивания', this.renderHelperList(data.practice_plan)],
+            ['Чем заменить баррэ', this.renderHelperList(data.barre_replacements)],
+            ['Сложные места', this.renderHelperList(data.hard_spots)],
+            ['Советы по исполнению', this.renderHelperList(data.performance_advice)],
+            ['Быстрые подсказки', this.renderHelperList(data.study_tips)]
         ].filter(([, content]) => content);
         return sections.map(([title, content]) => `<section class="helper-card"><h3>${this.escapeHtml(title)}</h3>${content}</section>`).join('');
     },
@@ -1325,7 +1323,7 @@ ${song.text}
 
     startAutoscroll() {
         const button = document.getElementById('autoscrollBtn');
-        button.textContent = 'РџР°СѓР·Р°';
+        button.textContent = 'Пауза';
         this.state.scrollInterval = setInterval(() => {
             window.scrollBy({ top: this.state.scrollSpeed / 1.8, left: 0, behavior: 'auto' });
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
@@ -1341,7 +1339,7 @@ ${song.text}
         }
         const button = document.getElementById('autoscrollBtn');
         if (button) {
-            button.textContent = 'РђРІС‚РѕСЃРєСЂРѕР»Р»';
+            button.textContent = 'Автоскролл';
         }
     },
 
@@ -1354,12 +1352,17 @@ ${song.text}
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch((error) => {
-            console.error('РћС€РёР±РєР° СЂРµРіРёСЃС‚СЂР°С†РёРё service worker:', error);
+            console.error('Ошибка регистрации service worker:', error);
         });
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => app.init());
+
+
+
+
+
 
 
 
