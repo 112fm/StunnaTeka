@@ -1523,3 +1523,258 @@ label[for="songTextQuick"] {
 #songTextQuick {
     min-height: 230px;
 }
+
+
+/* Mobile polish v2 */
+@media (max-width: 900px) {
+    main {
+        gap: 18px;
+    }
+
+    .wizard-shell {
+        gap: 16px;
+    }
+
+    .wizard-card,
+    .panel,
+    .song-card {
+        border-radius: 20px;
+    }
+
+    .wizard-steps {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        gap: 10px;
+        scrollbar-width: thin;
+    }
+
+    .wizard-step {
+        flex: 0 0 auto;
+        min-width: 148px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 760px) {
+    #appContainer {
+        padding: 10px 10px 24px;
+    }
+
+    .minimal-header {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand actions"
+            "nav nav";
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .brand-mark {
+        grid-area: brand;
+        min-height: 44px;
+    }
+
+    .header-actions.minimal-actions {
+        grid-area: actions;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .top-nav.compact-nav {
+        grid-area: nav;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 2px;
+        scrollbar-width: thin;
+    }
+
+    .top-nav.compact-nav .nav-chip {
+        width: auto;
+        flex: 0 0 auto;
+        min-height: 40px;
+        padding: 0 14px;
+    }
+
+    .text-icon-btn {
+        min-width: 84px;
+        padding: 0 14px;
+        font-size: 0.9rem;
+    }
+
+    .icon-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .home-hero h1,
+    .hero-lead h1,
+    .quiet-hero h1 {
+        font-size: clamp(1.9rem, 8vw, 2.5rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+    }
+
+    .hero-actions .big-btn {
+        min-width: 0;
+    }
+
+    .step-one-grid {
+        gap: 18px;
+    }
+
+    .upload-summaries-stacked {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .capture-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .drop-card,
+    .paste-zone {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .wizard-footer {
+        position: sticky;
+        bottom: 8px;
+        background: color-mix(in srgb, var(--surface-base) 84%, transparent);
+        backdrop-filter: blur(8px);
+        padding: 8px;
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        z-index: 8;
+    }
+
+    .library-toolbar {
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .search-input,
+    .sort-select {
+        min-height: 46px;
+    }
+
+    .songs-grid {
+        gap: 14px;
+        margin-top: 6px;
+    }
+
+    .song-card {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    #songView .view-heading {
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    #songView .panel,
+    #songView .song-sheet-panel {
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+
+    #songView .song-controls {
+        gap: 10px;
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+
+    #songView .song-render-sheet {
+        padding: 14px;
+    }
+}
+
+@media (max-width: 560px) {
+    .minimal-header {
+        border-radius: 18px;
+        padding: 10px;
+    }
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .minimal-actions {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .compact-nav .nav-chip,
+    .text-icon-btn {
+        width: auto;
+    }
+
+    .brand-copy strong {
+        font-size: 1.35rem;
+    }
+
+    .wizard-shell h2,
+    .view-heading h2 {
+        font-size: 1.9rem;
+        line-height: 1.08;
+    }
+
+    .wizard-card,
+    .panel,
+    .song-card,
+    .feature-tile {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .field-label {
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+    }
+
+    input,
+    select,
+    textarea,
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn,
+    .danger-btn,
+    .stroke-btn {
+        min-height: 44px;
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    #songTextQuick {
+        min-height: 180px;
+    }
+
+    .song-line-pair .chord-line,
+    .song-line-pair .lyric-line,
+    .song-line-single {
+        font-size: 0.92rem;
+        line-height: 1.42;
+    }
+
+    .strum-chip {
+        min-width: 40px;
+        padding: 8px 10px;
+    }
+
+    .helper-card {
+        padding: 14px;
+    }
+
+    .helper-list p {
+        padding: 10px 12px;
+    }
+}
