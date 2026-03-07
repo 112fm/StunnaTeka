@@ -7,245 +7,332 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="icon-192x192.png">
-    <meta name="theme-color" content="#101418">
+    <meta name="theme-color" content="#0d131a">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="settingsModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="panel-header">
-                <div>
-                    <p class="eyebrow">Настройки</p>
-                    <h2>Подключения</h2>
+        <div class="modal-shell">
+            <div class="settings-card">
+                <div class="sheet-head">
+                    <div>
+                        <p class="eyebrow">Настройки</p>
+                        <h2>Подключения и режим работы</h2>
+                    </div>
+                    <button class="icon-btn subtle" type="button" onclick="app.closeSettings()">✕</button>
                 </div>
-                <button class="icon-btn" type="button" onclick="app.closeSettings()">✕</button>
+
+                <div class="settings-grid">
+                    <div class="setting-block">
+                        <h3>GitHub</h3>
+                        <p>Нужен для хранения базы песен.</p>
+                        <label class="field-label" for="ghUsername">Username</label>
+                        <input type="text" id="ghUsername" placeholder="Например, 112fm">
+                        <label class="field-label" for="ghRepo">Repository</label>
+                        <input type="text" id="ghRepo" placeholder="Например, StunnaTeka">
+                        <label class="field-label" for="ghToken">Token</label>
+                        <input type="password" id="ghToken" placeholder="PAT с правом repo">
+                    </div>
+
+                    <div class="setting-block">
+                        <h3>AI</h3>
+                        <p>Нужен для OCR, заполнения песни и подсказок по разбору.</p>
+                        <label class="field-label" for="googleApiKey">Gemini API Key</label>
+                        <input type="password" id="googleApiKey" placeholder="Ключ из Google AI Studio">
+
+                        <div class="settings-tip">
+                            <strong>Как это работает</strong>
+                            <span>Скрины и текст отправляются только в Gemini по вашему ключу. Ключи хранятся локально в браузере.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sheet-actions">
+                    <button id="saveSettingsBtn" class="primary-btn" type="button">Сохранить настройки</button>
+                </div>
             </div>
-
-            <label class="field-label" for="ghUsername">GitHub Username</label>
-            <input type="text" id="ghUsername" placeholder="Например, 112fm">
-
-            <label class="field-label" for="ghRepo">GitHub Repository</label>
-            <input type="text" id="ghRepo" placeholder="Например, Strunoteka">
-
-            <label class="field-label" for="ghToken">GitHub Token</label>
-            <input type="password" id="ghToken" placeholder="PAT с правом repo">
-
-            <label class="field-label" for="googleApiKey">Google Gemini API Key</label>
-            <input type="password" id="googleApiKey" placeholder="Ключ из Google AI Studio">
-
-            <p class="help-text">Ключи хранятся только в вашем браузере. GitHub нужен для базы песен, Gemini для OCR и AI-помощи.</p>
-
-            <button id="saveSettingsBtn" class="primary-btn full-width" type="button">Сохранить настройки</button>
         </div>
     </div>
 
     <div id="appContainer">
         <header class="app-header">
-            <button class="logo-btn" type="button" onclick="app.showView('homeView')">
+            <button class="brand-mark" type="button" onclick="app.showView('homeView')">
                 <img src="icon-192x192.png" alt="Струнотека" class="logo-img">
-                <span>
+                <span class="brand-copy">
                     <strong>Струнотека</strong>
-                    <small>песни, бой, разбор, репетиции</small>
+                    <small>личная база песен и разборов</small>
                 </span>
             </button>
 
+            <nav class="top-nav">
+                <button class="nav-chip" type="button" onclick="app.showView('homeView')">Главная</button>
+                <button class="nav-chip" type="button" onclick="app.showView('addView')">Новая песня</button>
+                <button class="nav-chip" type="button" onclick="app.showView('libraryView')">Мои песни</button>
+            </nav>
+
             <div class="header-actions">
-                <button id="themeToggleBtn" class="icon-btn" type="button" onclick="app.toggleTheme()">☾</button>
-                <button id="settingsBtn" class="icon-btn" type="button" onclick="app.openSettings()">⚙</button>
+                <button id="themeToggleBtn" class="icon-btn subtle" type="button" onclick="app.toggleTheme()">☾</button>
+                <button id="settingsBtn" class="icon-btn subtle" type="button" onclick="app.openSettings()">⚙</button>
             </div>
         </header>
 
         <main>
             <section id="homeView" class="view active">
-                <div class="hero-card">
-                    <p class="eyebrow">Главное</p>
-                    <h1>Собирай песни из текста, скринов и разборов в одном месте</h1>
-                    <p class="hero-copy">Можно загрузить скрин текста с аккордами, отдельно скрин боя, вставить ссылку на видео и затем вручную быстро довести разбор до идеала.</p>
-                    <div class="home-buttons">
-                        <button class="massive-btn accent" type="button" onclick="app.showView('addView')">Новая песня</button>
-                        <button class="massive-btn" type="button" onclick="app.showView('libraryView')">Мои песни</button>
+                <div class="hero-layout">
+                    <div class="hero-panel hero-lead">
+                        <p class="eyebrow">Струнотека</p>
+                        <h1>Добавляй песню за пару действий, а не через перегруженную форму</h1>
+                        <p class="hero-copy">Загрузи скрины текста, схемы боя и ссылку на разбор. AI заполнит песню, а ты только быстро проверишь результат и вечером откроешь её для игры.</p>
+                        <div class="hero-actions">
+                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">Собрать новую песню</button>
+                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">Открыть библиотеку</button>
+                        </div>
+                    </div>
+
+                    <div class="hero-panel hero-side">
+                        <div class="hero-metric">
+                            <strong>1</strong>
+                            <span>Закинь материалы</span>
+                        </div>
+                        <div class="hero-metric">
+                            <strong>2</strong>
+                            <span>AI соберёт песню и бой</span>
+                        </div>
+                        <div class="hero-metric">
+                            <strong>3</strong>
+                            <span>Проверь и сохрани</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="home-grid">
-                    <div class="feature-card">
-                        <h3>AI-разбор со скринов</h3>
-                        <p>Распознавание текста, аккордов, боя, BPM, тональности, капо и базовых подсказок по игре.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Конструктор боя</h3>
-                        <p>Собирайте бой стрелками, отмечайте акценты и глушение, а не просто храните “шестёрка” или “восьмёрка”.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Режим чтения песни</h3>
-                        <p>Аккорды выводятся отдельной строкой над текстом там, где это возможно, с предпросмотром ещё до сохранения.</p>
-                    </div>
+                <div class="feature-strip">
+                    <article class="feature-tile">
+                        <h3>Скрины и OCR</h3>
+                        <p>Текст песни, аккорды, бой, строй, капо и BPM можно подтянуть прямо из изображений.</p>
+                    </article>
+                    <article class="feature-tile">
+                        <h3>Песня для репетиции</h3>
+                        <p>Открыл вечером и сразу играешь: текст, бой, видеоразбор и помощь по изучению уже на месте.</p>
+                    </article>
+                    <article class="feature-tile">
+                        <h3>Ручная доводка</h3>
+                        <p>Если AI ошибся, можно быстро подправить детали, не утопая в лишних полях с самого начала.</p>
+                    </article>
                 </div>
             </section>
 
             <section id="addView" class="view hidden">
-                <div class="view-heading compact-heading">
-                    <div>
-                        <p class="eyebrow">Добавление</p>
-                        <h2>Новая песня</h2>
-                        <p class="subheadline">Быстрый режим: закинул скрины, вставил что есть, нажал AI, сохранил.</p>
+                <div class="wizard-shell">
+                    <div class="wizard-head">
+                        <div>
+                            <p class="eyebrow">Добавление песни</p>
+                            <h2>Мастер в 3 шага</h2>
+                            <p class="subheadline">Сначала материалы, потом AI-результат, потом сохранение.</p>
+                        </div>
+                        <button id="runAiBtn" class="primary-btn" type="button">Запустить AI</button>
                     </div>
-                    <div class="header-inline-actions">
-                        <button id="runAiBtn" class="primary-btn" type="button">Собрать песню через AI</button>
+
+                    <div class="wizard-steps">
+                        <button class="wizard-step active" type="button" data-step="1">
+                            <strong>01</strong>
+                            <span>Материалы</span>
+                        </button>
+                        <button class="wizard-step" type="button" data-step="2">
+                            <strong>02</strong>
+                            <span>Проверка</span>
+                        </button>
+                        <button class="wizard-step" type="button" data-step="3">
+                            <strong>03</strong>
+                            <span>Сохранение</span>
+                        </button>
+                    </div>
+
+                    <form id="addSongForm" class="wizard-form">
+                        <section class="wizard-page active" data-page="1">
+                            <div class="wizard-grid">
+                                <div class="wizard-card emphasis-card">
+                                    <div class="card-head">
+                                        <div>
+                                            <p class="card-kicker">Шаг 1</p>
+                                            <h3>Закинь всё, что у тебя есть</h3>
+                                        </div>
+                                    </div>
+
+                                    <div class="capture-grid">
+                                        <label class="drop-card" for="lyricsImageInput">
+                                            <strong>Скрины текста и аккордов</strong>
+                                            <span>Фото, скрины сайта, табы, разборы, куплеты с аккордами. Можно добавлять много скринов.</span>
+                                        </label>
+                                        <input type="file" id="lyricsImageInput" accept="image/*" multiple class="hidden">
+
+                                        <label class="drop-card accent-card" for="patternImageInput">
+                                            <strong>Скрины боя и схемы ударов</strong>
+                                            <span>Стрелки, акценты, глушка, рисунок по струнам. Можно прикладывать несколько схем.</span>
+                                        </label>
+                                        <input type="file" id="patternImageInput" accept="image/*" multiple class="hidden">
+                                    </div>
+
+                                    <button id="lyricsPasteZone" class="paste-zone" type="button">
+                                        <strong>Вставить скрин из буфера</strong>
+                                        <span>Кликни сюда и нажми Ctrl + V. Можно вставлять несколько раз подряд, а на телефоне добавлять файлы партиями.</span>
+                                    </button>
+
+                                    <div class="upload-summaries">
+                                        <div id="lyricsUploadSummary" class="upload-summary">Скрины текста не выбраны</div>
+                                        <div id="patternUploadSummary" class="upload-summary">Скрины боя не выбраны</div>
+                                    </div>
+
+                                    <div id="ocrStatus" class="ocr-status hidden">
+                                        <span class="spinner"></span>
+                                        <span id="ocrStatusText">AI обрабатывает материалы...</span>
+                                    </div>
+                                </div>
+
+                                <div class="wizard-card calm-card">
+                                    <div class="card-head">
+                                        <div>
+                                            <p class="card-kicker">Опционально</p>
+                                            <h3>Что уже известно</h3>
+                                        </div>
+                                    </div>
+
+                                    <div class="compact-fields">
+                                        <div>
+                                            <label class="field-label" for="songArtist">Исполнитель</label>
+                                            <input type="text" id="songArtist" placeholder="Например, Кино">
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="songTitle">Название</label>
+                                            <input type="text" id="songTitle" placeholder="Например, Группа крови">
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="songVideoUrl">Ссылка на разбор</label>
+                                            <input type="url" id="songVideoUrl" placeholder="YouTube, VK Видео, Instagram и т.д.">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="wizard-page" data-page="2">
+                            <div class="wizard-grid review-grid">
+                                <div class="wizard-card">
+                                    <div class="card-head">
+                                        <div>
+                                            <p class="card-kicker">Шаг 2</p>
+                                            <h3>Проверь, что собрал AI</h3>
+                                        </div>
+                                        <div class="inline-actions">
+                                            <button id="normalizeTextBtn" class="ghost-btn" type="button">Нормализовать текст</button>
+                                            <button id="fillMetaFromTextBtn" class="ghost-btn" type="button">Добрать метаданные</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="meta-grid">
+                                        <div>
+                                            <label class="field-label" for="songKey">Тональность</label>
+                                            <input type="text" id="songKey" placeholder="Am">
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="songBpm">BPM</label>
+                                            <input type="number" id="songBpm" placeholder="92" min="1">
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="songCapo">Каподастр</label>
+                                            <input type="number" id="songCapo" placeholder="0-12" min="0" max="12">
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="songTuning">Строй</label>
+                                            <input type="text" id="songTuning" placeholder="E A D G B E">
+                                        </div>
+                                    </div>
+
+                                    <label class="field-label" for="songText">Текст песни</label>
+                                    <textarea id="songText" rows="16" placeholder="AI подставит сюда распознанный текст песни. Если надо, поправь вручную."></textarea>
+
+                                    <details class="manual-box">
+                                        <summary>Если AI криво распознал бой, поправить вручную</summary>
+                                        <div class="manual-box-body">
+                                            <div class="strum-toolbar">
+                                                <button class="stroke-btn" type="button" data-direction="down">↓ Вниз</button>
+                                                <button class="stroke-btn" type="button" data-direction="up">↑ Вверх</button>
+                                                <button id="toggleAccentBtn" class="secondary-btn" type="button">Акцент</button>
+                                                <button id="toggleMuteBtn" class="secondary-btn" type="button">Глушка</button>
+                                                <button id="deleteStepBtn" class="ghost-btn" type="button">Удалить шаг</button>
+                                                <button id="clearStrumBtn" class="ghost-btn" type="button">Очистить</button>
+                                            </div>
+
+                                            <div id="strumBuilder" class="strum-builder empty">Добавь шаги боя кнопками выше</div>
+                                            <div class="strum-legend">
+                                                <span><i class="legend-dot accent"></i> Акцент</span>
+                                                <span><i class="legend-dot muted"></i> Глушка</span>
+                                                <span><i class="legend-dot selected"></i> Выбранный шаг</span>
+                                            </div>
+
+                                            <label class="field-label" for="strumNotes">Комментарий по бою</label>
+                                            <textarea id="strumNotes" rows="3" placeholder="Например: акцент на 2 и 4 долю, последний удар мягче"></textarea>
+                                        </div>
+                                    </details>
+                                </div>
+
+                                <div class="wizard-card preview-card">
+                                    <div class="card-head">
+                                        <div>
+                                            <p class="card-kicker">Живой предпросмотр</p>
+                                            <h3>Как песня будет выглядеть</h3>
+                                        </div>
+                                        <button id="previewSongBtn" class="secondary-btn" type="button">Обновить</button>
+                                    </div>
+                                    <div id="songPreview" class="song-preview-empty">Предпросмотр появится после ввода текста или запуска AI.</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="wizard-page" data-page="3">
+                            <div class="wizard-grid final-grid">
+                                <div class="wizard-card">
+                                    <div class="card-head">
+                                        <div>
+                                            <p class="card-kicker">Шаг 3</p>
+                                            <h3>Финальные детали</h3>
+                                        </div>
+                                    </div>
+
+                                    <label class="field-label" for="songFingerings">Аппликатура / сложные места</label>
+                                    <textarea id="songFingerings" rows="5" placeholder="Например: F лучше играть малым баррэ, а во вступлении удобнее щипок"></textarea>
+
+                                    <div class="final-note">
+                                        <strong>Что произойдёт после сохранения</strong>
+                                        <span>Песня уйдёт в GitHub, появится в библиотеке и будет доступна для репетиции и AI-помощи.</span>
+                                    </div>
+                                </div>
+
+                                <div class="wizard-card">
+                                    <div class="card-head">
+                                        <div>
+                                            <p class="card-kicker">Готово</p>
+                                            <h3>Сохрани и переходи играть</h3>
+                                        </div>
+                                    </div>
+
+                                    <div class="save-summary">
+                                        <div class="save-chip">Текст и аккорды</div>
+                                        <div class="save-chip">Бой и схема ударов</div>
+                                        <div class="save-chip">Видеоразбор</div>
+                                        <div class="save-chip">Подсказки по игре</div>
+                                    </div>
+
+                                    <button type="submit" class="primary-btn full-width save-song-btn">Сохранить песню</button>
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+
+                    <div class="wizard-footer">
+                        <button id="wizardPrevBtn" class="ghost-btn" type="button">Назад</button>
+                        <button id="wizardNextBtn" class="secondary-btn" type="button">Дальше</button>
                     </div>
                 </div>
-
-                <form id="addSongForm" class="stack-form">
-                    <div class="quick-start-panel panel">
-                        <div class="quick-start-copy">
-                            <p class="panel-title">Быстрое добавление</p>
-                            <p class="panel-subtitle">Сначала просто закинь материалы. Всё необязательное потом можно аккуратно дотянуть вручную.</p>
-                        </div>
-                        <div class="quick-start-actions">
-                            <button id="previewSongBtn" class="ghost-btn" type="button">Обновить предпросмотр</button>
-                        </div>
-                    </div>
-
-                    <div class="panel quick-capture-layout">
-                        <div class="quick-capture-main">
-                            <div class="capture-grid">
-                                <label class="upload-card upload-card-large" for="lyricsImageInput">
-                                    <strong>Текст и аккорды</strong>
-                                    <span>Выбери скрины текста, аккордов, табов или разбора.</span>
-                                </label>
-                                <input type="file" id="lyricsImageInput" accept="image/*" multiple class="hidden">
-
-                                <label class="upload-card upload-card-large accent-border" for="patternImageInput">
-                                    <strong>Бой и схема ударов</strong>
-                                    <span>Закинь отдельный скрин со стрелками, акцентами, глушкой или рисунком по струнам.</span>
-                                </label>
-                                <input type="file" id="patternImageInput" accept="image/*" multiple class="hidden">
-                            </div>
-
-                            <button id="lyricsPasteZone" class="paste-zone" type="button">
-                                <strong>Вставить скрин из буфера</strong>
-                                <span>Сделай скрин, кликни сюда и нажми Ctrl + V. Картинка попадёт сразу в блок текста и аккордов.</span>
-                            </button>
-
-                            <div class="upload-summaries">
-                                <div id="lyricsUploadSummary" class="upload-summary">Скрины текста не выбраны</div>
-                                <div id="patternUploadSummary" class="upload-summary">Скрины боя не выбраны</div>
-                            </div>
-
-                            <div id="ocrStatus" class="ocr-status hidden">
-                                <span class="spinner"></span>
-                                <span id="ocrStatusText">AI обрабатывает материалы...</span>
-                            </div>
-                        </div>
-
-                        <div class="quick-capture-side">
-                            <p class="panel-title">Если что-то уже знаешь</p>
-                            <div class="grid-two compact-grid">
-                                <div>
-                                    <label class="field-label" for="songArtist">Исполнитель</label>
-                                    <input type="text" id="songArtist" placeholder="Например, Любэ">
-                                </div>
-                                <div>
-                                    <label class="field-label" for="songTitle">Название</label>
-                                    <input type="text" id="songTitle" placeholder="Например, Комбат">
-                                </div>
-                                <div>
-                                    <label class="field-label" for="songKey">Тональность</label>
-                                    <input type="text" id="songKey" placeholder="Am">
-                                </div>
-                                <div>
-                                    <label class="field-label" for="songBpm">BPM</label>
-                                    <input type="number" id="songBpm" placeholder="92" min="1">
-                                </div>
-                            </div>
-
-                            <label class="field-label" for="songVideoUrl">Ссылка на разбор</label>
-                            <input type="url" id="songVideoUrl" placeholder="YouTube, VK Видео, Instagram и т.д.">
-                        </div>
-                    </div>
-
-                    <div class="panel song-text-panel">
-                        <div class="panel-header">
-                            <div>
-                                <p class="panel-title">Текст песни</p>
-                                <p class="panel-subtitle">Можно вообще ничего не писать и доверить это AI. А можно вставить текст вручную или быстро поправить результат.</p>
-                            </div>
-                            <div class="inline-actions">
-                                <button id="normalizeTextBtn" class="ghost-btn" type="button">Нормализовать текст</button>
-                                <button id="fillMetaFromTextBtn" class="ghost-btn" type="button">AI добрать метаданные</button>
-                            </div>
-                        </div>
-
-                        <textarea id="songText" rows="14" placeholder="Сюда можно вставить текст песни вручную или оставить поле пустым и дать AI собрать всё со скринов."></textarea>
-                    </div>
-
-                    <details class="panel advanced-panel">
-                        <summary>
-                            <span>
-                                <strong>Доработать вручную</strong>
-                                <small>Бой, каподастр, строй, аппликатура и комментарии по игре</small>
-                            </span>
-                        </summary>
-
-                        <div class="advanced-grid">
-                            <div>
-                                <div class="panel-header inner-panel-header">
-                                    <div>
-                                        <p class="panel-title">Конструктор боя</p>
-                                        <p class="panel-subtitle">Используй только если AI не распознал бой как надо.</p>
-                                    </div>
-                                    <button id="clearStrumBtn" class="ghost-btn" type="button">Очистить</button>
-                                </div>
-
-                                <div class="strum-toolbar">
-                                    <button class="stroke-btn" type="button" data-direction="down">↓ Вниз</button>
-                                    <button class="stroke-btn" type="button" data-direction="up">↑ Вверх</button>
-                                    <button id="toggleAccentBtn" class="secondary-btn" type="button">Акцент</button>
-                                    <button id="toggleMuteBtn" class="secondary-btn" type="button">Глушка</button>
-                                    <button id="deleteStepBtn" class="ghost-btn" type="button">Удалить шаг</button>
-                                </div>
-
-                                <div id="strumBuilder" class="strum-builder empty">Добавь шаги боя кнопками выше</div>
-                                <div class="strum-legend">
-                                    <span><i class="legend-dot accent"></i> Акцент</span>
-                                    <span><i class="legend-dot muted"></i> Глушка</span>
-                                    <span><i class="legend-dot selected"></i> Выбранный шаг</span>
-                                </div>
-
-                                <label class="field-label" for="strumNotes">Комментарий по бою</label>
-                                <textarea id="strumNotes" rows="3" placeholder="Например: акцент на 2 и 4 долю, последний удар мягче"></textarea>
-                            </div>
-
-                            <div>
-                                <div class="grid-two compact-grid">
-                                    <div>
-                                        <label class="field-label" for="songCapo">Каподастр</label>
-                                        <input type="number" id="songCapo" placeholder="0-12" min="0" max="12">
-                                    </div>
-                                    <div>
-                                        <label class="field-label" for="songTuning">Строй</label>
-                                        <input type="text" id="songTuning" placeholder="E A D G B E">
-                                    </div>
-                                </div>
-
-                                <label class="field-label" for="songFingerings">Аппликатура / сложные места</label>
-                                <textarea id="songFingerings" rows="6" placeholder="Например: F лучше играть малым баррэ, вступление щипком по 6-4-3-2"></textarea>
-                            </div>
-                        </div>
-                    </details>
-
-                    <div class="panel preview-panel">
-                        <div class="panel-header">
-                            <div>
-                                <p class="panel-title">Предпросмотр песни</p>
-                                <p class="panel-subtitle">Здесь быстро проверяешь, не поехали ли аккорды и можно ли уже сохранять.</p>
-                            </div>
-                        </div>
-                        <div id="songPreview" class="song-preview-empty">Предпросмотр появится после ввода текста или запуска AI.</div>
-                    </div>
-
-                    <button type="submit" class="primary-btn full-width save-song-btn">Сохранить песню</button>
-                </form>
             </section>
 
             <section id="libraryView" class="view hidden">

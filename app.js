@@ -4,6 +4,7 @@ const app = {
         songs: [],
         filteredSongs: [],
         currentView: 'homeView',
+        currentWizardStep: 1,
         ghUsername: '',
         ghRepo: '',
         ghToken: '',
@@ -25,6 +26,7 @@ const app = {
         this.bindEvents();
         this.loadDraft();
         this.renderStrumBuilder();
+        this.updateWizard();
         this.updatePreview();
 
         if (!this.hasGitHubConfig()) {
@@ -52,12 +54,34 @@ const app = {
             this.updatePreview();
         });
 
+        document.getElementById('wizardPrevBtn').addEventListener('click', () => this.goWizardStep(-1));
+        document.getElementById('wizardNextBtn').addEventListener('click', () => this.goWizardStep(1));
+        document.querySelectorAll('.wizard-step').forEach((button) => {
+            button.addEventListener('click', () => this.setWizardStep(Number(button.dataset.step)));
+        });
+
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
             this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
         });
-
         document.getElementById('patternImageInput').addEventListener('change', (event) => {
             this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'Скрины боя');
+        });
+
+        const pasteZone = document.getElementById('lyricsPasteZone');
+        pasteZone.addEventListener('click', () => pasteZone.focus());
+        pasteZone.addEventListener('paste', (event) => this.handleImagePaste(event));
+
+        document.addEventListener('paste', (event) => {
+            const target = event.target;
+            const isFormInput = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+            if (this.state.currentView !== 'addView' || isFormInput) {
+                return;
+            }
+            this.handleImagePaste(event);
+        });
+
+        ['songArtist', 'songTitle', 'songVideoUrl', 'songKey', 'songBpm', 'songCapo', 'songTuning', 'songFingerings', 'strumNotes'].forEach((id) => {
+            document.getElementById(id).addEventListener('input', () => this.persistDraft());
         });
 
         document.getElementById('songText').addEventListener('input', () => {
@@ -65,33 +89,14 @@ const app = {
             this.updatePreview();
         });
 
-        ['songArtist', 'songTitle', 'songKey', 'songBpm', 'songCapo', 'songTuning', 'songVideoUrl', 'songFingerings', 'strumNotes'].forEach((id) => {
-            document.getElementById(id).addEventListener('input', () => this.persistDraft());
-        });
-
         document.querySelectorAll('.stroke-btn').forEach((button) => {
             button.addEventListener('click', () => this.addStrumStep(button.dataset.direction));
         });
-
         document.getElementById('toggleAccentBtn').addEventListener('click', () => this.toggleSelectedStrumFlag('accent'));
         document.getElementById('toggleMuteBtn').addEventListener('click', () => this.toggleSelectedStrumFlag('muted'));
         document.getElementById('deleteStepBtn').addEventListener('click', () => this.deleteSelectedStrumStep());
         document.getElementById('clearStrumBtn').addEventListener('click', () => this.clearStrumSteps());
         document.getElementById('studyHelperBtn').addEventListener('click', () => this.runStudyHelper());
-        document.getElementById('songText').addEventListener('paste', (event) => this.handleSongTextPaste(event));
-
-        const lyricsPasteZone = document.getElementById('lyricsPasteZone');
-        lyricsPasteZone.addEventListener('click', () => lyricsPasteZone.focus());
-        lyricsPasteZone.addEventListener('paste', (event) => this.handleSongTextPaste(event));
-
-        document.addEventListener('paste', (event) => {
-            const target = event.target;
-            const isTextInput = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
-            if (this.state.currentView !== 'addView' || isTextInput) {
-                return;
-            }
-            this.handleSongTextPaste(event);
-        });
     },
 
     hasGitHubConfig() {
@@ -143,8 +148,7 @@ const app = {
 
     applyTheme() {
         document.documentElement.setAttribute('data-theme', this.state.theme);
-        const toggleBtn = document.getElementById('themeToggleBtn');
-        toggleBtn.textContent = this.state.theme === 'dark' ? '☾' : '☀';
+        document.getElementById('themeToggleBtn').textContent = this.state.theme === 'dark' ? '☾' : '☀';
     },
 
     showView(viewId) {
@@ -162,27 +166,46 @@ const app = {
         if (viewId === 'libraryView') {
             this.loadSongs();
         }
-
         if (viewId === 'addView') {
+            this.setWizardStep(1);
             this.updatePreview();
         }
+    },
+
+    setWizardStep(step) {
+        this.state.currentWizardStep = Math.max(1, Math.min(3, step));
+        this.updateWizard();
+    },
+
+    goWizardStep(delta) {
+        this.setWizardStep(this.state.currentWizardStep + delta);
+    },
+
+    updateWizard() {
+        document.querySelectorAll('.wizard-step').forEach((button) => {
+            button.classList.toggle('active', Number(button.dataset.step) === this.state.currentWizardStep);
+        });
+        document.querySelectorAll('.wizard-page').forEach((section) => {
+            section.classList.toggle('active', Number(section.dataset.page) === this.state.currentWizardStep);
+        });
+        document.getElementById('wizardPrevBtn').disabled = this.state.currentWizardStep === 1;
+        document.getElementById('wizardNextBtn').disabled = this.state.currentWizardStep === 3;
     },
 
     persistDraft() {
         const draft = {
             artist: document.getElementById('songArtist').value,
             title: document.getElementById('songTitle').value,
+            videoUrl: document.getElementById('songVideoUrl').value,
             key: document.getElementById('songKey').value,
             bpm: document.getElementById('songBpm').value,
             capo: document.getElementById('songCapo').value,
             tuning: document.getElementById('songTuning').value,
-            videoUrl: document.getElementById('songVideoUrl').value,
             fingerings: document.getElementById('songFingerings').value,
             strumNotes: document.getElementById('strumNotes').value,
             text: document.getElementById('songText').value,
             strumSteps: this.state.currentStrumSteps
         };
-
         localStorage.setItem('songDraft', JSON.stringify(draft));
     },
 
@@ -192,15 +215,14 @@ const app = {
             if (!rawDraft) {
                 return;
             }
-
             const draft = JSON.parse(rawDraft);
             document.getElementById('songArtist').value = draft.artist || '';
             document.getElementById('songTitle').value = draft.title || '';
+            document.getElementById('songVideoUrl').value = draft.videoUrl || '';
             document.getElementById('songKey').value = draft.key || '';
             document.getElementById('songBpm').value = draft.bpm || '';
             document.getElementById('songCapo').value = draft.capo || '';
             document.getElementById('songTuning').value = draft.tuning || '';
-            document.getElementById('songVideoUrl').value = draft.videoUrl || '';
             document.getElementById('songFingerings').value = draft.fingerings || '';
             document.getElementById('strumNotes').value = draft.strumNotes || '';
             document.getElementById('songText').value = draft.text || '';
@@ -214,46 +236,37 @@ const app = {
     clearDraft() {
         localStorage.removeItem('songDraft');
     },
-
-    handleSongTextPaste(event) {
+    handleImagePaste(event) {
         const items = (event.clipboardData || event.originalEvent?.clipboardData)?.items || [];
         const imageFiles = [];
-
         for (let index = 0; index < items.length; index += 1) {
             const item = items[index];
             if (item.kind === 'file' && item.type.startsWith('image/')) {
-                event.preventDefault();
                 imageFiles.push(item.getAsFile());
             }
         }
-
         if (imageFiles.length) {
+            event.preventDefault();
             this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
-            const pasteZone = document.getElementById('lyricsPasteZone');
-            if (pasteZone) {
-                pasteZone.classList.add('has-content');
-                pasteZone.querySelector('strong').textContent = 'Скрин вставлен из буфера';
-                pasteZone.querySelector('span').textContent = 'Можно сразу запускать AI или докинуть ещё скрины через выбор файла.';
-            }
+            this.setWizardStep(1);
         }
     },
 
     prepareImages(fileList, stateKey, summaryId, label) {
-        this.state[stateKey] = Array.from(fileList || []);
-        const summaryNode = document.getElementById(summaryId);
-        summaryNode.textContent = this.state[stateKey].length
+        const nextFiles = Array.from(fileList || []);
+        this.state[stateKey] = [...this.state[stateKey], ...nextFiles];
+        document.getElementById(summaryId).textContent = this.state[stateKey].length
             ? label + ': ' + this.state[stateKey].length + ' шт.'
             : label + ' не выбраны';
 
         if (stateKey === 'pendingLyricsImages') {
             const pasteZone = document.getElementById('lyricsPasteZone');
-            if (pasteZone) {
-                pasteZone.classList.toggle('has-content', this.state[stateKey].length > 0);
-                pasteZone.querySelector('strong').textContent = this.state[stateKey].length ? 'Материалы добавлены' : 'Вставить скрин из буфера';
-                pasteZone.querySelector('span').textContent = this.state[stateKey].length
-                    ? 'Текстовые скрины уже подхвачены. Можно запускать AI или добавить ещё.'
-                    : 'Сделай скрин, кликни сюда и нажми Ctrl + V. Картинка попадёт сразу в блок текста и аккордов.';
-            }
+            const hasContent = this.state[stateKey].length > 0;
+            pasteZone.classList.toggle('has-content', hasContent);
+            pasteZone.querySelector('strong').textContent = hasContent ? 'Скрины добавлены в очередь' : 'Вставить скрин из буфера';
+            pasteZone.querySelector('span').textContent = hasContent
+                ? 'Можно запускать AI или продолжать докидывать материалы.'
+                : 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
         }
     },
 
@@ -270,7 +283,6 @@ const app = {
             alert('Сначала выберите шаг боя.');
             return;
         }
-
         step[flagName] = !step[flagName];
         this.renderStrumBuilder();
         this.persistDraft();
@@ -280,7 +292,6 @@ const app = {
         if (this.state.selectedStrumIndex < 0) {
             return;
         }
-
         this.state.currentStrumSteps.splice(this.state.selectedStrumIndex, 1);
         this.state.selectedStrumIndex = Math.min(this.state.selectedStrumIndex, this.state.currentStrumSteps.length - 1);
         this.renderStrumBuilder();
@@ -293,11 +304,11 @@ const app = {
         this.renderStrumBuilder();
         this.persistDraft();
     },
+
     renderStrumBuilder(target = document.getElementById('strumBuilder'), steps = this.state.currentStrumSteps, interactive = true) {
         if (!target) {
             return;
         }
-
         if (!steps.length) {
             target.classList.add('empty');
             target.innerHTML = interactive ? 'Добавь шаги боя кнопками выше' : 'Бой не заполнен';
@@ -307,22 +318,20 @@ const app = {
         target.classList.remove('empty');
         target.innerHTML = '';
         steps.forEach((step, index) => {
-            const button = document.createElement(interactive ? 'button' : 'div');
-            button.className = `strum-step${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}${index === this.state.selectedStrumIndex && interactive ? ' selected' : ''}`;
-            button.innerHTML = `
-                <span class="strum-step-direction">${step.direction === 'down' ? '↓' : '↑'}</span>
+            const node = document.createElement(interactive ? 'button' : 'div');
+            node.className = `strum-step${step.accent ? ' accent' : ''}${step.muted ? ' muted' : ''}${interactive && index === this.state.selectedStrumIndex ? ' selected' : ''}`;
+            node.innerHTML = `
+                <span class="strum-step-direction">${step.direction === 'up' ? '↑' : '↓'}</span>
                 <span class="strum-step-meta">${this.describeStep(step)}</span>
             `;
-
             if (interactive) {
-                button.type = 'button';
-                button.addEventListener('click', () => {
+                node.type = 'button';
+                node.addEventListener('click', () => {
                     this.state.selectedStrumIndex = index;
                     this.renderStrumBuilder();
                 });
             }
-
-            target.appendChild(button);
+            target.appendChild(node);
         });
     },
 
@@ -339,42 +348,18 @@ const app = {
 
     buildStrumSummary(steps = this.state.currentStrumSteps) {
         return steps.map((step) => {
-            const direction = step.direction === 'down' ? '↓' : '↑';
+            const direction = step.direction === 'up' ? '↑' : '↓';
             const accent = step.accent ? '!' : '';
             const muted = step.muted ? 'x' : '';
             return `${direction}${accent}${muted}`;
         }).join(' ');
     },
 
-    updatePreview() {
-        const previewNode = document.getElementById('songPreview');
-        const text = this.normalizeSongText(document.getElementById('songText').value);
-        const strumSummary = this.buildStrumSummary();
-        const previewPieces = [];
-
-        if (strumSummary) {
-            previewPieces.push(`<div class="song-line-single"><strong>Бой:</strong> ${this.escapeHtml(strumSummary)}</div>`);
-        }
-
-        if (text.trim()) {
-            previewPieces.push(this.renderSongMarkup(text));
-            previewNode.classList.remove('song-preview-empty');
-            previewNode.innerHTML = previewPieces.join('');
-        } else {
-            previewNode.classList.add('song-preview-empty');
-            previewNode.innerHTML = previewPieces.length ? previewPieces.join('') : 'Предпросмотр появится после ввода текста или запуска AI.';
-        }
-    },
-
     normalizeSongText(rawText) {
         if (!rawText) {
             return '';
         }
-
-        let text = rawText.replace(/\r/g, '');
-        text = text.replace(/\t/g, '    ');
-        text = text.replace(/[ ]+$/gm, '');
-
+        let text = rawText.replace(/\r/g, '').replace(/\t/g, '    ').replace(/[ ]+$/gm, '');
         const replacements = [
             [/\bАm\b/g, 'Am'],
             [/\bС\b/g, 'C'],
@@ -384,13 +369,10 @@ const app = {
             [/\bА\b/g, 'A'],
             [/\b([A-GH])\s+m\b/g, '$1m']
         ];
-
         replacements.forEach(([pattern, replacement]) => {
             text = text.replace(pattern, replacement);
         });
-
-        text = text.replace(/\n{4,}/g, '\n\n\n');
-        return text;
+        return text.replace(/\n{4,}/g, '\n\n\n');
     },
 
     isChordLine(line) {
@@ -398,30 +380,22 @@ const app = {
         if (!trimmed) {
             return false;
         }
-
         const tokens = trimmed.split(/\s+/).filter(Boolean);
-        if (!tokens.length) {
-            return false;
-        }
-
-        return tokens.every((token) => /^[A-GH](?:#|b)?(?:m|maj7|maj|min|dim|aug|sus2|sus4|sus|add9|m7|7|9|11|13)?(?:\/[A-GH](?:#|b)?)?$/.test(token));
+        return tokens.length > 0 && tokens.every((token) => /^[A-GH](?:#|b)?(?:m|maj7|maj|min|dim|aug|sus2|sus4|sus|add9|m7|7|9|11|13)?(?:\/[A-GH](?:#|b)?)?$/.test(token));
     },
 
     renderSongMarkup(rawText) {
         const text = this.normalizeSongText(rawText);
         const lines = text.split('\n');
         const blocks = [];
-
         for (let index = 0; index < lines.length; index += 1) {
             const currentLine = lines[index];
             const nextLine = lines[index + 1];
             const trimmed = currentLine.trim();
-
             if (!trimmed) {
                 blocks.push('<div class="song-line-single">&nbsp;</div>');
                 continue;
             }
-
             if (this.isChordLine(currentLine) && typeof nextLine === 'string' && nextLine.trim() && !this.isChordLine(nextLine)) {
                 blocks.push(`
                     <div class="song-line-pair">
@@ -432,16 +406,30 @@ const app = {
                 index += 1;
                 continue;
             }
-
             if (/^[А-ЯA-Z][^:]{0,40}:$/u.test(trimmed)) {
                 blocks.push(`<div class="song-line-single section-label">${this.escapeHtml(trimmed)}</div>`);
                 continue;
             }
-
             blocks.push(`<div class="song-line-single">${this.escapeHtml(currentLine)}</div>`);
         }
-
         return blocks.join('');
+    },
+
+    updatePreview() {
+        const text = this.normalizeSongText(document.getElementById('songText').value);
+        const previewNode = document.getElementById('songPreview');
+        const parts = [];
+        const strumSummary = this.buildStrumSummary();
+        if (strumSummary) {
+            parts.push(`<div class="song-line-single"><strong>Бой:</strong> ${this.escapeHtml(strumSummary)}</div>`);
+        }
+        if (text.trim()) {
+            previewNode.classList.remove('song-preview-empty');
+            previewNode.innerHTML = parts.join('') + this.renderSongMarkup(text);
+        } else {
+            previewNode.classList.add('song-preview-empty');
+            previewNode.innerHTML = parts.length ? parts.join('') : 'Предпросмотр появится после ввода текста или запуска AI.';
+        }
     },
 
     escapeHtml(value) {
@@ -452,7 +440,6 @@ const app = {
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;');
     },
-
     async getGitHubFile() {
         const url = `https://api.github.com/repos/${this.state.ghUsername}/${this.state.ghRepo}/contents/songs.json`;
         const response = await fetch(url, {
@@ -461,32 +448,22 @@ const app = {
                 Accept: 'application/vnd.github.v3+json'
             }
         });
-
         if (response.status === 404) {
             return { content: [], sha: null };
         }
-
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             throw new Error(errorData.message || 'Не удалось получить songs.json из GitHub.');
         }
-
         const data = await response.json();
         const decoded = decodeURIComponent(escape(atob(data.content)));
-        const content = JSON.parse(decoded);
-        return { content, sha: data.sha };
+        return { content: JSON.parse(decoded), sha: data.sha };
     },
 
     async saveSongsToGitHub(songs, message) {
         const url = `https://api.github.com/repos/${this.state.ghUsername}/${this.state.ghRepo}/contents/songs.json`;
         const { sha } = await this.getGitHubFile();
         const encodedContent = btoa(unescape(encodeURIComponent(JSON.stringify(songs, null, 2))));
-        const body = {
-            message,
-            content: encodedContent,
-            sha
-        };
-
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -494,9 +471,8 @@ const app = {
                 Accept: 'application/vnd.github.v3+json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify({ message, content: encodedContent, sha })
         });
-
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             throw new Error(errorData.message || 'Не удалось сохранить songs.json в GitHub.');
@@ -527,18 +503,15 @@ const app = {
     async loadSongs() {
         const grid = document.getElementById('songsGrid');
         grid.innerHTML = '<p class="loading-text">Синхронизация с GitHub...</p>';
-
         if (!this.hasGitHubConfig()) {
             grid.innerHTML = '<p class="error-text">Откройте настройки и укажите GitHub Username, Repo и Token.</p>';
             return;
         }
-
         try {
             const { content } = await this.getGitHubFile();
             this.state.songs = Array.isArray(content) ? content.map((song) => this.normalizeSongObject(song)) : [];
             this.applyLibraryFilters();
         } catch (error) {
-            console.error(error);
             grid.innerHTML = `<p class="error-text">${this.escapeHtml(error.message)}</p>`;
         }
     },
@@ -546,17 +519,12 @@ const app = {
     applyLibraryFilters(queryValue) {
         const query = (typeof queryValue === 'string' ? queryValue : document.getElementById('searchInput').value).trim().toLowerCase();
         const sortValue = document.getElementById('sortSelect').value;
-
         const filtered = this.state.songs.filter((song) => {
             if (!query) {
                 return true;
             }
-
-            return [song.title, song.artist, song.key, song.strum_pattern, song.tuning]
-                .filter(Boolean)
-                .some((value) => value.toLowerCase().includes(query));
+            return [song.title, song.artist, song.key, song.tuning].filter(Boolean).some((value) => value.toLowerCase().includes(query));
         });
-
         filtered.sort((a, b) => {
             if (sortValue === 'title') {
                 return a.title.localeCompare(b.title, 'ru');
@@ -566,39 +534,36 @@ const app = {
             }
             return a.artist.localeCompare(b.artist, 'ru');
         });
-
         this.state.filteredSongs = filtered;
         this.renderSongs(filtered);
     },
+
     renderSongs(songs) {
         const grid = document.getElementById('songsGrid');
         if (!songs.length) {
-            grid.innerHTML = '<p class="loading-text">Пока пусто. Добавьте первую песню из текста, скрина или видеоразбора.</p>';
+            grid.innerHTML = '<p class="loading-text">Пока пусто. Добавьте первую песню через мастер.</p>';
             return;
         }
-
         grid.innerHTML = '';
         songs.forEach((song) => {
             const card = document.createElement('article');
             card.className = 'song-card';
-            const metaBadges = [song.key && `Тональность: ${song.key}`, song.bpm && `BPM: ${song.bpm}`, song.strum_pattern && `Бой: ${song.strum_pattern}`]
+            const badges = [song.key && `Тональность: ${song.key}`, song.bpm && `BPM: ${song.bpm}`, song.strum_pattern && `Бой: ${song.strum_pattern}`]
                 .filter(Boolean)
                 .map((badge) => `<span class="song-badge">${this.escapeHtml(badge)}</span>`)
                 .join('');
-
             card.innerHTML = `
                 <div class="song-card-top">
                     <div>
                         <h3>${this.escapeHtml(song.title)}</h3>
                         <p>${this.escapeHtml(song.artist)}</p>
                     </div>
-                    <button class="delete-inline-btn" type="button">Удалить</button>
+                    <button class="danger-btn" type="button">Удалить</button>
                 </div>
-                <div class="song-meta">${metaBadges || '<span class="song-badge">Метаданные не заполнены</span>'}</div>
+                <div class="song-meta">${badges || '<span class="song-badge">Метаданные не заполнены</span>'}</div>
             `;
-
             card.addEventListener('click', () => this.openSongView(song.id));
-            card.querySelector('.delete-inline-btn').addEventListener('click', (event) => {
+            card.querySelector('.danger-btn').addEventListener('click', (event) => {
                 event.stopPropagation();
                 this.deleteSongById(song.id);
             });
@@ -615,23 +580,19 @@ const app = {
         if (!song) {
             return;
         }
-
         this.state.currentSongId = song.id;
         document.getElementById('viewTitle').textContent = song.title;
         document.getElementById('viewArtist').textContent = song.artist;
         document.getElementById('viewText').innerHTML = this.renderSongMarkup(song.text);
         document.getElementById('studyHelperPanel').classList.add('hidden');
         document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(song.study_tips);
-
-        const metaNode = document.getElementById('viewMeta');
-        metaNode.innerHTML = [
+        document.getElementById('viewMeta').innerHTML = [
             song.key && `Тональность: ${song.key}`,
             song.bpm && `BPM: ${song.bpm}`,
             Number.isFinite(song.capo) ? `Капо: ${song.capo}` : '',
             song.tuning && `Строй: ${song.tuning}`,
             song.fingerings && 'Есть заметки по аппликатуре'
         ].filter(Boolean).map((meta) => `<span class="song-badge">${this.escapeHtml(meta)}</span>`).join('');
-
         this.renderSongStrum(song);
         this.renderSongVideo(song.video_url);
         this.showView('songView');
@@ -641,14 +602,12 @@ const app = {
         const section = document.getElementById('viewStrumSection');
         const preview = document.getElementById('viewStrumPreview');
         const notes = document.getElementById('viewStrumNotes');
-
         if (!song.strum_steps.length && !song.strum_pattern && !song.strum_notes) {
             section.classList.add('hidden');
             preview.innerHTML = '';
             notes.textContent = '';
             return;
         }
-
         section.classList.remove('hidden');
         notes.textContent = song.strum_notes || song.strum_pattern || '';
         this.renderStrumBuilder(preview, song.strum_steps.length ? song.strum_steps : this.parseSummaryToSteps(song.strum_pattern), false);
@@ -658,7 +617,6 @@ const app = {
         if (!summary) {
             return [];
         }
-
         return summary.split(/\s+/).filter(Boolean).map((token) => ({
             direction: token.includes('↑') ? 'up' : 'down',
             accent: token.includes('!'),
@@ -671,23 +629,19 @@ const app = {
         const embedWrapper = document.getElementById('viewVideoEmbed');
         const iframe = document.getElementById('viewYoutube');
         const linkNode = document.getElementById('viewVideoLink');
-
         section.classList.add('hidden');
         embedWrapper.classList.add('hidden');
         linkNode.classList.add('hidden');
         iframe.src = '';
-
         if (!url) {
             return;
         }
-
         section.classList.remove('hidden');
         const youtubeId = this.extractYoutubeId(url);
         if (youtubeId) {
             embedWrapper.classList.remove('hidden');
             iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
         }
-
         linkNode.href = url;
         linkNode.classList.remove('hidden');
     },
@@ -696,28 +650,25 @@ const app = {
         const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.*\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/i);
         return match ? match[1] : null;
     },
-
     async handleSaveSong() {
         if (!this.hasGitHubConfig()) {
             alert('Сначала заполните GitHub-настройки.');
             this.openSettings();
             return;
         }
-
         const title = document.getElementById('songTitle').value.trim();
         const artist = document.getElementById('songArtist').value.trim();
         const text = this.normalizeSongText(document.getElementById('songText').value);
-
         if (!title || !artist) {
             alert('Нужно заполнить хотя бы название и исполнителя.');
+            this.setWizardStep(1);
             return;
         }
-
         if (!text) {
             alert('Добавьте текст песни или распознайте его со скрина.');
+            this.setWizardStep(2);
             return;
         }
-
         const song = this.normalizeSongObject({
             id: Date.now().toString(),
             title,
@@ -734,12 +685,10 @@ const app = {
             text,
             study_tips: []
         });
-
         const duplicate = this.state.songs.find((item) => item.title.toLowerCase() === song.title.toLowerCase() && item.artist.toLowerCase() === song.artist.toLowerCase());
         if (duplicate && !confirm('Такая песня уже есть. Сохранить ещё одну копию?')) {
             return;
         }
-
         const updatedSongs = [...this.state.songs, song];
         try {
             await this.saveSongsToGitHub(updatedSongs, `Добавлена песня: ${song.title} — ${song.artist}`);
@@ -747,7 +696,6 @@ const app = {
             this.clearSongForm();
             this.showView('libraryView');
         } catch (error) {
-            console.error(error);
             alert(`Не удалось сохранить песню: ${error.message}`);
         }
     },
@@ -761,14 +709,13 @@ const app = {
         document.getElementById('lyricsUploadSummary').textContent = 'Скрины текста не выбраны';
         document.getElementById('patternUploadSummary').textContent = 'Скрины боя не выбраны';
         const pasteZone = document.getElementById('lyricsPasteZone');
-        if (pasteZone) {
-            pasteZone.classList.remove('has-content');
-            pasteZone.querySelector('strong').textContent = 'Вставить скрин из буфера';
-            pasteZone.querySelector('span').textContent = 'Сделай скрин, кликни сюда и нажми Ctrl + V. Картинка попадёт сразу в блок текста и аккордов.';
-        }
+        pasteZone.classList.remove('has-content');
+        pasteZone.querySelector('strong').textContent = 'Вставить скрин из буфера';
+        pasteZone.querySelector('span').textContent = 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
         this.renderStrumBuilder();
         this.updatePreview();
         this.clearDraft();
+        this.setWizardStep(1);
     },
 
     async deleteSongById(songId) {
@@ -776,11 +723,9 @@ const app = {
         if (!song) {
             return;
         }
-
         if (!confirm(`Удалить песню "${song.title}"?`)) {
             return;
         }
-
         const nextSongs = this.state.songs.filter((item) => item.id !== songId);
         try {
             await this.saveSongsToGitHub(nextSongs, `Удалена песня: ${song.title}`);
@@ -792,17 +737,14 @@ const app = {
                 this.applyLibraryFilters();
             }
         } catch (error) {
-            console.error(error);
             alert(`Не удалось удалить песню: ${error.message}`);
         }
     },
 
     deleteCurrentSong() {
-        if (!this.state.currentSongId) {
-            return;
+        if (this.state.currentSongId) {
+            this.deleteSongById(this.state.currentSongId);
         }
-
-        this.deleteSongById(this.state.currentSongId);
     },
 
     async filesToInlineData(files) {
@@ -823,32 +765,27 @@ const app = {
         if (this.state.selectedModel) {
             return this.state.selectedModel;
         }
-
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${this.state.googleApiKey}`);
         const data = await response.json();
         if (!response.ok) {
             throw new Error(data.error?.message || 'Не удалось получить список моделей Gemini.');
         }
-
         const priority = ['models/gemini-2.5-flash', 'models/gemini-2.0-flash', 'models/gemini-1.5-flash'];
         const available = data.models || [];
         this.state.selectedModel = priority.find((name) => available.some((model) => model.name === name && model.supportedGenerationMethods?.includes('generateContent')))
             || available.find((model) => model.name.includes('gemini') && model.supportedGenerationMethods?.includes('generateContent'))?.name;
-
         if (!this.state.selectedModel) {
             throw new Error('Подходящая модель Gemini не найдена для текущего ключа.');
         }
-
         return this.state.selectedModel;
     },
+
     async requestGemini(parts) {
         if (!this.state.googleApiKey) {
             throw new Error('Добавьте Google Gemini API Key в настройках.');
         }
-
         const model = await this.ensureGeminiModel();
-        const url = `https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${this.state.googleApiKey}`;
-        const response = await fetch(url, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${this.state.googleApiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -860,12 +797,10 @@ const app = {
                 }
             })
         });
-
         const data = await response.json();
         if (!response.ok) {
             throw new Error(data.error?.message || 'Gemini вернул ошибку.');
         }
-
         return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     },
 
@@ -880,37 +815,16 @@ const app = {
     },
 
     applyAiSongData(result, { replaceText }) {
-        if (result.title) {
-            document.getElementById('songTitle').value = result.title;
-        }
-        if (result.artist) {
-            document.getElementById('songArtist').value = result.artist;
-        }
-        if (result.key) {
-            document.getElementById('songKey').value = result.key;
-        }
-        if (result.bpm) {
-            document.getElementById('songBpm').value = result.bpm;
-        }
-        if (Number.isFinite(Number(result.capo))) {
-            document.getElementById('songCapo').value = result.capo;
-        }
-        if (result.tuning) {
-            document.getElementById('songTuning').value = result.tuning;
-        }
-        if (result.video_url) {
-            document.getElementById('songVideoUrl').value = result.video_url;
-        }
-        if (result.fingering_notes) {
-            document.getElementById('songFingerings').value = result.fingering_notes;
-        }
-        if (result.strum?.notes) {
-            document.getElementById('strumNotes').value = result.strum.notes;
-        }
-        if (replaceText && result.text) {
-            document.getElementById('songText').value = this.normalizeSongText(result.text);
-        }
-
+        if (result.title) document.getElementById('songTitle').value = result.title;
+        if (result.artist) document.getElementById('songArtist').value = result.artist;
+        if (result.video_url) document.getElementById('songVideoUrl').value = result.video_url;
+        if (result.key) document.getElementById('songKey').value = result.key;
+        if (result.bpm) document.getElementById('songBpm').value = result.bpm;
+        if (Number.isFinite(Number(result.capo))) document.getElementById('songCapo').value = result.capo;
+        if (result.tuning) document.getElementById('songTuning').value = result.tuning;
+        if (result.fingering_notes) document.getElementById('songFingerings').value = result.fingering_notes;
+        if (result.strum?.notes) document.getElementById('strumNotes').value = result.strum.notes;
+        if (replaceText && result.text) document.getElementById('songText').value = this.normalizeSongText(result.text);
         if (Array.isArray(result.strum?.steps) && result.strum.steps.length) {
             this.state.currentStrumSteps = result.strum.steps.map((step) => ({
                 direction: step.direction === 'up' ? 'up' : 'down',
@@ -920,38 +834,32 @@ const app = {
             this.state.selectedStrumIndex = this.state.currentStrumSteps.length ? 0 : -1;
             this.renderStrumBuilder();
         }
-
         this.persistDraft();
         this.updatePreview();
+        this.setWizardStep(2);
     },
-
     async runSongAiExtraction({ fromTextOnly }) {
         const statusNode = document.getElementById('ocrStatus');
         const statusText = document.getElementById('ocrStatusText');
         const manualText = document.getElementById('songText').value.trim();
         const hasImages = this.state.pendingLyricsImages.length || this.state.pendingPatternImages.length;
-
         if (!fromTextOnly && !hasImages && !manualText) {
             alert('Добавьте скрины или вставьте текст перед запуском AI.');
+            this.setWizardStep(1);
             return;
         }
-
         if (fromTextOnly && !manualText) {
             alert('Сначала вставьте текст песни.');
+            this.setWizardStep(2);
             return;
         }
-
         statusNode.classList.remove('hidden');
         statusText.textContent = fromTextOnly ? 'AI добирает метаданные из текста...' : 'AI разбирает скрины и заполняет песню...';
-
         try {
-            const imageParts = fromTextOnly
-                ? []
-                : [
-                    ...(await this.filesToInlineData(this.state.pendingLyricsImages)),
-                    ...(await this.filesToInlineData(this.state.pendingPatternImages))
-                ];
-
+            const imageParts = fromTextOnly ? [] : [
+                ...(await this.filesToInlineData(this.state.pendingLyricsImages)),
+                ...(await this.filesToInlineData(this.state.pendingPatternImages))
+            ];
             const prompt = `
 Ты помогаешь собрать карточку гитарной песни из скринов и текста.
 Верни только JSON без markdown и пояснений.
@@ -963,7 +871,7 @@ const app = {
 - Если есть акценты, пометь accent=true.
 - Если есть глушение, пометь muted=true.
 - Если метаданные не видны, оставь null или пустую строку.
-- Если есть строй, BPM, капо, аппликатура, советы по сложным местам, вынеси их.
+- Если есть строй, BPM, капо и аппликатура, вынеси их.
 
 Схема JSON:
 {
@@ -985,19 +893,16 @@ const app = {
   "study_tips": ["", ""]
 }
 `.trim();
-
             const parts = [{ text: prompt }];
             if (manualText) {
-                parts.push({ text: `Уже введённый текст/заметки пользователя:\n${manualText}` });
+                parts.push({ text: `Уже введённый текст пользователя:\n${manualText}` });
             }
             imageParts.forEach((part) => parts.push(part));
-
             const rawResponse = await this.requestGemini(parts);
             const parsed = this.extractJsonBlock(rawResponse);
             this.applyAiSongData(parsed, { replaceText: true });
-            alert('AI заполнил песню. Проверь текст и при необходимости поправь вручную.');
+            alert('AI заполнил песню. Проверь результат на шаге 2.');
         } catch (error) {
-            console.error(error);
             alert(`Не удалось обработать материалы: ${error.message}`);
         } finally {
             statusNode.classList.add('hidden');
@@ -1008,13 +913,7 @@ const app = {
         if (!Array.isArray(studyTips) || !studyTips.length) {
             return '<p class="muted-copy">Нажми "Помочь в разборе", чтобы получить советы по изучению, замене баррэ и сложным местам.</p>';
         }
-
-        return `
-            <div>
-                <h3>Короткие советы</h3>
-                <ul>${studyTips.map((tip) => `<li>${this.escapeHtml(tip)}</li>`).join('')}</ul>
-            </div>
-        `;
+        return `<div><h3>Короткие советы</h3><ul>${studyTips.map((tip) => `<li>${this.escapeHtml(tip)}</li>`).join('')}</ul></div>`;
     },
 
     async runStudyHelper() {
@@ -1022,14 +921,12 @@ const app = {
         if (!song) {
             return;
         }
-
         const panel = document.getElementById('studyHelperPanel');
         const status = document.getElementById('studyHelperStatus');
         const output = document.getElementById('studyHelperOutput');
         panel.classList.remove('hidden');
         status.classList.remove('hidden');
         output.innerHTML = '';
-
         try {
             const prompt = `
 Ты — помощник по гитарному разбору песни.
@@ -1056,13 +953,11 @@ ${song.text}
   "study_tips": ["", ""]
 }
 `.trim();
-
             const rawResponse = await this.requestGemini([{ text: prompt }]);
             const parsed = this.extractJsonBlock(rawResponse);
             song.study_tips = parsed.study_tips || [];
             output.innerHTML = this.renderStudyHelper(parsed);
         } catch (error) {
-            console.error(error);
             output.innerHTML = `<p class="error-text">${this.escapeHtml(error.message)}</p>`;
         } finally {
             status.classList.add('hidden');
@@ -1078,7 +973,6 @@ ${song.text}
             ['Советы по исполнению', this.renderList(data.performance_advice)],
             ['Быстрые подсказки', this.renderList(data.study_tips)]
         ].filter(([, content]) => content);
-
         return sections.map(([title, content]) => `<div><h3>${this.escapeHtml(title)}</h3>${content}</div>`).join('');
     },
 
@@ -1092,9 +986,9 @@ ${song.text}
     toggleAutoscroll() {
         if (this.state.scrollInterval) {
             this.stopAutoscroll();
-            return;
+        } else {
+            this.startAutoscroll();
         }
-        this.startAutoscroll();
     },
 
     startAutoscroll() {
@@ -1134,7 +1028,6 @@ if ('serviceWorker' in navigator) {
 }
 
 document.addEventListener('DOMContentLoaded', () => app.init());
-
 
 
 
