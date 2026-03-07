@@ -1,27 +1,32 @@
-const CACHE_NAME = 'mychordbase-v1';
+﻿const CACHE_NAME = 'strunoteka-v2';
 const ASSETS = [
     './',
     './index.html',
     './styles.css',
     './app.js',
-    './manifest.json'
+    './manifest.json',
+    './icon-192x192.png',
+    './icon-512x512.png'
 ];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(ASSETS))
+        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    );
+});
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))).then(() => self.clients.claim())
     );
 });
 
 self.addEventListener('fetch', (event) => {
-    // Не кэшируем запросы к GitHub API (чтобы всегда получать свежие песни)
-    if (event.request.url.includes('api.github.com')) {
+    if (event.request.url.includes('api.github.com') || event.request.url.includes('generativelanguage.googleapis.com')) {
         return;
     }
 
     event.respondWith(
-        caches.match(event.request)
-            .then((response) => response || fetch(event.request))
+        caches.match(event.request).then((cached) => cached || fetch(event.request))
     );
 });
