@@ -907,32 +907,38 @@ main {
 .library-toolbar {
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 14px;
+    gap: 16px;
 }
 
 .search-input {
     flex: 1 1 360px;
+    min-height: 52px;
 }
 
 .sort-select {
     flex: 0 0 250px;
+    min-height: 52px;
 }
 
 .songs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    gap: 24px;
+    margin-top: 12px;
 }
 
 .song-card {
     display: grid;
-    gap: 12px;
+    gap: 16px;
+    padding: 24px;
 }
 
 .song-card-top,
 .song-meta {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 14px;
     flex-wrap: wrap;
     align-items: center;
 }
