@@ -78,45 +78,53 @@
 
         <main>
             <section id="homeView" class="view active">
-                <div class="hero-layout">
-                    <div class="hero-panel hero-lead">
+                <div class="home-stack">
+                    <div class="home-hero">
                         <p class="eyebrow">Струнотека</p>
-                        <h1>Добавляй песню за пару действий, а не через перегруженную форму</h1>
-                        <p class="hero-copy">Загрузи скрины текста, схемы боя и ссылку на разбор. AI заполнит песню, а ты только быстро проверишь результат и вечером откроешь её для игры.</p>
-                        <div class="hero-actions">
-                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">Собрать новую песню</button>
-                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">Открыть библиотеку</button>
+                        <h1>Собирай песни спокойно, а не продирайся через перегруженные экраны</h1>
+                        <p class="hero-copy">Загрузил скрины текста и боя, запустил AI, быстро проверил результат и сохранил. Главная задача здесь не впечатлять блоками, а быстро доводить до песни, которую можно открыть вечером и играть.</p>
+
+                        <div class="hero-actions hero-actions-spaced">
+                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">Новая песня</button>
+                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">Моя библиотека</button>
                         </div>
                     </div>
 
-                    <div class="hero-panel hero-side">
-                        <div class="hero-metric">
+                    <div class="home-flow">
+                        <div class="flow-card">
                             <strong>1</strong>
-                            <span>Закинь материалы</span>
+                            <span>Добавь скрины, ссылку или текст</span>
                         </div>
-                        <div class="hero-metric">
+                        <div class="flow-card">
                             <strong>2</strong>
-                            <span>AI соберёт песню и бой</span>
+                            <span>AI соберёт песню и подтянет детали</span>
                         </div>
-                        <div class="hero-metric">
+                        <div class="flow-card">
                             <strong>3</strong>
-                            <span>Проверь и сохрани</span>
+                            <span>Проверь, сохрани и открывай для игры</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="feature-strip">
-                    <article class="feature-tile">
-                        <h3>Скрины и OCR</h3>
-                        <p>Текст песни, аккорды, бой, строй, капо и BPM можно подтянуть прямо из изображений.</p>
+                <div class="home-support-line">
+                    <span>OCR по скринам</span>
+                    <span>бой и схема ударов</span>
+                    <span>видеоразбор</span>
+                    <span>подсказки по изучению</span>
+                </div>
+
+                <div class="feature-grid-relaxed">
+                    <article class="feature-tile soft-tile">
+                        <h3>Быстрый старт</h3>
+                        <p>Сначала кидаешь материалы, а не думаешь, какие десять полей заполнять вручную.</p>
                     </article>
-                    <article class="feature-tile">
-                        <h3>Песня для репетиции</h3>
-                        <p>Открыл вечером и сразу играешь: текст, бой, видеоразбор и помощь по изучению уже на месте.</p>
+                    <article class="feature-tile soft-tile">
+                        <h3>Режим репетиции</h3>
+                        <p>Песня сохраняется как рабочий разбор: текст, бой, видео и помощь по сложным местам.</p>
                     </article>
-                    <article class="feature-tile">
+                    <article class="feature-tile soft-tile">
                         <h3>Ручная доводка</h3>
-                        <p>Если AI ошибся, можно быстро подправить детали, не утопая в лишних полях с самого начала.</p>
+                        <p>Если AI ошибся, уже потом можно спокойно поправить детали, не перегружая стартовый экран.</p>
                     </article>
                 </div>
             </section>
@@ -422,4 +430,5 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 
