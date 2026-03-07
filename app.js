@@ -79,6 +79,19 @@ const app = {
         document.getElementById('clearStrumBtn').addEventListener('click', () => this.clearStrumSteps());
         document.getElementById('studyHelperBtn').addEventListener('click', () => this.runStudyHelper());
         document.getElementById('songText').addEventListener('paste', (event) => this.handleSongTextPaste(event));
+
+        const lyricsPasteZone = document.getElementById('lyricsPasteZone');
+        lyricsPasteZone.addEventListener('click', () => lyricsPasteZone.focus());
+        lyricsPasteZone.addEventListener('paste', (event) => this.handleSongTextPaste(event));
+
+        document.addEventListener('paste', (event) => {
+            const target = event.target;
+            const isTextInput = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+            if (this.state.currentView !== 'addView' || isTextInput) {
+                return;
+            }
+            this.handleSongTextPaste(event);
+        });
     },
 
     hasGitHubConfig() {
@@ -216,6 +229,12 @@ const app = {
 
         if (imageFiles.length) {
             this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
+            const pasteZone = document.getElementById('lyricsPasteZone');
+            if (pasteZone) {
+                pasteZone.classList.add('has-content');
+                pasteZone.querySelector('strong').textContent = 'Скрин вставлен из буфера';
+                pasteZone.querySelector('span').textContent = 'Можно сразу запускать AI или докинуть ещё скрины через выбор файла.';
+            }
         }
     },
 
@@ -223,8 +242,19 @@ const app = {
         this.state[stateKey] = Array.from(fileList || []);
         const summaryNode = document.getElementById(summaryId);
         summaryNode.textContent = this.state[stateKey].length
-            ? `${label}: ${this.state[stateKey].length} шт.`
-            : `${label} не выбраны`;
+            ? label + ': ' + this.state[stateKey].length + ' шт.'
+            : label + ' не выбраны';
+
+        if (stateKey === 'pendingLyricsImages') {
+            const pasteZone = document.getElementById('lyricsPasteZone');
+            if (pasteZone) {
+                pasteZone.classList.toggle('has-content', this.state[stateKey].length > 0);
+                pasteZone.querySelector('strong').textContent = this.state[stateKey].length ? 'Материалы добавлены' : 'Вставить скрин из буфера';
+                pasteZone.querySelector('span').textContent = this.state[stateKey].length
+                    ? 'Текстовые скрины уже подхвачены. Можно запускать AI или добавить ещё.'
+                    : 'Сделай скрин, кликни сюда и нажми Ctrl + V. Картинка попадёт сразу в блок текста и аккордов.';
+            }
+        }
     },
 
     addStrumStep(direction) {
@@ -730,6 +760,12 @@ const app = {
         this.state.pendingPatternImages = [];
         document.getElementById('lyricsUploadSummary').textContent = 'Скрины текста не выбраны';
         document.getElementById('patternUploadSummary').textContent = 'Скрины боя не выбраны';
+        const pasteZone = document.getElementById('lyricsPasteZone');
+        if (pasteZone) {
+            pasteZone.classList.remove('has-content');
+            pasteZone.querySelector('strong').textContent = 'Вставить скрин из буфера';
+            pasteZone.querySelector('span').textContent = 'Сделай скрин, кликни сюда и нажми Ctrl + V. Картинка попадёт сразу в блок текста и аккордов.';
+        }
         this.renderStrumBuilder();
         this.updatePreview();
         this.clearDraft();
@@ -1098,3 +1134,7 @@ if ('serviceWorker' in navigator) {
 }
 
 document.addEventListener('DOMContentLoaded', () => app.init());
+
+
+
+
