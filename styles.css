@@ -2330,9 +2330,16 @@ label[for="songTextQuick"] {
     margin-top: 18px;
 }
 
+.big-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+}
+
 .big-btn svg {
-    margin-right: 10px;
-    opacity: 0.85;
+    margin: 0 !important;
+    opacity: 0.9;
 }
 
 /* --- MOBILE REDESIGN --- */
@@ -2351,6 +2358,11 @@ label[for="songTextQuick"] {
         padding: 10px 14px;
         margin-bottom: 14px;
         grid-template-columns: 1fr auto;
+        
+        /* 🚨 Убираем блюр, иначе Fixed меню застревает внутри шапки */
+        backdrop-filter: none !important;
+        transform: none !important;
+        background: var(--surface-base) !important;
     }
 
     #mainNav {
