@@ -135,20 +135,17 @@
                                     <div class="capture-grid">
                                         <label class="drop-card" for="lyricsImageInput">
                                             <strong>Скрины текста и аккордов</strong>
-                                            <span>Фото, скрины сайта, табы, разборы, куплеты с аккордами. Можно добавлять много скринов.</span>
                                         </label>
                                         <input type="file" id="lyricsImageInput" accept="image/*" multiple class="hidden">
 
                                         <label class="drop-card accent-card" for="patternImageInput">
                                             <strong>Скрины боя и схемы ударов</strong>
-                                            <span>Стрелки, акценты, глушка, рисунок по струнам. Можно прикладывать несколько схем.</span>
                                         </label>
                                         <input type="file" id="patternImageInput" accept="image/*" multiple class="hidden">
                                     </div>
 
                                     <button id="lyricsPasteZone" class="paste-zone" type="button">
-                                        <strong>Вставить скрин из буфера</strong>
-                                        <span>Кликни сюда и нажми Ctrl + V. Можно вставлять несколько раз подряд, а на телефоне добавлять файлы партиями.</span>
+                                        <strong>Вставить скрин из буфера (Ctrl+V)</strong>
                                     </button>
 
                                     <div class="upload-summaries upload-summaries-stacked">
@@ -221,34 +218,39 @@
                                         </div>
                                         <div>
                                             <label class="field-label" for="songBpm">BPM</label>
-                                            <input type="number" id="songBpm" list="songBpmOptions" placeholder="Например, 80" min="1">
+                                            <input type="number" id="songBpm" list="songBpmOptions" placeholder="80" min="1">
                                             <datalist id="songBpmOptions">
                                                 <option value="60"></option><option value="70"></option><option value="80"></option><option value="90"></option><option value="100"></option><option value="120"></option><option value="140"></option>
                                             </datalist>
                                         </div>
-                                        <div>
-                                            <label class="field-label" for="songCapo">Каподастр</label>
-                                            <select id="songCapo">
-                                                <option value="">Не указан</option>
-                                                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="field-label" for="songTuningPreset">Строй</label>
-                                            <select id="songTuningPreset">
-                                                <option value="">Не указан</option>
-                                                <option value="E A D G B E">Стандартный</option>
-                                                <option value="D A D G B E">Drop D</option>
-                                                <option value="D A D G A D">DADGAD</option>
-                                                <option value="D G D G B D">Open G</option>
-                                                <option value="D A D F# A D">Open D</option>
-                                            </select>
-                                            <small class="field-help">Строй = как настроены струны. Если обычный, оставь стандартный.</small>
-                                        </div>
-                                        <div class="meta-span-2">
-                                            <label class="field-label" for="songTuning">Свой строй вручную</label>
-                                            <input type="text" id="songTuning" placeholder="Например, E A D G B E">
-                                        </div>
+                                        
+                                        <details class="advanced-settings-spoiler meta-span-2">
+                                            <summary>⚙️ Дополнительные настройки гитары</summary>
+                                            <div class="spoiler-content meta-grid">
+                                                <div>
+                                                    <label class="field-label" for="songCapo">Каподастр</label>
+                                                    <select id="songCapo">
+                                                        <option value="">Не указан</option>
+                                                        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="field-label" for="songTuningPreset">Строй</label>
+                                                    <select id="songTuningPreset">
+                                                        <option value="">Не указан</option>
+                                                        <option value="E A D G B E">Стандартный</option>
+                                                        <option value="D A D G B E">Drop D</option>
+                                                        <option value="D A D G A D">DADGAD</option>
+                                                        <option value="D G D G B D">Open G</option>
+                                                        <option value="D A D F# A D">Open D</option>
+                                                    </select>
+                                                </div>
+                                                <div class="meta-span-2">
+                                                    <label class="field-label" for="songTuning">Свой строй вручную</label>
+                                                    <input type="text" id="songTuning" placeholder="Например, E A D G B E">
+                                                </div>
+                                            </div>
+                                        </details>
                                     </div>
 
                                     <label class="field-label" for="songText">Текст песни</label>
@@ -302,7 +304,7 @@
 
                         <section class="wizard-page" data-page="3">
                             <div class="wizard-grid final-grid">
-                                <div class="wizard-card">
+                                <div class="wizard-card emphasis-card">
                                     <div class="card-head">
                                         <div>
                                             <p class="card-kicker">Шаг 3</p>
@@ -313,28 +315,12 @@
                                     <label class="field-label" for="songFingerings">Аппликатура / сложные места</label>
                                     <textarea id="songFingerings" rows="5" placeholder="Например: F лучше играть малым баррэ, а во вступлении удобнее щипок"></textarea>
 
-                                    <div class="final-note">
-                                        <strong>Что произойдёт после сохранения</strong>
-                                        <span>Песня уйдёт в GitHub, появится в библиотеке и будет доступна для репетиции и AI-помощи.</span>
+                                    <div style="margin-top: 24px;">
+                                        <button type="submit" class="primary-btn big-btn full-width save-song-btn">
+                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                                            <span>Упаковать в библиотеку</span>
+                                        </button>
                                     </div>
-                                </div>
-
-                                <div class="wizard-card">
-                                    <div class="card-head">
-                                        <div>
-                                            <p class="card-kicker">Готово</p>
-                                            <h3>Сохрани и переходи играть</h3>
-                                        </div>
-                                    </div>
-
-                                    <div class="save-summary">
-                                        <div class="save-chip">Текст и аккорды</div>
-                                        <div class="save-chip">Бой и схема ударов</div>
-                                        <div class="save-chip">Видеоразбор</div>
-                                        <div class="save-chip">Подсказки по игре</div>
-                                    </div>
-
-                                    <button type="submit" class="primary-btn full-width save-song-btn">Сохранить песню</button>
                                 </div>
                             </div>
                         </section>

@@ -1190,7 +1190,7 @@ const app = {
             document.querySelectorAll('.app-header .header-actions:not(.minimal-actions)').forEach(el => el.classList.remove('hidden'));
             this.state.currentView = 'homeView';
         } else if (viewId === 'libraryView') {
-            this.loadStoredSongs();
+            this.loadSongs();
             this.state.currentView = 'libraryView';
         } else if (viewId === 'addView') {
             this.state.currentView = 'addView';
