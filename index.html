@@ -93,11 +93,11 @@
                     <div class="home-hero quiet-hero">
                         <h1>Твоя личная база разборов</h1>
                         <div class="hero-actions hero-actions-spaced">
-                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">
+                            <button class="primary-btn big-btn hidden-mobile" type="button" onclick="app.showView('addView')">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                 <span>Добавить песню</span>
                             </button>
-                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">
+                            <button class="secondary-btn big-btn hidden-mobile" type="button" onclick="app.showView('libraryView')">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
                                 <span>Моя библиотека</span>
                             </button>
@@ -451,6 +451,39 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-shell">
+            <div class="settings-card card">
+                <div class="card-head">
+                    <div>
+                        <h2>Настройки</h2>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="setting-block card">
+                        <h3>🔑 Google AI (Gemini)</h3>
+                        <p>Вставьте свой ключ Gemini для авто-распознавания текста и аккордов.</p>
+                        <input type="password" id="geminiApiKey" placeholder="AIzaSy...">
+                    </div>
+
+                    <div class="setting-block card">
+                        <h3>🐙 База GitHub</h3>
+                        <p>Токен (repo scope) и название репозитория для сохранения.</p>
+                        <input type="password" id="githubToken" placeholder="ghp_...">
+                        <input type="text" id="githubRepo" placeholder="username/repo" style="margin-top: 10px;">
+                    </div>
+                </div>
+
+                <div class="sheet-actions">
+                    <button class="ghost-btn" type="button" onclick="app.closeSettings()">Отмена</button>
+                    <button class="primary-btn" type="button" onclick="app.saveSettings()">Сохранить</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
