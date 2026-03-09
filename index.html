@@ -87,14 +87,18 @@
 
         <main>
             <section id="homeView" class="view active">
-                <div class="home-stack compact-home">
+                <div class="desktop-centered-hero">
                     <div class="home-hero quiet-hero">
-                        <br><br>
                         <h1>Твоя личная база разборов</h1>
-                        <br>
                         <div class="hero-actions hero-actions-spaced">
-                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">➕ Добавить песню</button>
-                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">📚 Моя библиотека</button>
+                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Добавить песню
+                            </button>
+                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><path d="M4 19.5A2.5 2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                Моя библиотека
+                            </button>
                         </div>
                     </div>
                 </div>
