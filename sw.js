@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'strunoteka-v5';
+﻿const CACHE_NAME = 'strunoteka-v6';
 const ASSETS = [
     './',
     './index.html',
@@ -30,3 +30,4 @@ self.addEventListener('fetch', (event) => {
         caches.match(event.request).then((cached) => cached || fetch(event.request))
     );
 });
+
