@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg-color: #0d131a;
     --surface-base: #0d131a;
     --bg-gradient: radial-gradient(circle at top left, rgba(78, 140, 255, 0.20), transparent 26%), radial-gradient(circle at top right, rgba(240, 130, 72, 0.16), transparent 24%), linear-gradient(180deg, #0d131a 0%, #0a1117 100%);
@@ -2315,23 +2315,80 @@ label[for="songTextQuick"] {
 }
 
 
-/* Mobile layout stability fix v2 */
-@media (max-width: 760px) {
+/* --- MOBILE REDESIGN --- */
+.hidden-desktop {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .hidden-desktop {
+        display: block !important;
+    }
+
+    /* Bottom Tab Bar */
+    .app-header {
+        border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        grid-template-columns: 1fr auto; /* Только лого и настройки */
+    }
+
+    #mainNav {
+        position: fixed !important;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(18, 27, 36, 0.95);
+        backdrop-filter: blur(16px);
+        border: none;
+        border-top: 1px solid var(--surface-border);
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0 calc(env(safe-area-inset-bottom, 0px) + 10px);
+        z-index: 1000;
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        margin: 0;
+    }
+
+    [data-theme="light"] #mainNav {
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    body {
+        padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 80px);
+    }
+
+    .nav-chip {
+        flex-direction: column !important;
+        gap: 6px !important;
+        background: transparent !important;
+        padding: 8px !important;
+        font-size: 0.75rem !important;
+        font-weight: 500 !important;
+        height: auto !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .nav-chip:active {
+        transform: scale(0.95);
+    }
+
+    .nav-icon {
+        font-size: 1.4rem;
+        margin: 0 auto;
+    }
+
+    /* Home Hero */
     .home-stack {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
     }
 
-    .home-hero,
-    .home-flow {
-        grid-column: auto !important;
-        width: 100%;
-    }
-
     .home-hero h1 {
         max-width: 100%;
-        font-size: clamp(1.95rem, 7vw, 2.5rem) !important;
-        line-height: 1.06;
+        font-size: clamp(2rem, 8vw, 2.5rem) !important;
+        line-height: 1.1;
     }
 
     .hero-actions-spaced {
@@ -2344,29 +2401,7 @@ label[for="songTextQuick"] {
         width: 100%;
     }
 
-    .home-flow {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: none;
-        gap: 8px;
-        height: auto;
-    }
-
-    .flow-card {
-        min-height: 0 !important;
-        padding: 12px 14px !important;
-    }
-
-    .feature-grid-relaxed {
-        grid-template-columns: 1fr;
-        gap: 10px !important;
-    }
-
-    .soft-tile {
-        min-height: 0 !important;
-        padding: 14px !important;
-    }
-
+    /* Common */
     .wizard-steps {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2375,10 +2410,9 @@ label[for="songTextQuick"] {
     }
 
     .wizard-step {
-        min-width: 0 !important;
         width: 100%;
         justify-content: center;
-        padding: 10px 8px;
+        padding: 10px 4px;
     }
 
     .wizard-step span {
@@ -2388,7 +2422,6 @@ label[for="songTextQuick"] {
 
     .wizard-footer {
         position: static !important;
-        bottom: auto !important;
         margin-top: 12px;
         padding: 0;
         border: 0;
@@ -2398,7 +2431,7 @@ label[for="songTextQuick"] {
 
     .wizard-footer .ghost-btn,
     .wizard-footer .secondary-btn {
-        min-height: 44px;
+        min-height: 48px;
     }
 
     .library-toolbar {
@@ -2411,15 +2444,13 @@ label[for="songTextQuick"] {
     .sort-select {
         flex: none !important;
         width: 100% !important;
-        height: 46px !important;
-        min-height: 46px !important;
-        max-height: 46px;
-        line-height: 1.2;
+        height: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px;
     }
 
-    .songs-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+    .songs-grid, .capture-grid {
+        grid-template-columns: 1fr !important;
     }
 
     .song-card {
@@ -2431,15 +2462,8 @@ label[for="songTextQuick"] {
     }
 
     #songView .song-meta {
-        display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
-    }
-
-    #songView .song-meta .song-badge {
-        width: 100%;
-        justify-content: center;
-        text-align: center;
     }
 }
 

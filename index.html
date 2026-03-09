@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -69,9 +69,15 @@
                 </span>
             </button>
 
-            <nav class="top-nav compact-nav">
-                <button class="nav-chip" type="button" onclick="app.showView('addView')">Новая песня</button>
-                <button class="nav-chip" type="button" onclick="app.showView('libraryView')">Библиотека</button>
+            <nav class="top-nav compact-nav" id="mainNav">
+                <button class="nav-chip" type="button" onclick="app.showView('addView')">
+                    <span class="nav-icon hidden-desktop">➕</span>
+                    <span class="nav-text">Новая песня</span>
+                </button>
+                <button class="nav-chip" type="button" onclick="app.showView('libraryView')">
+                    <span class="nav-icon hidden-desktop">📚</span>
+                    <span class="nav-text">Библиотека</span>
+                </button>
             </nav>
 
             <div class="header-actions minimal-actions">
@@ -83,44 +89,14 @@
             <section id="homeView" class="view active">
                 <div class="home-stack compact-home">
                     <div class="home-hero quiet-hero">
-                        <h1>Собирай песни без лишнего шума</h1>
-                        <p class="hero-copy short-copy">Закинул материалы, проверил результат, сохранил и вечером открыл для игры.</p>
-
+                        <br><br>
+                        <h1>Твоя личная база разборов</h1>
+                        <br>
                         <div class="hero-actions hero-actions-spaced">
-                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">Новая песня</button>
-                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">Моя библиотека</button>
+                            <button class="primary-btn big-btn" type="button" onclick="app.showView('addView')">➕ Добавить песню</button>
+                            <button class="secondary-btn big-btn" type="button" onclick="app.showView('libraryView')">📚 Моя библиотека</button>
                         </div>
                     </div>
-
-                    <div class="home-flow">
-                        <div class="flow-card">
-                            <strong>1</strong>
-                            <span>Добавь скрины, ссылку или текст</span>
-                        </div>
-                        <div class="flow-card">
-                            <strong>2</strong>
-                            <span>AI соберёт песню и подтянет детали</span>
-                        </div>
-                        <div class="flow-card">
-                            <strong>3</strong>
-                            <span>Проверь и сохрани</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="feature-grid-relaxed">
-                    <article class="feature-tile soft-tile">
-                        <h3>Быстрый старт</h3>
-                        <p>Сначала кидаешь материалы, а не думаешь, какие поля сейчас обязательны.</p>
-                    </article>
-                    <article class="feature-tile soft-tile">
-                        <h3>Режим репетиции</h3>
-                        <p>Песня сохраняется как рабочий разбор: текст, бой, видео и заметки по игре.</p>
-                    </article>
-                    <article class="feature-tile soft-tile">
-                        <h3>Ручная доводка</h3>
-                        <p>Если AI ошибся, детали можно поправить уже после распознавания, а не на старте.</p>
-                    </article>
                 </div>
             </section>
 
