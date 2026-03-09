@@ -1186,22 +1186,6 @@ const app = {
         document.querySelectorAll('.view').forEach((view) => view.classList.add('hidden'));
         document.getElementById(viewId).classList.remove('hidden');
 
-        // Скрываем или показываем главное меню на мобилках в зависимости от окна
-        const mainNav = document.getElementById('mainNav');
-        if (mainNav) {
-            if (viewId === 'homeView') {
-                mainNav.classList.remove('hidden');
-                // Если мы на главном, кнопки в шапке (назад, удалить) не нужны
-                document.querySelectorAll('.header-actions, .header-inline-actions').forEach(el => {
-                    if (el.id !== 'settingsBtn' && !el.classList.contains('minimal-actions')) {
-                        el.style.display = 'none';
-                    }
-                });
-            } else {
-                mainNav.classList.add('hidden');
-            }
-        }
-
         if (viewId === 'homeView') {
             document.querySelectorAll('.app-header .header-actions:not(.minimal-actions)').forEach(el => el.classList.remove('hidden'));
             this.state.currentView = 'homeView';
