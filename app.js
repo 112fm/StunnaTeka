@@ -1183,8 +1183,13 @@ const app = {
     },
 
     showView(viewId) {
-        document.querySelectorAll('.view').forEach((view) => view.classList.add('hidden'));
-        document.getElementById(viewId).classList.remove('hidden');
+        document.querySelectorAll('.view').forEach((view) => {
+            view.classList.add('hidden');
+            view.classList.remove('active');
+        });
+        const target = document.getElementById(viewId);
+        target.classList.remove('hidden');
+        target.classList.add('active');
 
         if (viewId === 'homeView') {
             document.querySelectorAll('.app-header .header-actions:not(.minimal-actions)').forEach(el => el.classList.remove('hidden'));
