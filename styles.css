@@ -2334,12 +2334,15 @@ label[for="songTextQuick"] {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
 }
 
 .big-btn svg {
     margin: 0 !important;
-    opacity: 0.9;
+    opacity: 0.95;
+    display: block;
+    width: 22px;
+    height: 22px;
 }
 
 /* --- MOBILE REDESIGN --- */
@@ -2359,9 +2362,12 @@ label[for="songTextQuick"] {
         margin-bottom: 14px;
         grid-template-columns: 1fr auto;
         
-        /* 🚨 Убираем блюр, иначе Fixed меню застревает внутри шапки */
+        /* 🚨 Жесткий фикс Stacking Context для iOS/Android */
         backdrop-filter: none !important;
         transform: none !important;
+        perspective: none !important;
+        contain: none !important;
+        filter: none !important;
         background: var(--surface-base) !important;
     }
 
