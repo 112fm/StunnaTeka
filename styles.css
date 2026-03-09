@@ -2313,3 +2313,138 @@ label[for="songTextQuick"] {
         border-radius: 14px;
     }
 }
+
+
+/* Mobile layout stability fix v2 */
+@media (max-width: 760px) {
+    .home-stack {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .home-hero,
+    .home-flow {
+        grid-column: auto !important;
+        width: 100%;
+    }
+
+    .home-hero h1 {
+        max-width: 100%;
+        font-size: clamp(1.95rem, 7vw, 2.5rem) !important;
+        line-height: 1.06;
+    }
+
+    .hero-actions-spaced {
+        margin-top: 0;
+        padding-top: 6px;
+    }
+
+    .hero-actions-spaced .big-btn {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .home-flow {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        gap: 8px;
+        height: auto;
+    }
+
+    .flow-card {
+        min-height: 0 !important;
+        padding: 12px 14px !important;
+    }
+
+    .feature-grid-relaxed {
+        grid-template-columns: 1fr;
+        gap: 10px !important;
+    }
+
+    .soft-tile {
+        min-height: 0 !important;
+        padding: 14px !important;
+    }
+
+    .wizard-steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        overflow: visible;
+        gap: 8px;
+    }
+
+    .wizard-step {
+        min-width: 0 !important;
+        width: 100%;
+        justify-content: center;
+        padding: 10px 8px;
+    }
+
+    .wizard-step span {
+        white-space: nowrap;
+        font-size: 0.94rem;
+    }
+
+    .wizard-footer {
+        position: static !important;
+        bottom: auto !important;
+        margin-top: 12px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        backdrop-filter: none;
+    }
+
+    .wizard-footer .ghost-btn,
+    .wizard-footer .secondary-btn {
+        min-height: 44px;
+    }
+
+    .library-toolbar {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .search-input,
+    .sort-select {
+        flex: none !important;
+        width: 100% !important;
+        height: 46px !important;
+        min-height: 46px !important;
+        max-height: 46px;
+        line-height: 1.2;
+    }
+
+    .songs-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .song-card {
+        padding: 14px !important;
+    }
+
+    #songView .header-inline-actions {
+        grid-template-columns: 1fr !important;
+    }
+
+    #songView .song-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    #songView .song-meta .song-badge {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 420px) {
+    #songView .song-meta {
+        grid-template-columns: 1fr;
+    }
+}
