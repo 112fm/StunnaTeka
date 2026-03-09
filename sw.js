@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'strunoteka-v4';
+﻿const CACHE_NAME = 'strunoteka-v5';
 const ASSETS = [
     './',
     './index.html',

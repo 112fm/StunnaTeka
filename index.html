@@ -40,6 +40,12 @@
                         <label class="field-label" for="googleApiKey">Gemini API Key</label>
                         <input type="password" id="googleApiKey" placeholder="Ключ из Google AI Studio">
 
+                        <label class="field-label" for="themeSelect">Тема интерфейса</label>
+                        <select id="themeSelect">
+                            <option value="dark">Тёмная</option>
+                            <option value="light">Светлая</option>
+                        </select>
+
                         <div class="settings-tip">
                             <strong>Как это работает</strong>
                             <span>Скрины и текст отправляются только в Gemini по вашему ключу. Ключи хранятся локально в браузере.</span>
@@ -69,7 +75,6 @@
             </nav>
 
             <div class="header-actions minimal-actions">
-                <button id="themeToggleBtn" class="icon-btn subtle text-icon-btn" type="button" onclick="app.toggleTheme()">Тема</button>
                 <button id="settingsBtn" class="icon-btn subtle" type="button" onclick="app.openSettings()">⚙</button>
             </div>
         </header>

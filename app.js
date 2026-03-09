@@ -281,11 +281,14 @@ const app = {
         this.state.ghRepo = document.getElementById('ghRepo').value.trim();
         this.state.ghToken = document.getElementById('ghToken').value.trim();
         this.state.googleApiKey = document.getElementById('googleApiKey').value.trim();
+        this.state.theme = document.getElementById('themeSelect').value;
 
         localStorage.setItem('ghUsername', this.state.ghUsername);
         localStorage.setItem('ghRepo', this.state.ghRepo);
         localStorage.setItem('ghToken', this.state.ghToken);
         localStorage.setItem('googleApiKey', this.state.googleApiKey);
+        localStorage.setItem('theme', this.state.theme);
+        this.applyTheme();
 
         this.closeSettings();
         if (this.state.currentView === 'libraryView') {
@@ -298,6 +301,7 @@ const app = {
         document.getElementById('ghRepo').value = this.state.ghRepo;
         document.getElementById('ghToken').value = this.state.ghToken;
         document.getElementById('googleApiKey').value = this.state.googleApiKey;
+        document.getElementById('themeSelect').value = this.state.theme;
         document.getElementById('settingsModal').classList.remove('hidden');
     },
 
@@ -313,7 +317,10 @@ const app = {
 
     applyTheme() {
         document.documentElement.setAttribute('data-theme', this.state.theme);
-        document.getElementById('themeToggleBtn').textContent = this.state.theme === 'dark' ? 'Светлая' : 'Тёмная';
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) {
+            themeSelect.value = this.state.theme;
+        }
     },
 
     showView(viewId) {
@@ -1445,3 +1452,4 @@ if ('serviceWorker' in navigator) {
 }
 
 document.addEventListener('DOMContentLoaded', () => app.init());
+
