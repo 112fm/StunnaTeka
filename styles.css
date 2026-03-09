@@ -2397,6 +2397,10 @@ label[for="songTextQuick"] {
         display: block !important;
     }
 
+    .hidden-mobile {
+        display: none !important;
+    }
+
     /* Bottom Tab Bar */
     .app-header {
         border-radius: 0 0 var(--radius-xl) var(--radius-xl);

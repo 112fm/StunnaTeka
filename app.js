@@ -1,4 +1,4 @@
-﻿const STRUM_PATTERN_LIBRARY = [
+const STRUM_PATTERN_LIBRARY = [
     {
         id: 'shesterka',
         name: 'Шестёрка',
@@ -1180,6 +1180,41 @@ const app = {
             throw new Error('AI не вернул JSON.');
         }
         return JSON.parse(cleaned.slice(firstBrace, lastBrace + 1));
+    },
+
+    showView(viewId) {
+        document.querySelectorAll('.view').forEach((view) => view.classList.add('hidden'));
+        document.getElementById(viewId).classList.remove('hidden');
+
+        // Скрываем или показываем главное меню на мобилках в зависимости от окна
+        const mainNav = document.getElementById('mainNav');
+        if (mainNav) {
+            if (viewId === 'homeView') {
+                mainNav.classList.remove('hidden');
+                // Если мы на главном, кнопки в шапке (назад, удалить) не нужны
+                document.querySelectorAll('.header-actions, .header-inline-actions').forEach(el => {
+                    if (el.id !== 'settingsBtn' && !el.classList.contains('minimal-actions')) {
+                        el.style.display = 'none';
+                    }
+                });
+            } else {
+                mainNav.classList.add('hidden');
+            }
+        }
+
+        if (viewId === 'homeView') {
+            document.querySelectorAll('.app-header .header-actions:not(.minimal-actions)').forEach(el => el.classList.remove('hidden'));
+            this.state.currentView = 'homeView';
+        } else if (viewId === 'libraryView') {
+            this.loadStoredSongs();
+            this.state.currentView = 'libraryView';
+        } else if (viewId === 'addView') {
+            this.state.currentView = 'addView';
+            this.renderStrumBuilder();
+        } else if (viewId === 'songView') {
+            this.state.currentView = 'songView';
+        }
+        window.scrollTo(0, 0);
     },
 
     applyAiSongData(result, { replaceText }) {
