@@ -1099,6 +1099,101 @@ main {
     justify-content: center;
 }
 
+.external-link.song-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    cursor: pointer;
+    position: relative;
+}
+
+.pinned-indicator {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    background: var(--accent-color);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(240, 133, 71, 0.3);
+    z-index: 2;
+}
+
+.song-menu {
+    position: relative;
+}
+
+.song-menu-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.song-menu-btn:hover, .song-menu-btn.active {
+    background: var(--surface-soft);
+    color: var(--text-primary);
+}
+
+.song-menu-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    width: 180px;
+    background: var(--surface-strong);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.song-menu-dropdown.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.menu-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: transparent;
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.menu-action:hover {
+    background: var(--surface-soft);
+}
+
+.menu-action.danger {
+    color: var(--danger-color);
+}
+
+.menu-action.danger:hover {
+    background: rgba(255, 109, 114, 0.08);
+}
+
 .modal {
     position: fixed;
     inset: 0;

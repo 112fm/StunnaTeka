@@ -265,6 +265,10 @@ const app = {
             if (this.state.scrollInterval && this.state.currentView === 'songView' && !event.target.closest('#autoscrollBtn')) {
                 this.stopAutoscroll();
             }
+            if (!event.target.closest('.song-menu')) {
+                document.querySelectorAll('.song-menu-dropdown.active').forEach(menu => menu.classList.remove('active'));
+                document.querySelectorAll('.song-menu-btn.active').forEach(btn => btn.classList.remove('active'));
+            }
         });
 
         document.addEventListener('keydown', (event) => {
@@ -922,6 +926,7 @@ const app = {
             strum_pattern: song.strum_pattern || '',
             strum_steps: Array.isArray(song.strum_steps) ? song.strum_steps : [],
             text: this.normalizeSongText(song.text || ''),
+            is_pinned: Boolean(song.is_pinned),
             createdAt: song.createdAt || new Date().toISOString(),
             updatedAt: song.updatedAt || song.createdAt || new Date().toISOString(),
             study_tips: Array.isArray(song.study_tips) ? song.study_tips : []
@@ -954,6 +959,9 @@ const app = {
             return [song.title, song.artist, song.key, song.tuning].filter(Boolean).some((value) => value.toLowerCase().includes(query));
         });
         filtered.sort((a, b) => {
+            if (a.is_pinned !== b.is_pinned) {
+                return a.is_pinned ? -1 : 1;
+            }
             if (sortValue === 'title') {
                 return a.title.localeCompare(b.title, 'ru');
             }
@@ -980,23 +988,110 @@ const app = {
                 .filter(Boolean)
                 .map((badge) => `<span class="song-badge">${this.escapeHtml(badge)}</span>`)
                 .join('');
+            
+            const pinnedIndicator = song.is_pinned ? '<div class="pinned-indicator" title="Закреплено">📌</div>' : '';
+
             card.innerHTML = `
+                ${pinnedIndicator}
                 <div class="song-card-top">
                     <div>
                         <h3>${this.escapeHtml(song.title)}</h3>
                         <p>${this.escapeHtml(song.artist)}</p>
                     </div>
-                    <button class="danger-btn" type="button">Удалить</button>
+                    <div class="song-menu" onclick="event.stopPropagation()">
+                        <button class="icon-btn subtle song-menu-btn" type="button" aria-label="Меню. Действия с песней" onclick="app.toggleSongMenu('${song.id}', event)">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
+                        </button>
+                        <div class="song-menu-dropdown" id="song-menu-${song.id}">
+                            <button type="button" class="menu-action" onclick="app.togglePinSong('${song.id}')">${song.is_pinned ? 'Открепить' : '📌 Закрепить'}</button>
+                            <button type="button" class="menu-action" onclick="app.editSong('${song.id}')">✏️ Изменить</button>
+                            <button type="button" class="menu-action danger" onclick="app.deleteSongById('${song.id}')">🗑️ Удалить</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="song-meta">${badges || '<span class="song-badge">Метаданные не заполнены</span>'}</div>
             `;
             card.addEventListener('click', () => this.openSongView(song.id));
-            card.querySelector('.danger-btn').addEventListener('click', (event) => {
-                event.stopPropagation();
-                this.deleteSongById(song.id);
-            });
             grid.appendChild(card);
         });
+    },
+
+    toggleSongMenu(songId, event) {
+        if (event) event.stopPropagation();
+        const allMenus = document.querySelectorAll('.song-menu-dropdown');
+        const allBtns = document.querySelectorAll('.song-menu-btn');
+        const targetMenu = document.getElementById(`song-menu-${songId}`);
+        const targetBtn = event ? event.currentTarget : null;
+        
+        const isCurrentlyActive = targetMenu && targetMenu.classList.contains('active');
+
+        allMenus.forEach(menu => menu.classList.remove('active'));
+        allBtns.forEach(btn => btn.classList.remove('active'));
+
+        if (!isCurrentlyActive && targetMenu) {
+            targetMenu.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+    },
+
+    async togglePinSong(songId) {
+        const songIndex = this.state.songs.findIndex((item) => item.id === songId);
+        if (songIndex === -1) return;
+        
+        const song = this.state.songs[songIndex];
+        song.is_pinned = !song.is_pinned;
+        // Закрываем меню
+        this.toggleSongMenu(songId, null);
+
+        try {
+            await this.saveSongsToGitHub(this.state.songs, `${song.is_pinned ? 'Закреплена' : 'Откреплена'} песня: ${song.title}`);
+            this.applyLibraryFilters();
+        } catch (error) {
+            alert(`Не удалось сохранить изменения: ${error.message}`);
+            // Откатываем изменение при ошибке
+            song.is_pinned = !song.is_pinned;
+        }
+    },
+
+    editCurrentSong() {
+        if (this.state.currentSongId) {
+            this.editSong(this.state.currentSongId);
+        }
+    },
+
+    editSong(songId) {
+        const song = this.state.songs.find((item) => item.id === songId);
+        if (!song) return;
+
+        // Заполняем форму редактирования (мастер)
+        document.getElementById('songArtist').value = song.artist || '';
+        document.getElementById('songTitle').value = song.title || '';
+        document.getElementById('songVideoUrl').value = song.video_url || '';
+        document.getElementById('songKey').value = song.key || '';
+        document.getElementById('songBpm').value = song.bpm || '';
+        document.getElementById('songCapo').value = song.capo !== null ? song.capo : '';
+        document.getElementById('songTuning').value = song.tuning || '';
+        document.getElementById('songFingerings').value = song.fingerings || '';
+        document.getElementById('strumNotes').value = song.strum_notes || '';
+        document.getElementById('songText').value = song.text || '';
+        
+        // Синхронизируем бой
+        this.state.currentStrumSteps = Array.isArray(song.strum_steps) ? JSON.parse(JSON.stringify(song.strum_steps)) : [];
+        this.state.selectedStrumIndex = this.state.currentStrumSteps.length ? 0 : -1;
+        this.renderStrumBuilder();
+        
+        // Временно удаляем оригинал песни, чтобы перезаписать её при сохранении? 
+        // Нет, handleSaveSong делает find по названию/исполнителю, но лучше передадим ID.
+        // Добавим скрытое поле для ID или закроем глаза на то, что это сохранит новую копию,
+        // ОДНАКО duplicate проверка просто спросит "Такая песня уже есть. Сохранить ещё копию?".
+        // Придется изменить handleSaveSong, чтобы он обновлял песню, если она редактируется!
+        // Сохраним ID песни, которую редактируем.
+        this.state._editingSongId = song.id; 
+
+        // Переходим в мастер
+        this.showView('addView');
+        this.setWizardStep(2); // Сразу на шаг заполнения данных
+        this.persistDraft();
     },
     getCurrentSong() {
         return this.state.songs.find((song) => song.id === this.state.currentSongId) || null;
@@ -1148,15 +1243,39 @@ const app = {
             strum_pattern: this.buildStrumSummary(),
             strum_steps: this.state.currentStrumSteps,
             text,
+            is_pinned: false,
             study_tips: []
         });
-        const duplicate = this.state.songs.find((item) => item.title.toLowerCase() === song.title.toLowerCase() && item.artist.toLowerCase() === song.artist.toLowerCase());
-        if (duplicate && !confirm('Такая песня уже есть. Сохранить ещё одну копию?')) {
-            return;
+
+        let updatedSongs;
+        if (this.state._editingSongId) {
+            // Обновление существующей песни
+            const songIndex = this.state.songs.findIndex(s => s.id === this.state._editingSongId);
+            if (songIndex > -1) {
+                // Сохраняем оригинальные метаданные (created, pinned)
+                const originalSong = this.state.songs[songIndex];
+                song.id = originalSong.id;
+                song.is_pinned = originalSong.is_pinned;
+                song.createdAt = originalSong.createdAt;
+                song.updatedAt = new Date().toISOString();
+                
+                updatedSongs = [...this.state.songs];
+                updatedSongs[songIndex] = song;
+            } else {
+                updatedSongs = [...this.state.songs, song];
+            }
+            this.state._editingSongId = null; // сбрасываем состояние редактирования
+        } else {
+            // Добавление новой
+            const duplicate = this.state.songs.find((item) => item.title.toLowerCase() === song.title.toLowerCase() && item.artist.toLowerCase() === song.artist.toLowerCase());
+            if (duplicate && !confirm('Такая песня уже есть. Сохранить ещё одну копию?')) {
+                return;
+            }
+            updatedSongs = [...this.state.songs, song];
         }
-        const updatedSongs = [...this.state.songs, song];
+
         try {
-            await this.saveSongsToGitHub(updatedSongs, `Добавлена песня: ${song.title} — ${song.artist}`);
+            await this.saveSongsToGitHub(updatedSongs, `Сохранена песня: ${song.title} — ${song.artist}`);
             this.state.songs = updatedSongs;
             this.clearSongForm();
             this.applyLibraryFilters();
@@ -1188,6 +1307,7 @@ const app = {
         this.renderStrumBuilder();
         this.updatePreview();
         this.clearDraft();
+        this.state._editingSongId = null;
         this.setWizardStep(1);
     },
 
