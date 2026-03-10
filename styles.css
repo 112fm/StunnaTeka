@@ -195,24 +195,44 @@ select:focus {
 .ghost-btn,
 .stroke-btn,
 .sort-select,
-.song-badge,
-.save-chip,
-.nav-chip {
-    border-radius: 999px;
-}
-
 .nav-chip,
 .icon-btn,
 .secondary-btn,
 .ghost-btn,
 .stroke-btn,
 .sort-select,
-.song-badge,
 .save-chip,
 .upload-summary {
     border: 1px solid var(--surface-border);
     background: var(--surface-soft);
     color: var(--text-primary);
+}
+
+.song-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.song-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05); /* полупрозрачный фон */
+    border: 1px solid var(--surface-border);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+[data-theme="light"] .song-badge {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.song-badge strong {
+    color: var(--text-primary);
+    margin-left: 4px;
 }
 
 .nav-chip,
@@ -1217,20 +1237,26 @@ main {
 
 #chatForm {
     display: flex;
-    gap: 12px;
+    gap: 8px;
+    align-items: center;
 }
 
 #chatInput {
     flex: 1;
-    border-radius: 24px;
-    padding: 12px 18px;
+    border-radius: 20px;
+    padding: 10px 16px;
     margin: 0;
+    min-width: 0;
+    font-size: 0.95rem;
 }
 
 #sendChatBtn {
-    border-radius: 24px;
-    padding: 0 20px;
+    border-radius: 20px;
+    padding: 0 18px;
+    height: 42px;
     flex-shrink: 0;
+    width: auto; /* убирает растягивание */
+    font-size: 0.95rem;
 }
 
 .chat-status {
