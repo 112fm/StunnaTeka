@@ -383,31 +383,48 @@
     <!-- Modals -->
     <div id="settingsModal" class="modal hidden">
         <div class="modal-shell">
-            <div class="settings-card card">
-                <div class="card-head">
+            <div class="settings-card">
+                <div class="sheet-head">
                     <div>
-                        <h2>Настройки</h2>
+                        <p class="eyebrow">Настройки</p>
+                        <h2>Подключения и режим работы</h2>
                     </div>
+                    <button class="icon-btn subtle" type="button" onclick="app.closeSettings()">✕</button>
                 </div>
 
                 <div class="settings-grid">
-                    <div class="setting-block card">
-                        <h3>🔑 Google AI (Gemini)</h3>
-                        <p>Вставьте свой ключ Gemini для авто-распознавания текста и аккордов.</p>
-                        <input type="password" id="geminiApiKey" placeholder="AIzaSy...">
+                    <div class="setting-block">
+                        <h3>GitHub</h3>
+                        <p>Нужен для хранения базы песен.</p>
+                        <label class="field-label" for="ghUsername">Username</label>
+                        <input type="text" id="ghUsername" placeholder="Например, 112fm">
+                        <label class="field-label" for="ghRepo">Repository</label>
+                        <input type="text" id="ghRepo" placeholder="Например, StunnaTeka">
+                        <label class="field-label" for="ghToken">Token</label>
+                        <input type="password" id="ghToken" placeholder="PAT с правом repo">
                     </div>
 
-                    <div class="setting-block card">
-                        <h3>🐙 База GitHub</h3>
-                        <p>Токен (repo scope) и название репозитория для сохранения.</p>
-                        <input type="password" id="githubToken" placeholder="ghp_...">
-                        <input type="text" id="githubRepo" placeholder="username/repo" style="margin-top: 10px;">
+                    <div class="setting-block">
+                        <h3>AI</h3>
+                        <p>Нужен для OCR, заполнения песни и подсказок по разбору.</p>
+                        <label class="field-label" for="googleApiKey">Gemini API Key</label>
+                        <input type="password" id="googleApiKey" placeholder="Ключ из Google AI Studio">
+
+                        <label class="field-label" for="themeSelect">Тема интерфейса</label>
+                        <select id="themeSelect">
+                            <option value="dark">Тёмная</option>
+                            <option value="light">Светлая</option>
+                        </select>
+
+                        <div class="settings-tip">
+                            <strong>Как это работает</strong>
+                            <span>Скрины и текст отправляются только в Gemini по вашему ключу. Ключи хранятся локально в браузере.</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="sheet-actions">
-                    <button class="ghost-btn" type="button" onclick="app.closeSettings()">Отмена</button>
-                    <button class="primary-btn" type="button" onclick="app.saveSettings()">Сохранить</button>
+                    <button id="saveSettingsBtn" class="primary-btn big-btn" style="width: 100%;" type="button">Сохранить настройки</button>
                 </div>
             </div>
         </div>
