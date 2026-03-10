@@ -351,7 +351,6 @@ const app = {
 
     setWizardStep(step) {
         this.state.currentWizardStep = Math.max(1, Math.min(3, step));
-        this.updateWizard();
         this.updatePreview();
     },
 
@@ -359,46 +358,7 @@ const app = {
         this.setWizardStep(this.state.currentWizardStep + delta);
     },
 
-    updateWizard() {
-        document.querySelectorAll('.wizard-step').forEach((button) => {
-            button.classList.toggle('active', Number(button.dataset.step) === this.state.currentWizardStep);
-        });
-        document.querySelectorAll('.wizard-page').forEach((section) => {
-            section.classList.toggle('active', Number(section.dataset.page) === this.state.currentWizardStep);
-        });
-        const nextButton = document.getElementById('wizardNextBtn');
-        document.getElementById('wizardPrevBtn').disabled = this.state.currentWizardStep === 1;
-        nextButton.disabled = this.state.currentWizardStep === 3;
-        nextButton.classList.toggle('hidden', this.state.currentWizardStep === 3);
-        nextButton.textContent = this.state.currentWizardStep === 1 ? 'К проверке' : 'К сохранению';
 
-        document.getElementById('viewTitle').textContent = document.getElementById('songTitle').value || 'Название песни';
-        document.getElementById('viewArtist').textContent = document.getElementById('songArtist').value || 'Исполнитель';
-
-        const linksText = document.getElementById('songVideoUrl').value.trim();
-        const linksSection = document.getElementById('viewLinksSection');
-        const linksContainer = document.getElementById('viewVideoLinks');
-
-        if (linksText && linksContainer && linksSection) {
-            const urls = linksText.split('\n').filter(url => url.trim());
-            
-            if (urls.length > 0) {
-                linksContainer.innerHTML = urls.map(url => {
-                    url = url.trim();
-                    let hostname = url;
-                    try { hostname = new URL(url).hostname; } catch(e) {}
-                    return `<a href="${this.escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="secondary-btn external-link-btn">
-                        Открыть разбор (${this.escapeHtml(hostname)})
-                    </a>`;
-                }).join('');
-                linksSection.classList.remove('hidden');
-            } else {
-                linksSection.classList.add('hidden');
-            }
-        } else if (linksSection) {
-            linksSection.classList.add('hidden');
-        }
-    },
 
     persistDraft() {
         const draft = {
@@ -412,7 +372,6 @@ const app = {
             fingerings: document.getElementById('songFingerings').value,
             strumNotes: document.getElementById('strumNotes').value,
             text: document.getElementById('songText').value,
-            quickText: document.getElementById('songTextQuick').value,
             tuningPreset: document.getElementById('songTuningPreset').value,
             strumSteps: this.state.currentStrumSteps
         };
@@ -437,7 +396,6 @@ const app = {
             document.getElementById('songFingerings').value = draft.fingerings || '';
             document.getElementById('strumNotes').value = draft.strumNotes || '';
             document.getElementById('songText').value = draft.text || '';
-            document.getElementById('songTextQuick').value = draft.quickText || draft.text || '';
             this.state.currentStrumSteps = Array.isArray(draft.strumSteps) ? draft.strumSteps : [];
             this.state.selectedStrumIndex = this.state.currentStrumSteps.length ? 0 : -1;
         } catch (error) {
