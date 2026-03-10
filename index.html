@@ -182,6 +182,23 @@
                                             </div>
                                         </div>
                                     </details>
+                                
+                                <details class="manual-box">
+                                    <summary>📸 Прикрепить табы/ноты (Картинки)</summary>
+                                    <div class="manual-box-body">
+                                        <p class="muted-copy" style="margin-bottom: 12px; font-size: 0.9em;">
+                                            Здесь можно прикрепить картинки с табулатурами, схемами переборов или нотами. ИИ не будет пытаться их "прочитать", они сохранятся в галерею под песней.
+                                        </p>
+                                        <div class="upload-zone" id="tabsUploadZone">
+                                            <input type="file" id="tabsImageInput" accept="image/*" multiple class="hidden-input">
+                                            <p><strong id="tabsUploadSummary">Скрины табов не выбраны</strong></p>
+                                            <div class="upload-actions">
+                                                <button class="secondary-btn" type="button" onclick="document.getElementById('tabsImageInput').click()">📸 Выбрать фото / галерея</button>
+                                            </div>
+                                        </div>
+                                        <div id="tabsUploadList" class="upload-list empty">Пока нет загруженных табов.</div>
+                                    </div>
+                                </details>
                                 </div>
                             </details>
                         </div>
@@ -258,6 +275,13 @@
                             <h3>Видеоразборы</h3>
                             <div id="viewVideoLinks" class="external-links-list">
                                 <!-- Сюда скрипт вставит кнопки-ссылки -->
+                            </div>
+                        </div>
+
+                        <div id="viewTabsSection" class="song-subpanel hidden">
+                            <h3>📸 Табы и ноты</h3>
+                            <div id="viewTabsGallery" class="tabs-gallery-grid">
+                                <!-- Сюда скрипт вставит миниатюры табов -->
                             </div>
                         </div>
                     </div>
@@ -362,6 +386,19 @@
                     <button id="saveSettingsBtn" class="primary-btn big-btn" style="width: 100%;" type="button">Сохранить настройки</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Lightbox для просмотра табов на весь экран -->
+    <div id="tabsLightbox" class="lightbox-overlay hidden">
+        <button class="lightbox-close" type="button" id="closeLightboxBtn">✕</button>
+        <div class="lightbox-content-wrapper">
+            <img id="lightboxImage" src="" alt="Табулатура крупным планом">
+        </div>
+        <div class="lightbox-controls">
+            <button class="icon-btn" type="button" id="lightboxPrevBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <div class="lightbox-counter"><span id="lightboxCurrentIdx">1</span> / <span id="lightboxTotalCount">1</span></div>
+            <button class="icon-btn" type="button" id="lightboxNextBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
         </div>
     </div>
 

@@ -149,11 +149,16 @@ const app = {
         currentSongId: null,
         pendingLyricsImages: [],
         pendingPatternImages: [],
+        pendingTabsImages: [],
         currentStrumSteps: [],
         selectedStrumIndex: -1,
         studyHelperCollapsed: false,
         selectedModel: null,
-        previewObjectUrls: []
+        previewObjectUrls: [],
+        
+        // Lightbox state
+        lightboxImages: [],
+        lightboxIndex: 0
     },
 
     init() {
@@ -197,6 +202,20 @@ const app = {
 
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
             this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
+        });
+
+        document.getElementById('tabsImageInput').addEventListener('change', (event) => {
+            this.prepareImages(event.target.files, 'pendingTabsImages', 'tabsUploadSummary', 'Скрины табов');
+        });
+
+        // Lightbox events
+        document.getElementById('closeLightboxBtn').addEventListener('click', () => this.closeLightbox());
+        document.getElementById('lightboxPrevBtn').addEventListener('click', () => this.navigateLightbox(-1));
+        document.getElementById('lightboxNextBtn').addEventListener('click', () => this.navigateLightbox(1));
+        document.getElementById('tabsLightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'tabsLightbox' || e.target.classList.contains('lightbox-content-wrapper')) {
+                this.closeLightbox();
+            }
         });
 
         const pasteZone = document.getElementById('lyricsPasteZone');
@@ -268,6 +287,108 @@ const app = {
 
     hasGitHubConfig() {
         return Boolean(this.state.ghUsername && this.state.ghRepo && this.state.ghToken);
+    },
+
+    // --- LIGHTBOX METHODS ---
+    openLightbox(images, index) {
+        if (!images || !images.length) return;
+        this.state.lightboxImages = images;
+        this.state.lightboxIndex = index || 0;
+        this.renderLightbox();
+        document.getElementById('tabsLightbox').classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Запрещаем скролл под лайтбоксом
+    },
+
+    closeLightbox() {
+        document.getElementById('tabsLightbox').classList.add('hidden');
+        document.body.style.overflow = '';
+    },
+
+    navigateLightbox(direction) {
+        let nextIndex = this.state.lightboxIndex + direction;
+        if (nextIndex < 0) nextIndex = this.state.lightboxImages.length - 1;
+        if (nextIndex >= this.state.lightboxImages.length) nextIndex = 0;
+        this.state.lightboxIndex = nextIndex;
+        this.renderLightbox();
+    },
+
+    renderLightbox() {
+        const imageObj = this.state.lightboxImages[this.state.lightboxIndex];
+        const imgEl = document.getElementById('lightboxImage');
+        // Если это строка, значит URL. Если объект с url, то его
+        imgEl.src = typeof imageObj === 'string' ? imageObj : (imageObj?.url || '');
+        
+        document.getElementById('lightboxCurrentIdx').textContent = this.state.lightboxIndex + 1;
+        document.getElementById('lightboxTotalCount').textContent = this.state.lightboxImages.length;
+    },
+
+    // --- UPLOAD & CONVERSION METHODS ---
+    async processImageToWebp(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Сжимаем в webp с качеством 0.85
+                    const dataUrl = canvas.toDataURL('image/webp', 0.85);
+                    const base64Data = dataUrl.split(',')[1];
+                    
+                    resolve({
+                        base64Data,
+                        extension: 'webp'
+                    });
+                };
+                img.onerror = () => reject(new Error('Не удалось прочитать картинку для конвертации.'));
+                img.src = e.target.result;
+            };
+            reader.onerror = () => reject(new Error('Не удалось прочитать файл.'));
+            reader.readAsDataURL(file);
+        });
+    },
+
+    async uploadFileToGitHub(filePath, base64Content, message) {
+        const url = `https://api.github.com/repos/${this.state.ghUsername}/${this.state.ghRepo}/contents/${filePath}`;
+        
+        // Сначала проверяем, существует ли файл (нужен SHA для перезаписи)
+        let sha = null;
+        try {
+            const checkRes = await fetch(url, {
+                headers: {
+                    Authorization: `token ${this.state.ghToken}`,
+                    Accept: 'application/vnd.github.v3+json'
+                }
+            });
+            if (checkRes.ok) {
+                const data = await checkRes.json();
+                sha = data.sha;
+            }
+        } catch (e) {
+            // Файла нет или ошибка сети, игнорируем
+        }
+
+        const body = { message, content: base64Content };
+        if (sha) body.sha = sha;
+
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${this.state.ghToken}`,
+                Accept: 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Ошибка загрузки файла ${filePath} на GitHub.`);
+        }
     },
 
     loadSettings() {
@@ -443,7 +564,9 @@ const app = {
             ? label + ': ' + this.state[stateKey].length + ' шт.'
             : label + ' не выбраны';
 
-        const listId = stateKey === 'pendingLyricsImages' ? 'lyricsUploadList' : 'patternUploadList';
+        let listId = 'lyricsUploadList';
+        if (stateKey === 'pendingPatternImages') listId = 'patternUploadList';
+        if (stateKey === 'pendingTabsImages') listId = 'tabsUploadList';
         this.renderUploadList(listId, stateKey);
 
         if (stateKey === 'pendingLyricsImages') {
@@ -464,7 +587,9 @@ const app = {
         const files = this.state[stateKey];
         if (!files.length) {
             node.className = 'upload-list empty';
-            node.textContent = stateKey === 'pendingLyricsImages' ? 'Пока нет добавленных скринов текста.' : 'Пока нет добавленных скринов боя.';
+            if (stateKey === 'pendingLyricsImages') node.textContent = 'Пока нет добавленных скринов текста.';
+            else if (stateKey === 'pendingPatternImages') node.textContent = 'Пока нет добавленных скринов боя.';
+            else node.textContent = 'Пока нет загруженных табов.';
             return;
         }
         node.className = 'upload-list';
@@ -480,8 +605,15 @@ const app = {
             return;
         }
         this.state[stateKey].splice(index, 1);
-        const summaryId = stateKey === 'pendingLyricsImages' ? 'lyricsUploadSummary' : 'patternUploadSummary';
-        const label = stateKey === 'pendingLyricsImages' ? 'Скрины текста' : 'Скрины боя';
+        let summaryId = 'lyricsUploadSummary';
+        let label = 'Скрины текста';
+        if (stateKey === 'pendingPatternImages') {
+            summaryId = 'patternUploadSummary';
+            label = 'Скрины боя';
+        } else if (stateKey === 'pendingTabsImages') {
+            summaryId = 'tabsUploadSummary';
+            label = 'Скрины табов';
+        }
         this.updateUploadUi(stateKey, summaryId, label);
     },
 
@@ -852,7 +984,8 @@ const app = {
             is_pinned: Boolean(song.is_pinned),
             createdAt: song.createdAt || new Date().toISOString(),
             updatedAt: song.updatedAt || song.createdAt || new Date().toISOString(),
-            study_tips: Array.isArray(song.study_tips) ? song.study_tips : []
+            study_tips: Array.isArray(song.study_tips) ? song.study_tips : [],
+            tabs: Array.isArray(song.tabs) ? song.tabs : []
         };
     },
 
@@ -1056,6 +1189,7 @@ const app = {
         ].filter(Boolean).map((meta) => `<span class="song-badge">${meta}</span>`).join('');
         this.renderSongStrum(song);
         this.renderSongVideo(song.video_url);
+        this.renderSongTabs(song.tabs);
 
         // Синхронизация кнопки сворачивания
         const isCollapsed = this.state.metaCollapsed;
@@ -1133,6 +1267,31 @@ const app = {
             section.classList.remove('hidden');
         }
     },
+    renderSongTabs(tabs) {
+        const section = document.getElementById('viewTabsSection');
+        const gallery = document.getElementById('viewTabsGallery');
+        
+        if (!tabs || tabs.length === 0) {
+            section.classList.add('hidden');
+            gallery.innerHTML = '';
+            return;
+        }
+
+        const baseUrl = `https://raw.githubusercontent.com/${this.state.ghUsername}/${this.state.ghRepo}/main/`;
+
+        section.classList.remove('hidden');
+        gallery.innerHTML = '';
+        
+        tabs.forEach((tabPath, index) => {
+            const url = baseUrl + tabPath;
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = `Табулатура ${index + 1}`;
+            img.className = 'tab-thumbnail';
+            img.onclick = () => this.openLightbox(tabs.map(t => baseUrl + t), index);
+            gallery.appendChild(img);
+        });
+    },
     async handleSaveSong() {
         if (!this.hasGitHubConfig()) {
             alert('Сначала заполните GitHub-настройки.');
@@ -1171,6 +1330,8 @@ const app = {
         });
 
         let updatedSongs;
+        let existingTabs = [];
+        
         if (this.state._editingSongId) {
             // Обновление существующей песни
             const songIndex = this.state.songs.findIndex(s => s.id === this.state._editingSongId);
@@ -1181,6 +1342,7 @@ const app = {
                 song.is_pinned = originalSong.is_pinned;
                 song.createdAt = originalSong.createdAt;
                 song.updatedAt = new Date().toISOString();
+                existingTabs = originalSong.tabs || [];
                 
                 updatedSongs = [...this.state.songs];
                 updatedSongs[songIndex] = song;
@@ -1197,6 +1359,32 @@ const app = {
             updatedSongs = [...this.state.songs, song];
         }
 
+        // Обработка загружаемых табов
+        const newTabsUrls = [];
+        if (this.state.pendingTabsImages.length > 0) {
+            const btnSpan = document.querySelector('.save-song-btn span');
+            const oldSaveText = btnSpan ? btnSpan.textContent : 'Сохранить песню';
+            try {
+                for (let i = 0; i < this.state.pendingTabsImages.length; i++) {
+                    const file = this.state.pendingTabsImages[i];
+                    if (btnSpan) btnSpan.textContent = `Загрузка таба ${i + 1} из ${this.state.pendingTabsImages.length}...`;
+                    
+                    const { base64Data, extension } = await this.processImageToWebp(file);
+                    const filename = `tab_${Date.now()}_${i}.${extension}`;
+                    const filePath = `tabs/${song.id}/${filename}`;
+                    
+                    await this.uploadFileToGitHub(filePath, base64Data, `Добавлен таб для ${song.title}`);
+                    newTabsUrls.push(filePath);
+                }
+            } catch (err) {
+                alert('Ошибка при загрузке табов. Песня может быть сохранена не полностью: ' + err.message);
+            } finally {
+                if (btnSpan) btnSpan.textContent = oldSaveText;
+            }
+        }
+        
+        song.tabs = [...existingTabs, ...newTabsUrls];
+
         try {
             await this.saveSongsToGitHub(updatedSongs, `Сохранена песня: ${song.title} — ${song.artist}`);
             this.state.songs = updatedSongs;
@@ -1212,6 +1400,7 @@ const app = {
         this.state.currentStrumSteps = [];
         this.state.selectedStrumIndex = -1;
         this.state.pendingLyricsImages = [];
+        this.state.pendingTabsImages = [];
         this.revokePreviewUrls();
         
         const lyricsSummary = document.getElementById('lyricsUploadSummary');
@@ -1221,6 +1410,15 @@ const app = {
         if (lyricsList) {
             lyricsList.textContent = 'Пока нет добавленных скринов текста.';
             lyricsList.className = 'upload-list empty';
+        }
+
+        const tabsSummary = document.getElementById('tabsUploadSummary');
+        if (tabsSummary) tabsSummary.textContent = 'Скрины табов не выбраны';
+
+        const tabsList = document.getElementById('tabsUploadList');
+        if (tabsList) {
+            tabsList.textContent = 'Пока нет загруженных табов.';
+            tabsList.className = 'upload-list empty';
         }
         
         const quickText = document.getElementById('songTextQuick');
