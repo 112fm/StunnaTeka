@@ -198,9 +198,6 @@ const app = {
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
             this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
         });
-        document.getElementById('patternImageInput').addEventListener('change', (event) => {
-            this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'Скрины боя');
-        });
 
         const pasteZone = document.getElementById('lyricsPasteZone');
         pasteZone.addEventListener('click', () => pasteZone.focus());
@@ -1264,26 +1261,33 @@ const app = {
         this.state.currentStrumSteps = [];
         this.state.selectedStrumIndex = -1;
         this.state.pendingLyricsImages = [];
-        this.state.pendingPatternImages = [];
         this.revokePreviewUrls();
-        document.getElementById('lyricsUploadSummary').textContent = 'Скрины текста не выбраны';
-        document.getElementById('patternUploadSummary').textContent = 'Скрины боя не выбраны';
-        document.getElementById('lyricsUploadList').textContent = 'Пока нет добавленных скринов текста.';
-        document.getElementById('lyricsUploadList').className = 'upload-list empty';
-        document.getElementById('patternUploadList').textContent = 'Пока нет добавленных скринов боя.';
-        document.getElementById('patternUploadList').className = 'upload-list empty';
-        document.getElementById('songTextQuick').value = '';
+        
+        const lyricsSummary = document.getElementById('lyricsUploadSummary');
+        if (lyricsSummary) lyricsSummary.textContent = 'Скрины текста не выбраны';
+        
+        const lyricsList = document.getElementById('lyricsUploadList');
+        if (lyricsList) {
+            lyricsList.textContent = 'Пока нет добавленных скринов текста.';
+            lyricsList.className = 'upload-list empty';
+        }
+        
+        const quickText = document.getElementById('songTextQuick');
+        if (quickText) quickText.value = '';
+        
         document.getElementById('songTuningPreset').value = '';
         document.getElementById('strumPresetSelect').value = '';
+        
         const pasteZone = document.getElementById('lyricsPasteZone');
-        pasteZone.classList.remove('has-content');
-        pasteZone.querySelector('strong').textContent = 'Вставить скрин из буфера';
-        pasteZone.querySelector('span').textContent = 'Кликни сюда и нажми Ctrl + V. На телефоне используй выбор файла.';
+        if (pasteZone) {
+            pasteZone.classList.remove('has-content');
+            const strongTag = pasteZone.querySelector('strong');
+            if (strongTag) strongTag.textContent = 'Вставить из буфера (Ctrl+V)';
+        }
+        
         this.renderStrumBuilder();
-        this.updatePreview();
         this.clearDraft();
         this.state._editingSongId = null;
-        this.setWizardStep(1);
     },
 
     async deleteSongById(songId) {
