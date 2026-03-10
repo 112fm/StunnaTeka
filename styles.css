@@ -1087,8 +1087,9 @@ main {
 
 @media (max-width: 1080px) {
     .app-header {
-        grid-template-columns: 1fr;
-        justify-items: stretch;
+        display: flex; /* Override any grid overrides */
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     .top-nav {

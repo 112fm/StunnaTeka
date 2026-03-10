@@ -11,54 +11,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="settingsModal" class="modal hidden">
-        <div class="modal-shell">
-            <div class="settings-card">
-                <div class="sheet-head">
-                    <div>
-                        <p class="eyebrow">Настройки</p>
-                        <h2>Подключения и режим работы</h2>
-                    </div>
-                    <button class="icon-btn subtle" type="button" onclick="app.closeSettings()">✕</button>
-                </div>
-
-                <div class="settings-grid">
-                    <div class="setting-block">
-                        <h3>GitHub</h3>
-                        <p>Нужен для хранения базы песен.</p>
-                        <label class="field-label" for="ghUsername">Username</label>
-                        <input type="text" id="ghUsername" placeholder="Например, 112fm">
-                        <label class="field-label" for="ghRepo">Repository</label>
-                        <input type="text" id="ghRepo" placeholder="Например, StunnaTeka">
-                        <label class="field-label" for="ghToken">Token</label>
-                        <input type="password" id="ghToken" placeholder="PAT с правом repo">
-                    </div>
-
-                    <div class="setting-block">
-                        <h3>AI</h3>
-                        <p>Нужен для OCR, заполнения песни и подсказок по разбору.</p>
-                        <label class="field-label" for="googleApiKey">Gemini API Key</label>
-                        <input type="password" id="googleApiKey" placeholder="Ключ из Google AI Studio">
-
-                        <label class="field-label" for="themeSelect">Тема интерфейса</label>
-                        <select id="themeSelect">
-                            <option value="dark">Тёмная</option>
-                            <option value="light">Светлая</option>
-                        </select>
-
-                        <div class="settings-tip">
-                            <strong>Как это работает</strong>
-                            <span>Скрины и текст отправляются только в Gemini по вашему ключу. Ключи хранятся локально в браузере.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sheet-actions">
-                    <button id="saveSettingsBtn" class="primary-btn" type="button">Сохранить настройки</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="appContainer">
         <header class="app-header minimal-header">
