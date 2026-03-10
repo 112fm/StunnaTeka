@@ -168,7 +168,6 @@ const app = {
         this.loadDraft();
         this.renderStrumBuilder();
         this.renderStrumPresetOptions();
-        this.updateWizard();
         this.updatePreview();
         
         // Восстановление состояния панелей
