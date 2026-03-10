@@ -369,6 +369,33 @@ const app = {
         nextButton.disabled = this.state.currentWizardStep === 3;
         nextButton.classList.toggle('hidden', this.state.currentWizardStep === 3);
         nextButton.textContent = this.state.currentWizardStep === 1 ? 'К проверке' : 'К сохранению';
+
+        document.getElementById('viewTitle').textContent = document.getElementById('songTitle').value || 'Название песни';
+        document.getElementById('viewArtist').textContent = document.getElementById('songArtist').value || 'Исполнитель';
+
+        const linksText = document.getElementById('songVideoUrl').value.trim();
+        const linksSection = document.getElementById('viewLinksSection');
+        const linksContainer = document.getElementById('viewVideoLinks');
+
+        if (linksText && linksContainer && linksSection) {
+            const urls = linksText.split('\n').filter(url => url.trim());
+            
+            if (urls.length > 0) {
+                linksContainer.innerHTML = urls.map(url => {
+                    url = url.trim();
+                    let hostname = url;
+                    try { hostname = new URL(url).hostname; } catch(e) {}
+                    return `<a href="${this.escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="secondary-btn external-link-btn">
+                        Открыть разбор (${this.escapeHtml(hostname)})
+                    </a>`;
+                }).join('');
+                linksSection.classList.remove('hidden');
+            } else {
+                linksSection.classList.add('hidden');
+            }
+        } else if (linksSection) {
+            linksSection.classList.add('hidden');
+        }
     },
 
     persistDraft() {
@@ -733,6 +760,33 @@ const app = {
     },
 
     updatePreview() {
+        document.getElementById('viewTitle').textContent = document.getElementById('songTitle').value || 'Название песни';
+        document.getElementById('viewArtist').textContent = document.getElementById('songArtist').value || 'Исполнитель';
+
+        const linksText = document.getElementById('songVideoUrl').value.trim();
+        const linksSection = document.getElementById('viewLinksSection');
+        const linksContainer = document.getElementById('viewVideoLinks');
+
+        if (linksText && linksContainer && linksSection) {
+            const urls = linksText.split('\n').filter(url => url.trim());
+            
+            if (urls.length > 0) {
+                linksContainer.innerHTML = urls.map(url => {
+                    url = url.trim();
+                    let hostname = url;
+                    try { hostname = new URL(url).hostname; } catch(e) {}
+                    return `<a href="${this.escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="secondary-btn external-link-btn">
+                        Открыть разбор (${this.escapeHtml(hostname)})
+                    </a>`;
+                }).join('');
+                linksSection.classList.remove('hidden');
+            } else {
+                linksSection.classList.add('hidden');
+            }
+        } else if (linksSection) {
+            linksSection.classList.add('hidden');
+        }
+
         this.renderSourcePreview();
         const text = this.normalizeSongText(document.getElementById('songText').value);
         const previewNode = document.getElementById('songPreview');
@@ -949,12 +1003,12 @@ const app = {
         document.getElementById('studyHelperPanel').classList.add('hidden');
         document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(song.study_tips);
         document.getElementById('viewMeta').innerHTML = [
-            song.key && `Тональность: ${song.key}`,
-            song.bpm && `BPM: ${song.bpm}`,
-            Number.isFinite(song.capo) ? `Капо: ${song.capo}` : '',
-            song.tuning && `Строй: ${song.tuning}`,
+            song.key && `Тональность: <strong>${song.key}</strong>`,
+            song.bpm && `BPM: <strong>${song.bpm}</strong>`,
+            Number.isFinite(song.capo) ? `Каподастр: <strong>${song.capo} лад</strong>` : '',
+            song.tuning && `Строй: <strong>${song.tuning}</strong>`,
             song.fingerings && 'Есть заметки по аппликатуре'
-        ].filter(Boolean).map((meta) => `<span class="song-badge">${this.escapeHtml(meta)}</span>`).join('');
+        ].filter(Boolean).map((meta) => `<span class="song-badge">${meta}</span>`).join('');
         this.renderSongStrum(song);
         this.renderSongVideo(song.video_url);
         this.showView('songView');
@@ -986,31 +1040,30 @@ const app = {
             muted: token.includes('x')
         }));
     },
-    renderSongVideo(url) {
+    renderSongVideo(urlText) {
         const section = document.getElementById('viewLinksSection');
-        const embedWrapper = document.getElementById('viewVideoEmbed');
-        const iframe = document.getElementById('viewYoutube');
-        const linkNode = document.getElementById('viewVideoLink');
+        const linksContainer = document.getElementById('viewVideoLinks');
+        
         section.classList.add('hidden');
-        embedWrapper.classList.add('hidden');
-        linkNode.classList.add('hidden');
-        iframe.src = '';
-        if (!url) {
+        if (!linksContainer) return;
+        linksContainer.innerHTML = '';
+        
+        if (!urlText) {
             return;
         }
-        section.classList.remove('hidden');
-        const youtubeId = this.extractYoutubeId(url);
-        if (youtubeId) {
-            embedWrapper.classList.remove('hidden');
-            iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
-        }
-        linkNode.href = url;
-        linkNode.classList.remove('hidden');
-    },
 
-    extractYoutubeId(url) {
-        const match = url.match(/(?:youtube\.com\/(?:[^/]+\/.*\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/i);
-        return match ? match[1] : null;
+        const urls = urlText.split('\n').filter(u => u.trim());
+        if (urls.length > 0) {
+            linksContainer.innerHTML = urls.map(url => {
+                url = url.trim();
+                let hostname = url;
+                try { hostname = new URL(url).hostname; } catch(e) {}
+                return `<a href="${this.escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="secondary-btn external-link-btn">
+                    Открыть разбор (${this.escapeHtml(hostname)})
+                </a>`;
+            }).join('');
+            section.classList.remove('hidden');
+        }
     },
     async handleSaveSong() {
         if (!this.hasGitHubConfig()) {

@@ -137,10 +137,10 @@
                                             <label class="field-label" for="songTitle">Название</label>
                                             <input type="text" id="songTitle" placeholder="Например, Группа крови">
                                         </div>
-                                        <div>
-                                            <label class="field-label" for="songVideoUrl">Ссылка на разбор</label>
-                                            <input type="url" id="songVideoUrl" placeholder="YouTube, VK Видео, Instagram и т.д.">
-                                        </div>
+                                        <div class="field-pair">
+                        <label class="field-label" for="songVideoUrl">Ссылки на уроки (YouTube, TikTok...)</label>
+                        <textarea id="songVideoUrl" placeholder="https://youtube.com/...&#10;https://tiktok.com/..."></textarea>
+                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -330,11 +330,10 @@
                     </div>
 
                     <div id="viewLinksSection" class="song-subpanel hidden">
-                        <h3>Видео</h3>
-                        <div id="viewVideoEmbed" class="youtube-container hidden">
-                            <iframe id="viewYoutube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <h3>Видеоразборы</h3>
+                        <div id="viewVideoLinks" class="external-links-list">
+                            <!-- Сюда скрипт вставит кнопки-ссылки -->
                         </div>
-                        <a id="viewVideoLink" class="secondary-btn hidden" href="#" target="_blank" rel="noopener noreferrer">Открыть видеоразбор</a>
                     </div>
 
                     <div class="song-controls">
