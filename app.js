@@ -242,8 +242,6 @@ const app = {
                 this.sendChatMessage(event.target.dataset.prompt, event.target.textContent);
             }
         });
-        
-        document.getElementById('songTextQuick').addEventListener('input', (event) => this.syncQuickTextToMain(event.target.value));
         document.getElementById('songTuningPreset').addEventListener('change', (event) => this.applyTuningPreset(event.target.value));
 
         document.addEventListener('click', (event) => {
@@ -449,11 +447,6 @@ const app = {
 
     clearDraft() {
         localStorage.removeItem('songDraft');
-    },
-
-    syncQuickTextToMain(value) {
-        document.getElementById('songText').value = value;
-        this.persistDraft();
     },
 
     applyTuningPreset(value) {
