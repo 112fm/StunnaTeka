@@ -346,36 +346,45 @@
                         <button id="studyHelperBtn" class="primary-btn" type="button">AI-помощь</button>
                     </div>
                 </div>
-                <div id="studyHelperPanel" class="panel hidden">
-                    <div class="panel-header helper-head">
-                        <div>
-                            <p class="panel-title">AI-помощник</p>
-                            <p class="panel-subtitle">Выбери режим, с чем нужна помощь, и запусти разбор от AI.</p>
-                        </div>
-                        <button id="studyHelperCollapseBtn" class="ghost-btn" type="button">Свернуть советы</button>
-                    </div>
-                    <div id="studyHelperContent">
-                        <div class="helper-toolbar">
-                            <select id="studyHelperMode" class="sort-select">
-                                <option value="overview">Помощь по разбору песни</option>
-                                <option value="chords">Помощь по аккордам</option>
-                                <option value="barre">Чем заменить баррэ</option>
-                                <option value="practice">Как быстрее выучить песню</option>
-                            </select>
-                            <button id="runStudyHelperBtn" class="secondary-btn" type="button">Запросить AI</button>
-                        </div>
-                        <div id="studyHelperStatus" class="ocr-status hidden">
-                            <span class="spinner"></span>
-                            <span id="studyHelperStatusText">AI готовит ответ...</span>
-                        </div>
-                        <div id="studyHelperOutput" class="study-helper-output"></div>
-                    </div>
-                </div>
-
                 <div class="panel song-sheet-panel">
                     <div id="viewText" class="song-render song-render-sheet"></div>
                 </div>
             </section>
+            
+            <!-- Плавающая кнопка Чата -->
+            <button id="aiChatFab" class="fab-btn" type="button" aria-label="Открыть AI чат">
+                ✨
+            </button>
+
+            <!-- Окно AI Чата -->
+            <div id="aiChatOverlay" class="chat-overlay hidden">
+                <div class="chat-header">
+                    <p class="chat-title">Чат AI</p>
+                    <button class="icon-btn subtle" type="button" id="closeChatBtn">✕</button>
+                </div>
+                
+                <div id="chatMessages" class="chat-messages">
+                    <div class="chat-msg ai-msg">
+                        <p>Привет! Я могу подсказать, как играть эту песню, или ответить на вопросы по аккордам. Выбери быструю команду или напиши свой вопрос.</p>
+                        <div class="chat-quick-actions">
+                            <button class="ghost-btn quick-reply-btn" data-prompt="overview">Общий разбор</button>
+                            <button class="ghost-btn quick-reply-btn" data-prompt="chords">Помощь по аккордам</button>
+                            <button class="ghost-btn quick-reply-btn" data-prompt="barre">Чем заменить баррэ?</button>
+                            <button class="ghost-btn quick-reply-btn" data-prompt="practice">Как быстрее выучить?</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div id="chatStatus" class="chat-status hidden">
+                        <span class="spinner-small"></span> AI печатает...
+                    </div>
+                    <form id="chatForm">
+                        <input type="text" id="chatInput" placeholder="Спроси AI о песне..." autocomplete="off">
+                        <button type="submit" class="primary-btn" id="sendChatBtn">Отправить</button>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
 

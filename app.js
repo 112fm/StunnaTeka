@@ -237,12 +237,18 @@ const app = {
         document.getElementById('deleteStepBtn').addEventListener('click', () => this.deleteSelectedStrumStep());
         document.getElementById('clearStrumBtn').addEventListener('click', () => this.clearStrumSteps());
         document.getElementById('strumPresetSelect').addEventListener('change', (event) => this.applyStrumPreset(event.target.value));
-        document.getElementById('studyHelperBtn').addEventListener('click', () => this.toggleStudyHelperPanel());
-        document.getElementById('runStudyHelperBtn').addEventListener('click', () => this.runStudyHelper());
-        const collapseBtn = document.getElementById('studyHelperCollapseBtn');
-        if (collapseBtn) {
-            collapseBtn.addEventListener('click', () => this.toggleStudyHelperContent());
-        }
+        document.getElementById('aiChatFab').addEventListener('click', () => this.toggleAiChat(true));
+        document.getElementById('closeChatBtn').addEventListener('click', () => this.toggleAiChat(false));
+        document.getElementById('chatForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            this.sendChatMessage();
+        });
+        document.getElementById('chatMessages').addEventListener('click', (event) => {
+            if (event.target.classList.contains('quick-reply-btn')) {
+                this.sendChatMessage(event.target.dataset.prompt, event.target.textContent);
+            }
+        });
+        
         document.getElementById('songTextQuick').addEventListener('input', (event) => this.syncQuickTextToMain(event.target.value));
         document.getElementById('songTuningPreset').addEventListener('change', (event) => this.applyTuningPreset(event.target.value));
 
@@ -1000,8 +1006,24 @@ const app = {
         document.getElementById('viewTitle').textContent = song.title;
         document.getElementById('viewArtist').textContent = song.artist;
         document.getElementById('viewText').innerHTML = this.renderSongMarkup(song.text);
-        document.getElementById('studyHelperPanel').classList.add('hidden');
-        document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(song.study_tips);
+        
+        // Закрываем чат, если он был открыт из прошлой песни
+        this.toggleAiChat(false);
+        // Сбрасываем чат к начальному сообщению
+        const chatMessages = document.getElementById('chatMessages');
+        if (chatMessages) {
+            chatMessages.innerHTML = `
+                <div class="chat-msg ai-msg">
+                    <p>Привет! Я могу подсказать, как играть эту песню, или ответить на вопросы по аккордам. Выбери быструю команду или напиши свой вопрос.</p>
+                    <div class="chat-quick-actions">
+                        <button class="ghost-btn quick-reply-btn" data-prompt="overview">Общий разбор</button>
+                        <button class="ghost-btn quick-reply-btn" data-prompt="chords">Помощь по аккордам</button>
+                        <button class="ghost-btn quick-reply-btn" data-prompt="barre">Чем заменить баррэ?</button>
+                        <button class="ghost-btn quick-reply-btn" data-prompt="practice">Как быстрее выучить?</button>
+                    </div>
+                </div>
+            `;
+        }
         document.getElementById('viewMeta').innerHTML = [
             song.key && `Тональность: <strong>${song.key}</strong>`,
             song.bpm && `BPM: <strong>${song.bpm}</strong>`,
@@ -1360,97 +1382,80 @@ const app = {
         }
     },
 
-    renderStoredStudyTips(studyTips) {
-        if (!Array.isArray(studyTips) || !studyTips.length) {
-            return '<p class="muted-copy">Открой AI-помощь и выбери, с чем нужна помощь по этой песне.</p>';
-        }
-        return `<section class="helper-card"><h3>Короткие советы</h3><div class="helper-list">${studyTips.map((tip) => `<p>${this.escapeHtml(tip)}</p>`).join('')}</div></section>`;
-    },
-
-    toggleStudyHelperPanel(forceOpen) {
-        const panel = document.getElementById('studyHelperPanel');
-        const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('hidden');
-        panel.classList.toggle('hidden', !shouldOpen);
+    toggleAiChat(forceOpen) {
+        const overlay = document.getElementById('aiChatOverlay');
+        const fab = document.getElementById('aiChatFab');
+        const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : overlay.classList.contains('hidden');
+        
+        overlay.classList.toggle('hidden', !shouldOpen);
+        fab.classList.toggle('hidden', shouldOpen);
+        
         if (shouldOpen) {
-            this.toggleStudyHelperContent(false);
-            if (!document.getElementById('studyHelperOutput').innerHTML.trim()) {
-                document.getElementById('studyHelperOutput').innerHTML = this.renderStoredStudyTips(this.getCurrentSong()?.study_tips || []);
-            }
+            document.getElementById('chatInput').focus();
         }
     },
 
-    toggleStudyHelperContent(forceCollapsed) {
-        const content = document.getElementById('studyHelperContent');
-        const button = document.getElementById('studyHelperCollapseBtn');
-        const panel = document.getElementById('studyHelperPanel');
-        if (!content || !button || !panel) {
-            return;
+    appendChatMessage(text, sender = 'user', isHtml = false) {
+        const messagesContainer = document.getElementById('chatMessages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chat-msg ${sender === 'user' ? 'user-msg' : 'ai-msg'}`;
+        
+        if (isHtml) {
+            msgDiv.innerHTML = text;
+        } else {
+            msgDiv.innerHTML = `<p>${this.escapeHtml(text)}</p>`;
         }
-        const collapse = typeof forceCollapsed === 'boolean'
-            ? forceCollapsed
-            : !this.state.studyHelperCollapsed;
-        this.state.studyHelperCollapsed = collapse;
-        content.classList.toggle('hidden', collapse);
-        panel.classList.toggle('helper-collapsed', collapse);
-        button.textContent = collapse ? 'Развернуть советы' : 'Свернуть советы';
+        
+        messagesContainer.appendChild(msgDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     },
 
-    async runStudyHelper() {
+    async sendChatMessage(promptKey, displayText) {
         const song = this.getCurrentSong();
-        if (!song) {
-            return;
-        }
-        const mode = document.getElementById('studyHelperMode').value;
-        const panel = document.getElementById('studyHelperPanel');
-        const status = document.getElementById('studyHelperStatus');
-        const output = document.getElementById('studyHelperOutput');
+        if (!song) return;
+
+        const inputField = document.getElementById('chatInput');
+        const statusNode = document.getElementById('chatStatus');
+        
+        const rawInput = inputField.value.trim();
+        const userMessage = displayText || rawInput;
+        
+        if (!userMessage && !promptKey) return;
+
+        // Показываем сообщение пользователя
+        this.appendChatMessage(userMessage, 'user');
+        inputField.value = '';
+
         const modePrompts = {
-            overview: 'Нужна общая помощь по разбору песни: как играть, на что обратить внимание, как воспринимать форму.',
-            chords: 'Нужна помощь именно по аккордам: какие переходы сложные, что проверить, как упростить.',
-            barre: 'Нужна помощь по замене баррэ и упрощённым вариантам аккордов.',
-            practice: 'Нужен план, как быстрее выучить песню и довести до уверенного исполнения.'
+            overview: 'Мне нужен общий разбор: как играть эту песню, на что обратить внимание (бой, вступление, ритм).',
+            chords: 'Помоги с аккордами из этой песни: как их ставить, какие переходы сложные.',
+            barre: 'Подскажи, чем заменить аккорды с баррэ в этой песне на более простые открытые варианты.',
+            practice: 'Составь короткий план: как мне быстрее выучить и отработать эту песню.'
         };
-        panel.classList.remove('hidden');
-        this.toggleStudyHelperContent(false);
-        status.classList.remove('hidden');
-        output.innerHTML = '';
-        try {
-            const prompt = `
-Ты — помощник по гитарному разбору песни.
-Верни только JSON без markdown-разметки внутри строк (не используй **, __, списки с маркерами).
-
-Запрос пользователя:
-${modePrompts[mode] || modePrompts.overview}
-
-Песня:
+        
+        const systemInstruction = `Ты — гитарный AI-репетитор. Отвечай кратко, емко, дружелюбно, как в мессенджере. Пиши простым текстом (можно делить на абзацы), без markdown (без **, ## и списков).
+        
+Разбираем песню:
 Название: ${song.title}
-Исполнитель: ${song.artist}
 Тональность: ${song.key || 'не указана'}
-BPM: ${song.bpm || 'не указан'}
-Строй: ${song.tuning || 'не указан'}
-Бой: ${song.strum_pattern || 'не указан'}
-Аппликатура: ${song.fingerings || 'нет'}
-Текст:
-${song.text}
+Текст и аккорды:
+${song.text}`;
 
-Нужен JSON такого вида:
-{
-  "overview": "",
-  "practice_plan": ["", ""],
-  "barre_replacements": ["", ""],
-  "hard_spots": ["", ""],
-  "performance_advice": ["", ""],
-  "study_tips": ["", ""]
-}
-`.trim();
-            const rawResponse = await this.requestGemini([{ text: prompt }]);
-            const parsed = this.extractJsonBlock(rawResponse);
-            song.study_tips = Array.isArray(parsed.study_tips) ? parsed.study_tips.map((tip) => this.sanitizeAiText(tip)).filter(Boolean) : [];
-            output.innerHTML = this.renderStudyHelper(parsed);
+        const question = promptKey ? modePrompts[promptKey] : rawInput;
+
+        statusNode.classList.remove('hidden');
+        
+        try {
+            const rawResponse = await this.requestGemini([
+                { text: systemInstruction },
+                { text: `Вопрос пользователя: ${question}` }
+            ]);
+            
+            this.appendChatMessage(this.sanitizeAiText(rawResponse), 'ai', false);
         } catch (error) {
-            output.innerHTML = `<p class="error-text">${this.escapeHtml(error.message)}</p>`;
+            this.appendChatMessage(`Ошибка связи с AI: ${error.message}`, 'ai', false);
         } finally {
-            status.classList.add('hidden');
+            statusNode.classList.add('hidden');
         }
     },
     sanitizeAiText(value) {
@@ -1465,24 +1470,7 @@ ${song.text}
             .trim();
     },
 
-    renderStudyHelper(data) {
-        const sections = [
-            ['Обзор', data.overview ? `<p>${this.escapeHtml(this.sanitizeAiText(data.overview))}</p>` : ''],
-            ['План разучивания', this.renderHelperList(data.practice_plan)],
-            ['Чем заменить баррэ', this.renderHelperList(data.barre_replacements)],
-            ['Сложные места', this.renderHelperList(data.hard_spots)],
-            ['Советы по исполнению', this.renderHelperList(data.performance_advice)],
-            ['Быстрые подсказки', this.renderHelperList(data.study_tips)]
-        ].filter(([, content]) => content);
-        return sections.map(([title, content]) => `<section class="helper-card"><h3>${this.escapeHtml(title)}</h3>${content}</section>`).join('');
-    },
 
-    renderHelperList(items) {
-        if (!Array.isArray(items) || !items.length) {
-            return '';
-        }
-        return `<div class="helper-list">${items.map((item) => this.sanitizeAiText(item)).filter(Boolean).map((item) => `<p>${this.escapeHtml(item)}</p>`).join('')}</div>`;
-    },
 
     toggleAutoscroll() {
         if (this.state.scrollInterval) {
