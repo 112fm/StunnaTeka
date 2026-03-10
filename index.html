@@ -309,14 +309,20 @@
 
             <section id="songView" class="view hidden">
                 <div class="view-heading">
-                    <div>
-                        <p class="eyebrow">Песня</p>
-                        <h2 id="viewTitle">Название песни</h2>
-                        <p id="viewArtist" class="subheadline">Исполнитель</p>
-                    </div>
-                    <div class="header-inline-actions">
-                        <button class="ghost-btn" type="button" onclick="app.showView('libraryView')">Назад</button>
-                        <button class="danger-btn" type="button" onclick="app.deleteCurrentSong()">Удалить</button>
+                    <div class="song-header-main">
+                        <div>
+                            <p class="eyebrow">Песня</p>
+                            <h2 id="viewTitle">Название песни</h2>
+                            <p id="viewArtist" class="subheadline">Исполнитель</p>
+                        </div>
+                        <div class="header-icon-actions">
+                            <button class="icon-btn subtle" type="button" aria-label="Назад" onclick="app.showView('libraryView')" title="Назад">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button class="icon-btn danger-icon-btn" type="button" aria-label="Удалить песню" onclick="app.deleteCurrentSong()" title="Удалить песню">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
