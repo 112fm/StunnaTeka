@@ -374,6 +374,20 @@ main {
     background: rgba(255, 255, 255, 0.94);
 }
 
+.meta-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.meta-header .ghost-btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px dashed var(--surface-border);
+}
+
 .hero-panel,
 .feature-tile,
 .wizard-card,

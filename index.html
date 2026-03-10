@@ -321,28 +321,33 @@
                 </div>
 
                 <div class="panel">
-                    <div class="song-meta" id="viewMeta"></div>
-
-                    <div id="viewStrumSection" class="song-subpanel hidden">
-                        <h3>Бой</h3>
-                        <div id="viewStrumPreview"></div>
-                        <p id="viewStrumNotes" class="muted-copy"></p>
+                    <div class="meta-header">
+                        <button id="toggleMetaBtn" class="ghost-btn" type="button" onclick="app.toggleSongMeta()">Свернуть метаданные</button>
                     </div>
+                    <div id="songMetaContent" class="meta-content">
+                        <div class="song-meta" id="viewMeta"></div>
 
-                    <div id="viewLinksSection" class="song-subpanel hidden">
-                        <h3>Видеоразборы</h3>
-                        <div id="viewVideoLinks" class="external-links-list">
-                            <!-- Сюда скрипт вставит кнопки-ссылки -->
+                        <div id="viewStrumSection" class="song-subpanel hidden">
+                            <h3>Бой</h3>
+                            <div id="viewStrumPreview"></div>
+                            <p id="viewStrumNotes" class="muted-copy"></p>
                         </div>
-                    </div>
 
-                    <div class="song-controls">
-                        <button id="autoscrollBtn" class="secondary-btn" type="button" onclick="app.toggleAutoscroll()">Автоскролл</button>
-                        <label class="speed-control">
-                            <span>Скорость</span>
-                            <input type="range" id="scrollSpeed" min="1" max="10" value="3" oninput="app.updateScrollSpeed(this.value)">
-                            <strong id="speedValue">3</strong>
-                        </label>
+                        <div id="viewLinksSection" class="song-subpanel hidden">
+                            <h3>Видеоразборы</h3>
+                            <div id="viewVideoLinks" class="external-links-list">
+                                <!-- Сюда скрипт вставит кнопки-ссылки -->
+                            </div>
+                        </div>
+
+                        <div class="song-controls">
+                            <button id="autoscrollBtn" class="secondary-btn" type="button" onclick="app.toggleAutoscroll()">Автоскролл</button>
+                            <label class="speed-control">
+                                <span>Скорость</span>
+                                <input type="range" id="scrollSpeed" min="1" max="10" value="3" oninput="app.updateScrollSpeed(this.value)">
+                                <strong id="speedValue">3</strong>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="panel song-sheet-panel">

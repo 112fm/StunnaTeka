@@ -165,6 +165,11 @@ const app = {
         this.renderStrumPresetOptions();
         this.updateWizard();
         this.updatePreview();
+        
+        // Восстановление состояния панелей
+        if (localStorage.getItem('metaCollapsed') === 'true') {
+            this.toggleSongMeta(true);
+        }
 
         if (!this.hasGitHubConfig()) {
             this.openSettings();
@@ -1033,8 +1038,31 @@ const app = {
         ].filter(Boolean).map((meta) => `<span class="song-badge">${meta}</span>`).join('');
         this.renderSongStrum(song);
         this.renderSongVideo(song.video_url);
+
+        // Синхронизация кнопки сворачивания
+        const isCollapsed = this.state.metaCollapsed;
+        const btn = document.getElementById('toggleMetaBtn');
+        if (btn) btn.textContent = isCollapsed ? 'Развернуть метаданные' : 'Свернуть метаданные';
+        
         this.showView('songView');
     },
+
+    toggleSongMeta(forceCollapsed) {
+        const content = document.getElementById('songMetaContent');
+        const btn = document.getElementById('toggleMetaBtn');
+        if (!content || !btn) return;
+
+        const isCollapsed = typeof forceCollapsed === 'boolean' 
+            ? forceCollapsed 
+            : !content.classList.contains('hidden');
+
+        this.state.metaCollapsed = isCollapsed;
+        localStorage.setItem('metaCollapsed', String(isCollapsed));
+        
+        content.classList.toggle('hidden', isCollapsed);
+        btn.textContent = isCollapsed ? 'Развернуть метаданные' : 'Свернуть метаданные';
+    },
+
     renderSongStrum(song) {
         const section = document.getElementById('viewStrumSection');
         const preview = document.getElementById('viewStrumPreview');
@@ -1441,7 +1469,9 @@ const app = {
             practice: 'Составь короткий план: как мне быстрее выучить и отработать эту песню.'
         };
         
-        const systemInstruction = `Ты — гитарный AI-репетитор. Отвечай кратко, емко, дружелюбно, как в мессенджере. Пиши простым текстом (можно делить на абзацы), без markdown (без **, ## и списков).
+        const systemInstruction = `Ты — гитарный AI-репетитор. Отвечай кратко, по делу и дружелюбно.
+ОЧЕНЬ ВАЖНО: НИКОГДА не здоровайся (не пиши Привет, Здравствуйте и т.д.)! Сразу переходи к ответу на вопрос.
+Пиши простым текстом (можно делить на абзацы), без markdown (без **, ## и списков).
         
 Разбираем песню:
 Название: ${song.title}
