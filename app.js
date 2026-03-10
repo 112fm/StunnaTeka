@@ -187,19 +187,12 @@ const app = {
         document.getElementById('sortSelect').addEventListener('change', () => this.applyLibraryFilters());
 
         document.getElementById('runAiBtn').addEventListener('click', () => this.runSongAiExtraction({ fromTextOnly: false }));
-        document.getElementById('fillMetaFromTextBtn').addEventListener('click', () => this.runSongAiExtraction({ fromTextOnly: true }));
-        document.getElementById('previewSongBtn').addEventListener('click', () => this.updatePreview());
         document.getElementById('normalizeTextBtn').addEventListener('click', () => {
             const textArea = document.getElementById('songText');
-            textArea.value = this.normalizeSongText(textArea.value);
-            this.persistDraft();
-            this.updatePreview();
-        });
-
-        document.getElementById('wizardPrevBtn').addEventListener('click', () => this.goWizardStep(-1));
-        document.getElementById('wizardNextBtn').addEventListener('click', () => this.goWizardStep(1));
-        document.querySelectorAll('.wizard-step').forEach((button) => {
-            button.addEventListener('click', () => this.setWizardStep(Number(button.dataset.step)));
+            if (textArea) {
+                textArea.value = this.normalizeSongText(textArea.value);
+                this.persistDraft();
+            }
         });
 
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
@@ -231,7 +224,6 @@ const app = {
 
         document.getElementById('songText').addEventListener('input', () => {
             this.persistDraft();
-            this.updatePreview();
         });
 
         document.querySelectorAll('.stroke-btn').forEach((button) => {
@@ -465,7 +457,6 @@ const app = {
     syncQuickTextToMain(value) {
         document.getElementById('songText').value = value;
         this.persistDraft();
-        this.updatePreview();
     },
 
     applyTuningPreset(value) {
@@ -490,7 +481,6 @@ const app = {
         if (imageFiles.length) {
             event.preventDefault();
             this.prepareImages(imageFiles, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
-            this.setWizardStep(1);
         }
     },
 
@@ -651,7 +641,6 @@ const app = {
         document.getElementById('strumNotes').value = `Шаблон: ${pattern.name}`;
         this.renderStrumBuilder();
         this.persistDraft();
-        this.updatePreview();
     },
 
     normalizeStrumText(value) {
@@ -803,20 +792,6 @@ const app = {
         }
 
         this.renderSourcePreview();
-        const text = this.normalizeSongText(document.getElementById('songText').value);
-        const previewNode = document.getElementById('songPreview');
-        const parts = [];
-        const strumSummary = this.buildStrumSummary();
-        if (strumSummary) {
-            parts.push(`<div class="song-line-single"><strong>Бой:</strong> ${this.escapeHtml(strumSummary)}</div>`);
-        }
-        if (text.trim()) {
-            previewNode.classList.remove('song-preview-empty');
-            previewNode.innerHTML = parts.join('') + this.renderSongMarkup(text);
-        } else {
-            previewNode.classList.add('song-preview-empty');
-            previewNode.innerHTML = parts.length ? parts.join('') : 'Предпросмотр появится после ввода текста или запуска AI.';
-        }
     },
     revokePreviewUrls() {
         if (!Array.isArray(this.state.previewObjectUrls)) {
@@ -1431,6 +1406,8 @@ const app = {
         } else if (viewId === 'addView') {
             this.state.currentView = 'addView';
             this.renderStrumBuilder();
+            // Сбрасываем скролл, если мы пришли в редактор 
+            window.scrollTo(0, 0);
         } else if (viewId === 'songView') {
             this.state.currentView = 'songView';
         }
@@ -1458,8 +1435,6 @@ const app = {
             this.renderStrumBuilder();
         }
         this.persistDraft();
-        this.updatePreview();
-        this.setWizardStep(2);
     },
     async runSongAiExtraction({ fromTextOnly }) {
         const statusNode = document.getElementById('ocrStatus');
@@ -1468,12 +1443,10 @@ const app = {
         const hasImages = this.state.pendingLyricsImages.length || this.state.pendingPatternImages.length;
         if (!fromTextOnly && !hasImages && !manualText) {
             alert('Добавьте скрины или вставьте текст перед запуском AI.');
-            this.setWizardStep(1);
             return;
         }
         if (fromTextOnly && !manualText) {
             alert('Сначала вставьте текст песни.');
-            this.setWizardStep(2);
             return;
         }
         statusNode.classList.remove('hidden');
@@ -1530,7 +1503,7 @@ const app = {
             const rawResponse = await this.requestGemini(parts);
             const parsed = this.extractJsonBlock(rawResponse);
             this.applyAiSongData(parsed, { replaceText: true });
-            alert('AI заполнил песню. Проверь результат на шаге 2.');
+            alert('AI заполнил данные песни!');
         } catch (error) {
             alert(`Не удалось обработать материалы: ${error.message}`);
         } finally {

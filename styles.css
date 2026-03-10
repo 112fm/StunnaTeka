@@ -606,58 +606,29 @@ main {
     gap: 18px;
 }
 
-.wizard-head {
-    align-items: end;
-    justify-content: space-between;
+.editor-heading {
+    margin-bottom: 24px;
 }
 
-.wizard-steps {
-    gap: 10px;
-}
-
-.wizard-step {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    border: 1px solid var(--surface-border);
-    border-radius: 999px;
-    background: var(--surface-soft);
-    color: var(--text-secondary);
-}
-
-.wizard-step strong {
-    color: var(--text-primary);
-}
-
-.wizard-step.active {
-    background: linear-gradient(135deg, rgba(240, 133, 71, 0.16), rgba(79, 143, 255, 0.14));
-    color: var(--text-primary);
-    border-color: rgba(79, 143, 255, 0.24);
-}
-
-.wizard-form {
+.editor-form {
     display: grid;
+    gap: 24px;
 }
 
-.wizard-page {
-    display: none;
+.panel {
+    background: var(--surface-soft);
+    border: 1px solid var(--surface-border);
+    border-radius: 24px;
+    padding: 24px;
 }
 
-.wizard-page.active {
-    display: block;
+.emphasis-panel {
+    border-color: rgba(79, 143, 255, 0.2);
+    background: linear-gradient(180deg, rgba(79, 143, 255, 0.04), transparent);
 }
 
-.wizard-grid > * {
-    flex: 1 1 320px;
-}
-
-.review-grid > *:first-child {
-    flex-basis: 720px;
-}
-
-.review-grid > *:last-child {
-    flex-basis: 420px;
+.full-width {
+    width: 100%;
 }
 
 .card-head,
@@ -2439,30 +2410,18 @@ label[for="songTextQuick"] {
         font-size: 0.98rem;
     }
 
-    .wizard-head {
-        display: grid;
+    .compact-fields,
+    .meta-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+    }
+
+    .compact-fields > :last-child,
+    .meta-grid > *:nth-child(1) {
+        grid-column: span 1;
     }
 
     #runAiBtn {
         width: 100%;
-    }
-
-    .wizard-steps {
-        gap: 8px;
-    }
-
-    .wizard-step {
-        min-width: 132px;
-    }
-
-    .step-one-grid {
-        gap: 16px;
-    }
-
-    .step-one-main {
-        gap: 14px;
     }
 
     .drop-card,
@@ -2481,19 +2440,8 @@ label[for="songTextQuick"] {
         min-width: 84px;
     }
 
-    .wizard-footer {
-        position: sticky;
-        bottom: max(6px, env(safe-area-inset-bottom, 0));
-        padding: 8px;
-        border-radius: 14px;
-        border: 1px solid var(--surface-border);
-        background: color-mix(in srgb, var(--surface-base) 86%, transparent);
-        backdrop-filter: blur(8px);
-        z-index: 20;
-    }
-
-    .wizard-footer .ghost-btn,
-    .wizard-footer .secondary-btn {
+    .editor-actions .ghost-btn,
+    .editor-actions .secondary-btn {
         min-height: 44px;
     }
 
