@@ -1266,6 +1266,14 @@ const app = {
         target.classList.remove('hidden');
         target.classList.add('active');
 
+        const aiChatFab = document.getElementById('aiChatFab');
+        if (aiChatFab) {
+            aiChatFab.classList.toggle('hidden', viewId !== 'songView');
+        }
+        if (viewId !== 'songView') {
+            this.toggleAiChat(false);
+        }
+
         if (viewId === 'homeView') {
             document.querySelectorAll('.app-header .header-actions:not(.minimal-actions)').forEach(el => el.classList.remove('hidden'));
             this.state.currentView = 'homeView';
