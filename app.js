@@ -138,7 +138,6 @@ const app = {
         songs: [],
         filteredSongs: [],
         currentView: 'homeView',
-        currentWizardStep: 1,
         ghUsername: '',
         ghRepo: '',
         ghToken: '',
@@ -461,24 +460,12 @@ const app = {
             this.loadSongs();
         }
         if (viewId === 'addView') {
-            this.setWizardStep(1);
             this.updatePreview();
         }
         if (viewId !== 'songView') {
             this.toggleStudyHelperPanel(false);
         }
     },
-
-    setWizardStep(step) {
-        this.state.currentWizardStep = Math.max(1, Math.min(3, step));
-        this.updatePreview();
-    },
-
-    goWizardStep(delta) {
-        this.setWizardStep(this.state.currentWizardStep + delta);
-    },
-
-
 
     persistDraft() {
         const draft = {
@@ -1118,7 +1105,7 @@ const app = {
         const song = this.state.songs.find((item) => item.id === songId);
         if (!song) return;
 
-        // Заполняем форму редактирования (мастер)
+        // Заполняем форму редактирования
         document.getElementById('songArtist').value = song.artist || '';
         document.getElementById('songTitle').value = song.title || '';
         document.getElementById('songVideoUrl').value = song.video_url || '';
@@ -1143,9 +1130,8 @@ const app = {
         // Сохраним ID песни, которую редактируем.
         this.state._editingSongId = song.id; 
 
-        // Переходим в мастер
+        // Переходим в форму добавления/редактирования
         this.showView('addView');
-        this.setWizardStep(2); // Сразу на шаг заполнения данных
         this.persistDraft();
     },
     getCurrentSong() {
@@ -1302,12 +1288,10 @@ const app = {
         const text = this.normalizeSongText(document.getElementById('songText').value);
         if (!title || !artist) {
             alert('Нужно заполнить хотя бы название и исполнителя.');
-            this.setWizardStep(1);
             return;
         }
         if (!text) {
             alert('Добавьте текст песни или распознайте его со скрина.');
-            this.setWizardStep(2);
             return;
         }
         const song = this.normalizeSongObject({
