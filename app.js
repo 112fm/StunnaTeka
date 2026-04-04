@@ -200,6 +200,12 @@ const app = {
 
         document.getElementById('lyricsImageInput').addEventListener('change', (event) => {
             this.prepareImages(event.target.files, 'pendingLyricsImages', 'lyricsUploadSummary', 'Скрины текста');
+            event.target.value = '';
+        });
+
+        document.getElementById('patternImageInput').addEventListener('change', (event) => {
+            this.prepareImages(event.target.files, 'pendingPatternImages', 'patternUploadSummary', 'Скрины боя');
+            event.target.value = '';
         });
 
         document.getElementById('tabsImageInput').addEventListener('change', (event) => {
@@ -540,9 +546,26 @@ const app = {
     },
 
     prepareImages(fileList, stateKey, summaryId, label) {
-        const nextFiles = Array.from(fileList || []).filter(Boolean);
+        const incoming = Array.from(fileList || []).filter(Boolean);
+        if (!incoming.length) {
+            return;
+        }
+        const existingSignatures = new Set((this.state[stateKey] || []).map((file) => this.getFileSignature(file)));
+        const nextFiles = incoming.filter((file) => {
+            const signature = this.getFileSignature(file);
+            if (existingSignatures.has(signature)) {
+                return false;
+            }
+            existingSignatures.add(signature);
+            return true;
+        });
         this.state[stateKey] = [...this.state[stateKey], ...nextFiles];
         this.updateUploadUi(stateKey, summaryId, label);
+        this.renderSourcePreview();
+    },
+
+    getFileSignature(file) {
+        return [file?.name || '', file?.size || 0, file?.type || '', file?.lastModified || 0].join('|');
     },
 
     updateUploadUi(stateKey, summaryId, label) {
@@ -557,6 +580,9 @@ const app = {
 
         if (stateKey === 'pendingLyricsImages') {
             const pasteZone = document.getElementById('lyricsPasteZone');
+            if (!pasteZone) {
+                return;
+            }
             const hasContent = this.state[stateKey].length > 0;
             pasteZone.classList.toggle('has-content', hasContent);
             pasteZone.querySelector('strong').textContent = hasContent ? 'Скрины добавлены в очередь' : 'Вставить скрин из буфера';
@@ -601,6 +627,7 @@ const app = {
             label = 'Скрины табов';
         }
         this.updateUploadUi(stateKey, summaryId, label);
+        this.renderSourcePreview();
     },
 
     addStrumStep(direction) {
@@ -902,7 +929,7 @@ const app = {
         });
 
         node.classList.remove('hidden');
-        node.innerHTML = '<span class="source-preview-title">Загруженные материалы из шага 1</span>'
+        node.innerHTML = '<span class="source-preview-title">Загруженные материалы</span>'
             + `<div class="source-preview-grid">${thumbs.join('')}</div>`;
     },
     escapeHtml(value) {
@@ -1383,8 +1410,10 @@ const app = {
         this.state.currentStrumSteps = [];
         this.state.selectedStrumIndex = -1;
         this.state.pendingLyricsImages = [];
+        this.state.pendingPatternImages = [];
         this.state.pendingTabsImages = [];
         this.revokePreviewUrls();
+        this.renderSourcePreview();
         
         const lyricsSummary = document.getElementById('lyricsUploadSummary');
         if (lyricsSummary) lyricsSummary.textContent = 'Скрины текста не выбраны';
@@ -1393,6 +1422,15 @@ const app = {
         if (lyricsList) {
             lyricsList.textContent = 'Пока нет добавленных скринов текста.';
             lyricsList.className = 'upload-list empty';
+        }
+
+        const patternSummary = document.getElementById('patternUploadSummary');
+        if (patternSummary) patternSummary.textContent = 'Скрины боя не выбраны';
+
+        const patternList = document.getElementById('patternUploadList');
+        if (patternList) {
+            patternList.textContent = 'Пока нет добавленных скринов боя.';
+            patternList.className = 'upload-list empty';
         }
 
         const tabsSummary = document.getElementById('tabsUploadSummary');
@@ -1414,6 +1452,8 @@ const app = {
         if (pasteZone) {
             pasteZone.classList.remove('has-content');
             const strongTag = pasteZone.querySelector('strong');
+            const hintTag = pasteZone.querySelector('span');
+            if (hintTag) hintTag.textContent = 'Можно вставлять несколько скринов подряд.';
             if (strongTag) strongTag.textContent = 'Вставить из буфера (Ctrl+V)';
         }
         
@@ -1732,7 +1772,12 @@ ${song.text}`;
         return value
             .replace(/\*\*(.*?)\*\*/g, '$1')
             .replace(/__(.*?)__/g, '$1')
+            .replace(/`{1,3}/g, '')
+            .replace(/^#{1,6}\s+/gm, '')
+            .replace(/^\s*\d+\.\s+/gm, '')
             .replace(/^[\s]*[-*\u2022]+\s+/gm, '')
+            .replace(/[ \t]*\*{1,2}([^\n*]+)\*{1,2}/g, '$1')
+            .replace(/\n{3,}/g, '\n\n')
             .replace(/\s{2,}/g, ' ')
             .trim();
     },

@@ -78,11 +78,23 @@
                                         <strong>📸 Камера / Галерея</strong>
                                     </label>
                                     <input type="file" id="lyricsImageInput" accept="image/*" multiple class="hidden">
+                                    <label class="drop-card accent-card" for="patternImageInput">
+                                        <strong>Скрины боя и схем ударов</strong>
+                                        <span>Добавляйте отдельные изображения боя.</span>
+                                    </label>
+                                    <input type="file" id="patternImageInput" accept="image/*" multiple class="hidden">
                                     <button id="lyricsPasteZone" class="paste-zone" type="button">
+                                        <span class="paste-hint">Можно вставлять несколько скринов подряд.</span>
                                         <strong>📋 Вставить из буфера (Ctrl+V)</strong>
                                     </button>
                                 </div>
-                                <div id="lyricsUploadList" class="upload-list empty"></div>
+                                <div class="upload-summaries upload-summaries-stacked">
+                                    <p id="lyricsUploadSummary" class="upload-summary">Скрины текста не выбраны</p>
+                                    <p id="patternUploadSummary" class="upload-summary">Скрины боя не выбраны</p>
+                                </div>
+                                <div id="lyricsUploadList" class="upload-list empty">Пока нет добавленных скринов текста.</div>
+                                <div id="patternUploadList" class="upload-list empty">Пока нет добавленных скринов боя.</div>
+                                <div id="sourcePreview" class="source-preview hidden"></div>
                                 <div style="margin-top: 14px;">
                                     <button id="runAiBtn" class="primary-btn full-width" type="button">✨ Сгенерировать через AI</button>
                                 </div>

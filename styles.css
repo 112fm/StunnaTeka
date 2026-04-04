@@ -2242,4 +2242,158 @@ label[for="songTextQuick"] {
     }
 }
 
+/* --- P0 MOBILE STABILITY --- */
+.editor-actions {
+    display: grid;
+    gap: 12px;
+}
+
+@media (max-width: 768px) {
+    #appContainer {
+        padding: 10px 10px 24px;
+    }
+
+    main {
+        gap: 16px;
+    }
+
+    .app-header {
+        position: static;
+        padding: 12px;
+        border-radius: 20px;
+        gap: 10px;
+    }
+
+    .brand-mark {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .header-actions,
+    .minimal-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .desktop-centered-hero,
+    .home-stack,
+    .home-flow {
+        display: grid;
+        grid-template-columns: 1fr !important;
+        height: auto !important;
+    }
+
+    .home-hero {
+        grid-column: auto;
+        min-height: 0;
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .home-hero h1,
+    .quiet-hero h1,
+    .hero-lead h1 {
+        font-size: clamp(1.9rem, 8vw, 2.5rem) !important;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+    }
+
+    .flow-card {
+        min-height: 0;
+        padding: 16px;
+    }
+
+    .wizard-shell,
+    .editor-form,
+    .panel,
+    .manual-box,
+    .song-card {
+        gap: 16px;
+    }
+
+    .panel,
+    .song-card,
+    #songView .panel {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .capture-grid,
+    .compact-fields,
+    .meta-grid,
+    .library-toolbar,
+    .song-controls {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+
+    .upload-list {
+        margin-top: 8px;
+    }
+
+    .song-header-main {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-icon-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    #songView .song-meta,
+    .song-card .song-meta {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .song-line-pair .chord-line,
+    .song-line-pair .lyric-line,
+    .song-line-single {
+        font-size: 0.98rem;
+    }
+
+    .speed-control {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .speed-control input[type="range"] {
+        width: 100%;
+    }
+
+    .wizard-footer,
+    .editor-actions {
+        position: static !important;
+        inset: auto !important;
+        z-index: auto !important;
+        background: transparent !important;
+        border: 0 !important;
+        padding: 0 !important;
+        margin-top: 10px;
+    }
+
+    .sort-select {
+        border-radius: 14px;
+    }
+
+    .songs-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .chat-overlay {
+        right: 10px;
+        left: 10px;
+        width: auto;
+        bottom: 86px;
+        height: min(calc(100vh - 110px), 560px);
+    }
+}
+
 
