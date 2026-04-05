@@ -468,9 +468,6 @@ const app = {
         if (viewId === 'addView') {
             this.updatePreview();
         }
-        if (viewId !== 'songView') {
-            this.toggleStudyHelperPanel(false);
-        }
     },
 
     persistDraft() {
@@ -1557,6 +1554,7 @@ const app = {
     },
 
     showView(viewId) {
+        this.stopAutoscroll();
         document.querySelectorAll('.view').forEach((view) => {
             view.classList.add('hidden');
             view.classList.remove('active');
@@ -1566,11 +1564,12 @@ const app = {
         target.classList.add('active');
 
         const aiChatFab = document.getElementById('aiChatFab');
+        const aiChatOverlay = document.getElementById('aiChatOverlay');
+        if (aiChatOverlay) {
+            aiChatOverlay.classList.add('hidden');
+        }
         if (aiChatFab) {
             aiChatFab.classList.toggle('hidden', viewId !== 'songView');
-        }
-        if (viewId !== 'songView') {
-            this.toggleAiChat(false);
         }
 
         if (viewId === 'homeView') {
@@ -1583,7 +1582,7 @@ const app = {
             this.state.currentView = 'addView';
             this.renderStrumBuilder();
             // Сбрасываем скролл, если мы пришли в редактор 
-            window.scrollTo(0, 0);
+            this.updatePreview();
         } else if (viewId === 'songView') {
             this.state.currentView = 'songView';
         }
